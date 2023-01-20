@@ -2,11 +2,25 @@
 
 #include <wincodec.h>
 #include <string>
+#include <wrl.h>
+
+using namespace Microsoft;
+using namespace Microsoft::WRL;
 
 struct WICTranslate
 {
 	GUID wic;
 	DXGI_FORMAT format;
+};
+
+struct ImageData
+{
+	DXGI_FORMAT format;
+	uint32_t width;
+	uint32_t height;
+	uint32_t bpp;
+	uint32_t rowPitch;
+	ComPtr<IWICBitmapSource> data;
 };
 
 static WICTranslate g_WICFormats[] =
@@ -100,4 +114,4 @@ bool GetTargetPixelFormat(const GUID* pSourceFormat, GUID* pTargetFormat);
 
 DXGI_FORMAT GetDXGIFormatFromPixelFormat(const GUID* pPixelFormat);
 
-void loadImage(const std::wstring& path);
+ImageData loadImage(const std::wstring& path);

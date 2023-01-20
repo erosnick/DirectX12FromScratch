@@ -1,10 +1,6 @@
 #include "pch.h"
 #include "WICImage.h"
 #include "Utils.h"
-#include <wrl.h>
-
-using namespace Microsoft;
-using namespace Microsoft::WRL;
 
 ComPtr<IWICImagingFactory>			WICImagingFactory;
 ComPtr<IWICBitmapDecoder>			WICBitmapDecoder;
@@ -14,6 +10,7 @@ bool GetTargetPixelFormat(const GUID* pSourceFormat, GUID* pTargetFormat)
 {	
 	//查表确定兼容的最接近格式是哪个
 	*pTargetFormat = *pSourceFormat;
+
 	for (size_t i = 0; i < _countof(g_WICConvert); ++i)
 	{
 		if (InlineIsEqualGUID(g_WICConvert[i].source, *pSourceFormat))
@@ -38,7 +35,7 @@ DXGI_FORMAT GetDXGIFormatFromPixelFormat(const GUID* pPixelFormat)
 	return DXGI_FORMAT_UNKNOWN;
 }
 
-void loadImage(const std::wstring& path)
+ImageData loadImage(const std::wstring& path)
 {
 	DXCheck(CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED), "CoInitializeEx failed!");
 
@@ -82,7 +79,9 @@ void loadImage(const std::wstring& path)
 	}
 
 	// 定义一个位图格式的图片数据对象接口
-	ComPtr<IWICBitmapSource> bitmap;
+	ImageData imageData;
+
+	imageData.format = textureFormat;
 
 	if (!InlineIsEqualGUID(pixelFormatGUID, format))
 	{
@@ -103,11 +102,40 @@ void loadImage(const std::wstring& path)
 		), "IWICFormatConverter::Initialize failed!");
 
 		// 调用QueryInterface方法获得对象的位图数据源接口
-		DXCheck(converter.As(&bitmap), "Convert bitmap failed!");
+		DXCheck(converter.As(&imageData.data), "Convert bitmap failed!");
 	}
 	else
 	{
 		//图片数据格式不需要转换，直接获取其位图数据源接口
-		DXCheck(WICBitmapFrameDecode.As(&bitmap), "Convert bitmap failed!");
+		DXCheck(WICBitmapFrameDecode.As(&imageData.data), "Convert bitmap failed!");
 	}
+
+	// 获得图片大小（单位：像素）
+	DXCheck(imageData.data->GetSize(&imageData.width, &imageData.height), "IWICBitmapSource::GetSize failed!");
+
+	// 获取图片像素的位大小的BPP（Bits Per Pixel）信息，用以计算图片行数据的真实大小（单位：字节）
+	ComPtr<IWICComponentInfo> WICComponentInfo;
+	DXCheck(WICImagingFactory->CreateComponentInfo(format, WICComponentInfo.GetAddressOf()), "IWICImagingFactory::CreateComponentInfo failed!");
+
+	WICComponentType type;
+	DXCheck(WICComponentInfo->GetComponentType(&type), "IWICComponentInfo::GetComponentType failed!");
+
+	if (type != WICPixelFormat)
+	{
+		DXThrow("Type mismatch!");
+	}
+
+	ComPtr<IWICPixelFormatInfo> WICPixelInfo;
+	DXCheck(WICComponentInfo.As(&WICPixelInfo), "Get pixel info failed!");
+
+	uint32_t bpp = 0;
+
+	// 到这里终于可以得到BPP了，这也是我看的比较吐血的地方，为了BPP居然饶了这么多环节
+	DXCheck(WICPixelInfo->GetBitsPerPixel(&imageData.bpp), "IWICComponentInfo::GetBitsPerPixel failed!");
+
+	// 计算图片实际的行大小（单位：字节），这里使用了一个上取整除法即（A + B - 1）/ B ，
+	// 这曾经被传说是微软的面试题,希望你已经对它了如指掌
+	imageData.rowPitch = ((imageData.width * imageData.bpp) + 7) / 8;
+
+	return imageData;
 }
