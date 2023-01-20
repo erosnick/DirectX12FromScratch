@@ -135,7 +135,7 @@ ImageData loadImage(const std::wstring& path)
 
 	// 计算图片实际的行大小（单位：字节），这里使用了一个上取整除法即（A + B - 1）/ B ，
 	// 这曾经被传说是微软的面试题,希望你已经对它了如指掌
-	imageData.rowPitch = ((imageData.width * imageData.bpp) + 7) / 8;
+	imageData.rowPitch = UPPER_DIV(imageData.width * imageData.bpp, 8);
 
 	return imageData;
 }

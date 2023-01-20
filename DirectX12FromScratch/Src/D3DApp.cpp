@@ -136,6 +136,7 @@ LRESULT D3DApp::msgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case VK_UP:
+			currentSamplerNo = (currentSamplerNo + 1) % sampleMaxCount;
 			break;
 
 		case VK_ESCAPE:
@@ -275,6 +276,7 @@ void D3DApp::createDescriptorHeap()
 	// 得到每个描述符元素的大小
 	renderTargetViewDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
+	// 创建用于纹理采样的描述符堆(这里单独为ImGUI创建了一个，避免冲突)
 	D3D12_DESCRIPTOR_HEAP_DESC shaderResourceViewDescriptorHeapDesc{};
 	shaderResourceViewDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	shaderResourceViewDescriptorHeapDesc.NumDescriptors = 2;
@@ -295,6 +297,72 @@ void D3DApp::createDescriptor()
 	}
 }
 
+void D3DApp::createSamplerDescriptorHeap()
+{
+	D3D12_DESCRIPTOR_HEAP_DESC samplerDescriptorHeapDesc{};
+	samplerDescriptorHeapDesc.NumDescriptors = sampleMaxCount;
+	samplerDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;
+	samplerDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+
+	DXCheck(device->CreateDescriptorHeap(&samplerDescriptorHeapDesc, IID_PPV_ARGS(&samplerDescriptorHeap)), "ID3D12Device::CreateDescriptorHeap failed!");
+
+	samplerDescriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
+}
+
+void D3DApp::createSamplers()
+{
+	CD3DX12_CPU_DESCRIPTOR_HANDLE samplerDescriptorHeapHandle(samplerDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+
+	D3D12_SAMPLER_DESC samplerDesc{};
+	samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+
+	// Sampler 1
+	samplerDesc.BorderColor[0] = 1.0f;
+	samplerDesc.BorderColor[1] = 0.0f;
+	samplerDesc.BorderColor[2] = 1.0f;
+	samplerDesc.BorderColor[3] = 1.0f;
+	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	device->CreateSampler(&samplerDesc, samplerDescriptorHeapHandle);
+
+	samplerDescriptorHeapHandle.Offset(samplerDescriptorSize);
+
+	// Sampler 2
+	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	device->CreateSampler(&samplerDesc, samplerDescriptorHeapHandle);
+
+	samplerDescriptorHeapHandle.Offset(samplerDescriptorSize);
+
+	// Sampler 3
+	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+	device->CreateSampler(&samplerDesc, samplerDescriptorHeapHandle);
+
+	samplerDescriptorHeapHandle.Offset(samplerDescriptorSize);
+
+	// Sampler 4
+	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_MIRROR;
+	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_MIRROR;
+	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_MIRROR;
+	device->CreateSampler(&samplerDesc, samplerDescriptorHeapHandle);
+
+	samplerDescriptorHeapHandle.Offset(samplerDescriptorSize);
+
+	// Sampler 5
+	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_MIRROR_ONCE;
+	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_MIRROR_ONCE;
+	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_MIRROR_ONCE;
+	device->CreateSampler(&samplerDesc, samplerDescriptorHeapHandle);
+}
+
 void D3DApp::createRootSignature()
 {
 	// 检测是否支持V1.1版本的根签名
@@ -308,30 +376,17 @@ void D3DApp::createRootSignature()
 
 	// 在GPU上执行SetGraphicsRootDescriptorTable后，我们不修改命令列表中的SRV，因此我们可以使用默认Rang行为:
 	// D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC_WHILE_SET_AT_EXECUTE
-	CD3DX12_DESCRIPTOR_RANGE1 descriptorRanges[1]{};
+	CD3DX12_DESCRIPTOR_RANGE1 descriptorRanges[2]{};
 
 	descriptorRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC_WHILE_SET_AT_EXECUTE);
+	descriptorRanges[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, 1, 0);
 
-	CD3DX12_ROOT_PARAMETER1 rootParameters[1]{};
+	CD3DX12_ROOT_PARAMETER1 rootParameters[2]{};
 	rootParameters[0].InitAsDescriptorTable(1, &descriptorRanges[0], D3D12_SHADER_VISIBILITY_PIXEL);
-
-	D3D12_STATIC_SAMPLER_DESC staticSamplerDesc{};
-	staticSamplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_POINT;
-	staticSamplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
-	staticSamplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
-	staticSamplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
-	staticSamplerDesc.MipLODBias = 0;
-	staticSamplerDesc.MaxAnisotropy = 0;
-	staticSamplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-	staticSamplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
-	staticSamplerDesc.MinLOD = 0.0f;
-	staticSamplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
-	staticSamplerDesc.ShaderRegister = 0;
-	staticSamplerDesc.RegisterSpace = 0;
-	staticSamplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParameters[1].InitAsDescriptorTable(1, &descriptorRanges[1], D3D12_SHADER_VISIBILITY_PIXEL);
 
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-	rootSignatureDesc.Init_1_1(_countof(rootParameters), rootParameters, 1, &staticSamplerDesc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	rootSignatureDesc.Init_1_1(_countof(rootParameters), rootParameters, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSignatureData;
 	ComPtr<ID3DBlob> errorData;
@@ -423,10 +478,10 @@ void D3DApp::createVertexBuffer()
 {
 	std::vector<Vertex> quad =
 	{
-			{ { -0.25f * aspectRatio, -0.25f * aspectRatio, 0.0f}, { 0.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },	// Bottom left.
+			{ { -0.25f * aspectRatio, -0.25f * aspectRatio, 0.0f}, { 0.0f, 3.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },	// Bottom left.
 			{ { -0.25f * aspectRatio,  0.25f * aspectRatio, 0.0f}, { 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },	// Top left.
-			{ {  0.25f * aspectRatio, -0.25f * aspectRatio, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } },	// Bottom right.
-			{ {  0.25f * aspectRatio,  0.25f * aspectRatio, 0.0f}, { 1.0f, 0.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }		// Top right.
+			{ {  0.25f * aspectRatio, -0.25f * aspectRatio, 0.0f }, { 3.0f, 3.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } },	// Bottom right.
+			{ {  0.25f * aspectRatio,  0.25f * aspectRatio, 0.0f}, { 3.0f, 0.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }		// Top right.
 	};
 
 	vertexCount = static_cast<uint32_t>(quad.size());
@@ -541,6 +596,8 @@ void D3DApp::initDirect3D()
 	createSwapChain();
 	createDescriptorHeap();
 	createDescriptor();
+	createSamplerDescriptorHeap();
+	createSamplers();
 	createRootSignature();
 	createPipelineState();
 	createVertexBuffer();
@@ -553,8 +610,22 @@ void D3DApp::loadResources()
 	//auto imageData = loadImage(L"Assets/Textures/Kanna.jpg");
 	auto imageData = loadImage(L"Assets/Textures/Skrik.bmp");
 
-	ComPtr<ID3D12Resource> textureUpload;
+	// 创建纹理的默认堆
+	D3D12_HEAP_DESC textureHeapDesc{};
+	// 为堆指定纹理图片至少2倍大小的空间，这里没有详细取计算了，只是指定了一个足够大的空间，够放纹理就行
+	// 实际应用中也是要综合考虑分配堆的大小，以便可以重用堆
+	textureHeapDesc.SizeInBytes = UPPER(2 * imageData.rowPitch * imageData.width, D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT);
+	// 指定堆的对齐方式，这里使用了默认的64K边界对齐，因为我们暂时不需要MSAA支持
+	textureHeapDesc.Alignment = D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT;
+	textureHeapDesc.Properties.Type = D3D12_HEAP_TYPE_DEFAULT;
+	textureHeapDesc.Properties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+	textureHeapDesc.Properties.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+	// 拒绝渲染目标纹理，拒绝深度模板纹理，实际就只是用来摆放普通纹理
+	textureHeapDesc.Flags = D3D12_HEAP_FLAG_DENY_RT_DS_TEXTURES | D3D12_HEAP_FLAG_DENY_BUFFERS;
 
+	DXCheck(device->CreateHeap(&textureHeapDesc, IID_PPV_ARGS(&textureHeap)), "ID3D12Device::CreateHealp failed!");
+
+	// 创建2D纹理
 	D3D12_RESOURCE_DESC textureDesc{};
 	textureDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	textureDesc.MipLevels = 1;
@@ -566,32 +637,48 @@ void D3DApp::loadResources()
 	textureDesc.SampleDesc.Count = 1;
 	textureDesc.SampleDesc.Quality = 0;
 
-	// 创建默认堆上的资源，类型是Texture2D，GPU对默认堆资源的访问速度是最快的
-	// 因为纹理资源一般是不易变的资源，所以我们通常使用上传堆复制到默认堆中
-	// 在传统的D3D11及以前的D3D接口中，这些过程都被封装了，我们只能指定创建时的类型为默认堆 
-	DXCheck(device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
-		D3D12_HEAP_FLAG_NONE,
-		&textureDesc,			// 可以使用CD3DX12_RESOURCE_DESC：：Tex2D来简化结构体的初始化
-		D3D12_RESOURCE_STATE_COPY_DEST,
-		nullptr,
-		IID_PPV_ARGS(&texture)), "ID3D12Device::CreateCommittedResource failed!");
+	// 使用“定位方式”来创建纹理，注意下面这个调用内部实际已经没有存储分配和释放的实际操作了，所以性能很高
+	// 同时可以在这个堆上反复调用CreatePlacedResource来创建不同的纹理，当然前提是它们不在倍使用的时候，才考虑重用堆
+	DXCheck(device->CreatePlacedResource(textureHeap.Get(),
+											   0,
+											   &textureDesc,	// 可以使用CD3DX12_RESOURCE_DESC::Tex2D来简化结构体的初始化
+												D3D12_RESOURCE_STATE_COPY_DEST,
+												nullptr,
+												IID_PPV_ARGS(&texture)), "ID3D12Device::CreatePlacedResource failed!");
 
 	// 获取上传堆资源缓冲的大小，这个尺寸通常大于实际图片的尺寸
 	const uint64_t uploadBufferSize = GetRequiredIntermediateSize(texture.Get(), 0, 1);
+
+	// 创建上传堆
+	D3D12_HEAP_DESC uploadHeapDesc{};
+	// 尺寸依然是实际纹理数据大小的2倍并且64K边界对齐大小
+	uploadHeapDesc.SizeInBytes = UPPER(2 * uploadBufferSize, D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT);
+
+	// 注意上传堆肯定是Buffer类型，可以不指定对齐方式，其默认是64k边界对齐
+	uploadHeapDesc.Alignment = 0;
+	uploadHeapDesc.Properties.Type = D3D12_HEAP_TYPE_UPLOAD;
+	uploadHeapDesc.Properties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+	uploadHeapDesc.Properties.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+
+	// 上传堆就是缓冲，可以摆放任意数据
+	uploadHeapDesc.Flags = D3D12_HEAP_FLAG_ALLOW_ONLY_BUFFERS;
+
+	DXCheck(device->CreateHeap(&uploadHeapDesc, IID_PPV_ARGS(&uploadHeap)), "ID3D12Device::CreateHealp failed!");
+
+	// 使用“定位方式”创建用于上传纹理数据的缓冲资源
 
 	// 创建用于上传纹理的资源, 注意其类型是Buffer
 	// 上传堆对于GPU访问来说性能是很差的，
 	// 所以对于几乎不变的数据尤其像纹理都是
 	// 通过它来上传至GPU访问更高效的默认堆中
-	DXCheck(device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&textureUpload)
-	), "ID3D12Device::CreateCommittedResource failed!");
+	ComPtr<ID3D12Resource> textureUpload;
+
+	DXCheck(device->CreatePlacedResource(uploadHeap.Get(),
+								     0,
+									     &CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize),
+							        D3D12_RESOURCE_STATE_GENERIC_READ,
+							  nullptr,
+									      IID_PPV_ARGS(&textureUpload)), "ID3D12Device::CreatePlacedResource failed!");
 
 	// 按照资源缓冲大小来分配实际图片数据存储的内存大小
 	void* textureData = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, uploadBufferSize);
@@ -722,6 +809,7 @@ void D3DApp::loadResources()
 	shaderResourceViewDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	shaderResourceViewDesc.Texture2D.MipLevels = 1;
 
+	// 在描述符堆中创建SRV描述符
 	device->CreateShaderResourceView(texture.Get(), &shaderResourceViewDesc, shaderResourceDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
 	// 执行命令列表并等待纹理资源上传完成，这一步是必须的
@@ -784,7 +872,8 @@ void D3DApp::initImGui()
 	//io.Fonts->AddFontDefault();
 	//io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
 	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-	io.Fonts->AddFontFromFileTTF("Assets/fonts/Roboto-Medium.ttf", 24.0f);
+	//io.Fonts->AddFontFromFileTTF("Assets/fonts/Roboto-Medium.ttf", 24.0f);
+	io.Fonts->AddFontFromFileTTF("Assets/fonts/ProggyClean.ttf", 20.0f);
 	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
 	//ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 	//IM_ASSERT(font != NULL);
@@ -910,10 +999,14 @@ void D3DApp::render()
 
 	commandList->SetGraphicsRootSignature(rootSignature.Get());
 
-	ID3D12DescriptorHeap* descriptorHeaps[] = { shaderResourceDescriptorHeap.Get() };
-	commandList->SetDescriptorHeaps(1, descriptorHeaps);
+	ID3D12DescriptorHeap* descriptorHeaps[] = { shaderResourceDescriptorHeap.Get(), samplerDescriptorHeap.Get() };
+	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
 	commandList->SetGraphicsRootDescriptorTable(0, shaderResourceDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
+
+	CD3DX12_GPU_DESCRIPTOR_HANDLE samplerDescriptorHandle(samplerDescriptorHeap->GetGPUDescriptorHandleForHeapStart(), currentSamplerNo, samplerDescriptorSize);
+
+	commandList->SetGraphicsRootDescriptorTable(1, samplerDescriptorHandle);
 
 	const float clearColor[]{ 0.4f, 0.6f, 0.9f, 1.0f };
 	commandList->ClearRenderTargetView(renderTargetViewHandle, clearColor, 0, nullptr);

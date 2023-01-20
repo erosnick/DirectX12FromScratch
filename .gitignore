@@ -4,9 +4,9 @@ bin/
 bin-int/
 
 # Files
-*.vcxproj
-*.vcxproj.user
-*.vcxproj.filters
+# *.vcxproj
+# *.vcxproj.user
+# *.vcxproj.filters
 *.sln
 *.obj
 *.ilk

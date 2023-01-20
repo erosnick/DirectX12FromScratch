@@ -7,6 +7,12 @@
 
 #define DXCheck(result, message) if (FAILED(result)) { DXThrow(message); }
 
+// 用于向上取整除法
+#define UPPER_DIV(A, B) (static_cast<uint32_t>(((A) + ((B) - 1)) / (B)))
+
+// 更简洁的向上取整算法
+#define UPPER(A, B) (static_cast<uint32_t>(((A) + ((B) - 1)) &~ (B - 1)))
+
 class DxException
 {
 public:

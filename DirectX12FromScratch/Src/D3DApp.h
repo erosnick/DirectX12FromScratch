@@ -56,6 +56,8 @@ private:
 	void createSwapChain();
 	void createDescriptorHeap();
 	void createDescriptor();
+	void createSamplerDescriptorHeap();
+	void createSamplers();
 	void createRootSignature();
 	void createPipelineState();
 	void createVertexBuffer();
@@ -88,6 +90,10 @@ private:
 
 	uint32_t DXGIFactoryFlags = 0;
 	uint32_t renderTargetViewDescriptorSize = 0;
+	uint32_t samplerDescriptorSize = 0;
+
+	uint32_t currentSamplerNo = 0;		//当前使用的采样器索引
+	uint32_t sampleMaxCount = 5;		//创建五个典型的采样器
 
 	HWND mainWindow = nullptr;
 
@@ -117,6 +123,7 @@ private:
 	ComPtr<ID3D12DescriptorHeap> renderTargetViewDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> imGuiShaderResourceDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> shaderResourceDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap> samplerDescriptorHeap;
 	ComPtr<ID3D12Resource> renderTargets[frameBackbufferCount];
 	ComPtr<ID3D12CommandAllocator> commandAllocator;
 	ComPtr<ID3D12RootSignature> rootSignature;
@@ -125,6 +132,8 @@ private:
 	ComPtr<ID3D12Resource> vertexBuffer;
 	ComPtr<ID3D12Fence> fence;
 	ComPtr<ID3D12Resource> texture;
+	ComPtr<ID3D12Heap> textureHeap;
+	ComPtr<ID3D12Heap> uploadHeap;
 
 	// Our state
 	bool showDemoWindow = true;
