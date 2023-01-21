@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\64843447b31ac67fd0df0206fa90714f\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{82C1FA17-0CC4-3AAA-AFF9-AB965EB424AF}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

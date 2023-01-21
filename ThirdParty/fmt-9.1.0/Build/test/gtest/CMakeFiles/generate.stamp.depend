@@ -1,0 +1,8 @@
+# CMake generation dependency list for this directory.
+E:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/test/gtest/CMakeLists.txt
+E:/OpenSources/Maratis/cmake-3.23.1-windows-x86_64/share/cmake-3.23/Modules/CheckCXXSourceCompiles.cmake
+E:/OpenSources/Maratis/cmake-3.23.1-windows-x86_64/share/cmake-3.23/Modules/CheckIncludeFileCXX.cmake
+E:/OpenSources/Maratis/cmake-3.23.1-windows-x86_64/share/cmake-3.23/Modules/CheckLibraryExists.cmake
+E:/OpenSources/Maratis/cmake-3.23.1-windows-x86_64/share/cmake-3.23/Modules/FindPackageHandleStandardArgs.cmake
+E:/OpenSources/Maratis/cmake-3.23.1-windows-x86_64/share/cmake-3.23/Modules/FindPackageMessage.cmake
+E:/OpenSources/Maratis/cmake-3.23.1-windows-x86_64/share/cmake-3.23/Modules/FindThreads.cmake

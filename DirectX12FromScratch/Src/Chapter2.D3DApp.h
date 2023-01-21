@@ -25,7 +25,7 @@ using namespace DirectX;
 
 #define MAX_LOADSTRING 100
 
-struct Vertex
+struct DXVertex
 {
 	XMFLOAT3 position;
 	XMFLOAT2 texcood;
@@ -56,10 +56,8 @@ private:
 	void createSwapChain();
 	void createDescriptorHeap();
 	void createDescriptor();
-	void createSamplerDescriptorHeap();
-	void createSamplers();
 	void createRootSignature();
-	void createPipelineState();
+	void createGraphicsPipelineState();
 	void createVertexBuffer();
 	void createCommandList();
 	void createFence();
@@ -90,10 +88,6 @@ private:
 
 	uint32_t DXGIFactoryFlags = 0;
 	uint32_t renderTargetViewDescriptorSize = 0;
-	uint32_t samplerDescriptorSize = 0;
-
-	uint32_t currentSamplerNo = 0;		//当前使用的采样器索引
-	uint32_t sampleMaxCount = 5;		//创建五个典型的采样器
 
 	HWND mainWindow = nullptr;
 
@@ -121,9 +115,8 @@ private:
 	ComPtr<IDXGISwapChain4> swapChain;
 	//ComPtr<IDXGISwapChain3> swapChain;
 	ComPtr<ID3D12DescriptorHeap> renderTargetViewDescriptorHeap;
-	ComPtr<ID3D12DescriptorHeap> imGuiShaderResourceDescriptorHeap;
-	ComPtr<ID3D12DescriptorHeap> shaderResourceDescriptorHeap;
-	ComPtr<ID3D12DescriptorHeap> samplerDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap> imGuiShaderResourceViewDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap> shaderResourceViewDescriptorHeap;
 	ComPtr<ID3D12Resource> renderTargets[frameBackbufferCount];
 	ComPtr<ID3D12CommandAllocator> commandAllocator;
 	ComPtr<ID3D12RootSignature> rootSignature;

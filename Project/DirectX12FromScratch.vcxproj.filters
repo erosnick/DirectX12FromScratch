@@ -12,13 +12,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DirectX12FromScratch\src\3.D3DApp.h">
+    <ClInclude Include="..\DirectX12FromScratch\src\4.D3DApp.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\DirectX12FromScratch\src\Chapter2.D3DApp.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX12FromScratch\src\Chapter3.D3DApp.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="..\DirectX12FromScratch\src\Console.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX12FromScratch\src\Model.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\DirectX12FromScratch\src\Resource.h">
@@ -41,10 +47,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\DirectX12FromScratch\src\3.D3DApp.cpp">
+    <ClCompile Include="..\DirectX12FromScratch\src\4.D3DApp.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\3.TexturedCube.cpp">
+    <ClCompile Include="..\DirectX12FromScratch\src\4.TexturedCube.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\DirectX12FromScratch\src\Chapter1.Triangle.cpp">
@@ -56,10 +62,16 @@
     <ClCompile Include="..\DirectX12FromScratch\src\Chapter2.TexturedQuad.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="..\DirectX12FromScratch\src\Chapter3.D3DApp.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="..\DirectX12FromScratch\src\Chapter3.TexturedQuadAdvance.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\DirectX12FromScratch\src\ImGui\ImGuiBuild.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX12FromScratch\src\Model.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\DirectX12FromScratch\src\Utils.cpp">

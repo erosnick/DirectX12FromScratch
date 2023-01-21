@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ResolveNugetPackages>false</ResolveNugetPackages>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F5775502-D553-3413-8EB9-34577268D6C9}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\bin\cmake.exe -SE:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0 -BE:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/Build --check-stamp-file E:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/Build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeCXXCompiler.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeRCCompiler.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeSystem.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\FindSetEnv.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\JoinPaths.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\cxx14.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\fmt-config.cmake.in;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\fmt.pc.in;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCXXInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCommonLanguageInclude.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeGenericSystem.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeInitializeConfigs.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeLanguageInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakePackageConfigHelpers.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeParseArguments.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeRCInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeSystemSpecificInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeSystemSpecificInitialize.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CheckCXXCompilerFlag.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CheckCXXSourceCompiles.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Compiler\MSVC-CXX.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\GNUInstallDirs.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckCompilerFlag.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckFlagCommonConfig.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckSourceCompiles.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows-MSVC-CXX.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows-MSVC.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\WindowsPaths.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\bin\cmake.exe -SE:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0 -BE:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/Build --check-stamp-file E:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/Build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeCXXCompiler.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeRCCompiler.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeSystem.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\FindSetEnv.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\JoinPaths.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\cxx14.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\fmt-config.cmake.in;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\fmt.pc.in;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCXXInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCommonLanguageInclude.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeGenericSystem.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeInitializeConfigs.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeLanguageInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakePackageConfigHelpers.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeParseArguments.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeRCInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeSystemSpecificInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeSystemSpecificInitialize.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CheckCXXCompilerFlag.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CheckCXXSourceCompiles.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Compiler\MSVC-CXX.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\GNUInstallDirs.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckCompilerFlag.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckFlagCommonConfig.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckSourceCompiles.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows-MSVC-CXX.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows-MSVC.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\WindowsPaths.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule E:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\bin\cmake.exe -SE:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0 -BE:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/Build --check-stamp-file E:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/Build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeCXXCompiler.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeRCCompiler.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeSystem.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\FindSetEnv.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\JoinPaths.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\cxx14.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\fmt-config.cmake.in;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\fmt.pc.in;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCXXInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCommonLanguageInclude.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeGenericSystem.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeInitializeConfigs.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeLanguageInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakePackageConfigHelpers.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeParseArguments.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeRCInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeSystemSpecificInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeSystemSpecificInitialize.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CheckCXXCompilerFlag.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CheckCXXSourceCompiles.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Compiler\MSVC-CXX.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\GNUInstallDirs.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckCompilerFlag.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckFlagCommonConfig.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckSourceCompiles.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows-MSVC-CXX.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows-MSVC.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\WindowsPaths.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule E:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\bin\cmake.exe -SE:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0 -BE:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/Build --check-stamp-file E:/OpenSources/HelloTriangle/HelloOpenGL/Thirdparty/fmt-9.1.0/Build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeCXXCompiler.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeRCCompiler.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\3.23.1\CMakeSystem.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\FindSetEnv.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\JoinPaths.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\cxx14.cmake;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\fmt-config.cmake.in;E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\support\cmake\fmt.pc.in;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCXXInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeCommonLanguageInclude.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeGenericSystem.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeInitializeConfigs.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeLanguageInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakePackageConfigHelpers.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeParseArguments.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeRCInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeSystemSpecificInformation.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CMakeSystemSpecificInitialize.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CheckCXXCompilerFlag.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\CheckCXXSourceCompiles.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Compiler\MSVC-CXX.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\GNUInstallDirs.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckCompilerFlag.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckFlagCommonConfig.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Internal\CheckSourceCompiles.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows-MSVC-CXX.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows-MSVC.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\Windows.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\Platform\WindowsPaths.cmake;E:\OpenSources\Maratis\cmake-3.23.1-windows-x86_64\share\cmake-3.23\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\ZERO_CHECK.vcxproj">
+      <Project>{8EA95CD8-C672-3498-85C7-6C3E9BAE9632}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\args-test.vcxproj">
+      <Project>{FB1A5424-604F-33A1-B35D-4137BE3ADA11}</Project>
+      <Name>args-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\assert-test.vcxproj">
+      <Project>{AEECB450-6FB5-3E15-9DC4-279D37D75913}</Project>
+      <Name>assert-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\chrono-test.vcxproj">
+      <Project>{7B84C183-8B0F-3BA8-AEE4-4E122718B900}</Project>
+      <Name>chrono-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\color-test.vcxproj">
+      <Project>{4C623B78-6E8A-3D3C-84D1-0840F4D8A067}</Project>
+      <Name>color-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\compile-fp-test.vcxproj">
+      <Project>{A96C289A-81AE-320C-B6B9-3E410F2EC98C}</Project>
+      <Name>compile-fp-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\compile-test.vcxproj">
+      <Project>{B9DBBF62-C771-38EE-BE32-8BB01DD72F73}</Project>
+      <Name>compile-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\core-test.vcxproj">
+      <Project>{CD455372-B4F7-3FFD-A261-C6FA1628D6D3}</Project>
+      <Name>core-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\enforce-checks-test.vcxproj">
+      <Project>{63CA245E-3314-37D2-A5DE-086D172C4F92}</Project>
+      <Name>enforce-checks-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\fmt.vcxproj">
+      <Project>{8FFDCA7E-4FED-3E91-858D-A1F5CDECE414}</Project>
+      <Name>fmt</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\format-impl-test.vcxproj">
+      <Project>{75E3891D-321D-31DD-AF43-0070A875F2DD}</Project>
+      <Name>format-impl-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\format-test.vcxproj">
+      <Project>{E7CD3CF1-AD73-3CC0-B340-707B2423DDFD}</Project>
+      <Name>format-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\gtest\gtest.vcxproj">
+      <Project>{88C2F86D-EE93-382F-A0C9-86CAD739587D}</Project>
+      <Name>gtest</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\gtest-extra-test.vcxproj">
+      <Project>{6F1CD28E-9F65-3D02-B63D-7A2DF6333BC5}</Project>
+      <Name>gtest-extra-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\os-test.vcxproj">
+      <Project>{3A9B9376-A8A9-354A-9D22-90222D4C3D39}</Project>
+      <Name>os-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\ostream-test.vcxproj">
+      <Project>{919C174F-8C99-3676-B807-57AE96D3C62B}</Project>
+      <Name>ostream-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\posix-mock-test.vcxproj">
+      <Project>{40674451-844F-301A-B626-593A9DEE25DF}</Project>
+      <Name>posix-mock-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\printf-test.vcxproj">
+      <Project>{5F29746D-B7B1-36EF-914F-1ED4BC629D40}</Project>
+      <Name>printf-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\ranges-test.vcxproj">
+      <Project>{AEB9985E-C9E5-3664-BF9D-A4156452940C}</Project>
+      <Name>ranges-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\scan-test.vcxproj">
+      <Project>{2AC30605-D22D-364F-85AD-E2D4B633200C}</Project>
+      <Name>scan-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\std-test.vcxproj">
+      <Project>{677A08EF-3B8B-3E4F-9EE0-9494A6B99EA4}</Project>
+      <Name>std-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\test-main.vcxproj">
+      <Project>{E380E403-C1C6-3DDF-8390-727C3C1044FF}</Project>
+      <Name>test-main</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\unicode-test.vcxproj">
+      <Project>{0B8F97CE-244F-36A7-AE19-BEB52D0E6798}</Project>
+      <Name>unicode-test</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\OpenSources\HelloTriangle\HelloOpenGL\Thirdparty\fmt-9.1.0\Build\test\xchar-test.vcxproj">
+      <Project>{5F655572-A65B-3271-BBDA-C1CC3ECF7EE1}</Project>
+      <Name>xchar-test</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

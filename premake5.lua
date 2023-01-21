@@ -67,14 +67,16 @@ project "DirectX12FromScratch"
 
     --Debug配置项属性
     filter "configurations:Debug"
-        defines { "DEBUG" }                 --定义Debug宏(这可以算是默认配置)
+        defines { "DEBUG", "FMT_HEADER_ONLY" }                 --定义Debug宏(这可以算是默认配置)
         symbols "On"                        --开启调试符号
         includedirs 
         { 
             '%{prj.name}/src',
             './ThirdParty/stb',
             './ThirdParty/imgui-1.89.2',
+            './ThirdParty/tinyobjloader',
             './ThirdParty/glm-0.9.9.8/glm',
+            './ThirdParty/fmt-9.1.0/include',
             './ThirdParty/DirectXMath/Inc',
             './ThirdParty/DirectX-Headers/include/directx',
             './ThirdParty/WinPixEventRuntime.1.0.220810001/Include/WinPixEventRuntime'
@@ -100,14 +102,16 @@ project "DirectX12FromScratch"
 
     --Release配置项属性
     filter "configurations:Release"
-        defines { "NDEBUG" }                 --定义NDebug宏(这可以算是默认配置)
+        defines { "NDEBUG", "FMT_HEADER_ONLY" }                 --定义NDebug宏(这可以算是默认配置)
         optimize "On"                        --开启优化参数
         includedirs 
         { 
             '%{prj.name}/src',
             './ThirdParty/stb',
             './ThirdParty/imgui-1.89.2',
+            './ThirdParty/tinyobjloader',
             './ThirdParty/glm-0.9.9.8/glm',
+            './ThirdParty/fmt-9.1.0/include',
             './ThirdParty/DirectXMath/Inc',
             './ThirdParty/DirectX-Headers/include/directx',
             './ThirdParty/WinPixEventRuntime.1.0.220810001/Include/WinPixEventRuntime'

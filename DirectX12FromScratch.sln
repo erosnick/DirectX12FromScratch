@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{53E47842-3FC8-3998-A828-34EB942B241A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "ThirdParty\imgui-1.89.2\Project\ImGui.vcxproj", "{C0FF640D-2C14-8DBE-F595-301E616989EF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectX12FromScratch", "Project\DirectX12FromScratch.vcxproj", "{D7A9B475-C338-3E3F-6C57-523A58C54EE5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|Win32.Build.0 = Debug|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|x64.ActiveCfg = Debug|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|x64.Build.0 = Debug|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|Win32.ActiveCfg = Release|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|Win32.Build.0 = Release|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.ActiveCfg = Release|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.Build.0 = Release|x64
+		{D7A9B475-C338-3E3F-6C57-523A58C54EE5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D7A9B475-C338-3E3F-6C57-523A58C54EE5}.Debug|Win32.Build.0 = Debug|Win32
+		{D7A9B475-C338-3E3F-6C57-523A58C54EE5}.Debug|x64.ActiveCfg = Debug|x64
+		{D7A9B475-C338-3E3F-6C57-523A58C54EE5}.Debug|x64.Build.0 = Debug|x64
+		{D7A9B475-C338-3E3F-6C57-523A58C54EE5}.Release|Win32.ActiveCfg = Release|Win32
+		{D7A9B475-C338-3E3F-6C57-523A58C54EE5}.Release|Win32.Build.0 = Release|Win32
+		{D7A9B475-C338-3E3F-6C57-523A58C54EE5}.Release|x64.ActiveCfg = Release|x64
+		{D7A9B475-C338-3E3F-6C57-523A58C54EE5}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C0FF640D-2C14-8DBE-F595-301E616989EF} = {53E47842-3FC8-3998-A828-34EB942B241A}
+	EndGlobalSection
+EndGlobal

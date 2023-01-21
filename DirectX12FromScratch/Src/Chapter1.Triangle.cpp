@@ -37,7 +37,7 @@ using namespace DirectX;
 
 #define DXCheck(result, message) if (result != S_OK) { throw std::runtime_error(message); }
 
-struct Vertex
+struct DXVertex
 {
 	XMFLOAT3 position;
 	XMFLOAT4 color;
@@ -344,14 +344,14 @@ void createPipelineState()
 
 void createVertexBuffer()
 {
-	std::vector<Vertex> triangle =
+	std::vector<DXVertex> triangle =
 	{
 		{ { 0.0f, 0.25f * aspectRatio, 0.0 }, { 1.0f, 0.0f, 0.0f, 1.0f } },
 		{ { 0.25f * aspectRatio, -0.25f * aspectRatio, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },
 		{ { -0.25f * aspectRatio, -0.25f * aspectRatio, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }
 	};
 
-	const uint32_t vertexBufferSize = static_cast<uint32_t>(sizeof(Vertex) * triangle.size());
+	const uint32_t vertexBufferSize = static_cast<uint32_t>(sizeof(DXVertex) * triangle.size());
 
 	//explicit CD3DX12_HEAP_PROPERTIES(
 	//	D3D12_HEAP_TYPE type,
@@ -418,7 +418,7 @@ void createVertexBuffer()
 	vertexBuffer->Unmap(0, nullptr);
 
 	vertexBufferView.BufferLocation = vertexBuffer->GetGPUVirtualAddress();
-	vertexBufferView.StrideInBytes = sizeof(Vertex);
+	vertexBufferView.StrideInBytes = sizeof(DXVertex);
 	vertexBufferView.SizeInBytes = vertexBufferSize;
 }
 
