@@ -12,112 +12,112 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DirectX12FromScratch\src\5.D3DApp.h">
+    <ClInclude Include="..\src\5.D3DApp.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\Chapter2.D3DApp.h">
+    <ClInclude Include="..\src\Chapter2.D3DApp.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\Chapter3.D3DApp.h">
+    <ClInclude Include="..\src\Chapter3.D3DApp.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\Chapter4.D3DApp.h">
+    <ClInclude Include="..\src\Chapter4.D3DApp.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\Console.h">
+    <ClInclude Include="..\src\Console.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\DDSTextureLoader12.h">
+    <ClInclude Include="..\src\DDSTextureLoader12.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\GeometryGenerator.h">
+    <ClInclude Include="..\src\GeometryGenerator.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\Model.h">
+    <ClInclude Include="..\src\Model.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\Resource.h">
+    <ClInclude Include="..\src\Resource.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\Utils.h">
+    <ClInclude Include="..\src\Utils.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\WICImage.h">
+    <ClInclude Include="..\src\WICImage.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\framework.h">
+    <ClInclude Include="..\src\framework.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\glm.h">
+    <ClInclude Include="..\src\glm.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\pch.h">
+    <ClInclude Include="..\src\pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX12FromScratch\src\targetver.h">
+    <ClInclude Include="..\src\targetver.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\DirectX12FromScratch\src\5.Cubemap.cpp">
+    <ClCompile Include="..\src\5.Cubemap.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\5.D3DApp.cpp">
+    <ClCompile Include="..\src\5.D3DApp.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter1.Triangle.cpp">
+    <ClCompile Include="..\src\Chapter1.Triangle.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter2.D3DApp.cpp">
+    <ClCompile Include="..\src\Chapter2.D3DApp.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter2.TexturedQuad.cpp">
+    <ClCompile Include="..\src\Chapter2.TexturedQuad.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter3.D3DApp.cpp">
+    <ClCompile Include="..\src\Chapter3.D3DApp.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter3.TexturedQuadAdvance.cpp">
+    <ClCompile Include="..\src\Chapter3.TexturedQuadAdvance.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter4.D3DApp.cpp">
+    <ClCompile Include="..\src\Chapter4.D3DApp.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter4.TexturedCube.cpp">
+    <ClCompile Include="..\src\Chapter4.TexturedCube.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\DDSTextureLoader12.cpp">
+    <ClCompile Include="..\src\DDSTextureLoader12.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\GeometryGenerator.cpp">
+    <ClCompile Include="..\src\GeometryGenerator.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\ImGui\ImGuiBuild.cpp">
+    <ClCompile Include="..\src\ImGui\ImGuiBuild.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Model.cpp">
+    <ClCompile Include="..\src\Model.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Utils.cpp">
+    <ClCompile Include="..\src\Utils.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\WICImage.cpp">
+    <ClCompile Include="..\src\WICImage.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\pch.cpp">
+    <ClCompile Include="..\src\pch.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\DirectX12FromScratch\src\DirectX12FromScratch.ico">
+    <None Include="..\src\DirectX12FromScratch.ico">
       <Filter>Resources</Filter>
     </None>
-    <None Include="..\DirectX12FromScratch\src\small.ico">
+    <None Include="..\src\small.ico">
       <Filter>Resources</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\DirectX12FromScratch\src\DirectX12FromScratch.rc">
+    <ResourceCompile Include="..\src\DirectX12FromScratch.rc">
       <Filter>Resources</Filter>
     </ResourceCompile>
   </ItemGroup>

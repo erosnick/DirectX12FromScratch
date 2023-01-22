@@ -30,6 +30,7 @@ struct ModelViewProjectionBuffer
 {
 	XMFLOAT4X4 model;
 	XMFLOAT4X4 modelViewProjection;
+	glm::mat4 testMatrix;
 };
 
 class D3DApp

@@ -32,14 +32,14 @@ project "DirectX12FromScratch"
     location "Project"
     -- nuget { "WinPixEventRuntime:1.0.220810001" }
     pchheader "pch.h"
-    pchsource "%{prj.name}/src/pch.cpp"
+    pchsource "src/pch.cpp"
 
     files 
     { 
-        "%{prj.name}/src/**.h", 
-        "%{prj.name}/src/**.cpp",
-        '%{prj.name}/src/**.rc', 
-        '%{prj.name}/src/**.ico'
+        "src/**.h", 
+        "src/**.cpp",
+        'src/**.rc', 
+        'src/**.ico'
     }                                       --指定加载哪些文件或哪些类型的文件
 
     -- removefiles 
@@ -71,7 +71,7 @@ project "DirectX12FromScratch"
         symbols "On"                        --开启调试符号
         includedirs 
         { 
-            '%{prj.name}/src',
+            './src',
             './ThirdParty/stb',
             './ThirdParty/imgui-1.89.2',
             './ThirdParty/tinyobjloader',
@@ -106,7 +106,7 @@ project "DirectX12FromScratch"
         optimize "On"                        --开启优化参数
         includedirs 
         { 
-            '%{prj.name}/src',
+            './src',
             './ThirdParty/stb',
             './ThirdParty/imgui-1.89.2',
             './ThirdParty/tinyobjloader',

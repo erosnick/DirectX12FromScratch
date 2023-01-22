@@ -18,6 +18,7 @@ cbuffer ModelViewProjectionBuffer : register(b0)
 {
     float4x4 model;
     float4x4 modelViewProjection;
+    float4x4 testMatrix;
 };
 
 Texture2D albedo : register(t0);
@@ -27,7 +28,8 @@ PSInput VSMain(VSInput input)
 {
     PSInput result;
 
-    result.position = mul(float4(input.position, 1.0f), modelViewProjection);
+    // result.position = mul(float4(input.position, 1.0f), testMatrix);
+    result.position = mul(testMatrix, float4(input.position, 1.0f));
     result.normal = mul(float4(input.normal, 0.0f), model);
     result.texcoord = input.texcoord;
     result.color = input.color;

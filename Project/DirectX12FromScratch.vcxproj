@@ -99,7 +99,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\DirectX12FromScratch\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -107,7 +107,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\DirectX12FromScratch\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -125,7 +125,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\DirectX12FromScratch\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -133,7 +133,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\DirectX12FromScratch\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -151,7 +151,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\DirectX12FromScratch\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -162,7 +162,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\DirectX12FromScratch\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -181,7 +181,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\DirectX12FromScratch\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -192,7 +192,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\DirectX12FromScratch\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-1.89.2;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -206,62 +206,62 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\DirectX12FromScratch\src\5.D3DApp.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\Chapter2.D3DApp.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\Chapter3.D3DApp.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\Chapter4.D3DApp.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\Console.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\DDSTextureLoader12.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\GeometryGenerator.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\Model.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\Resource.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\Utils.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\WICImage.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\framework.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\glm.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\pch.h" />
-    <ClInclude Include="..\DirectX12FromScratch\src\targetver.h" />
+    <ClInclude Include="..\src\5.D3DApp.h" />
+    <ClInclude Include="..\src\Chapter2.D3DApp.h" />
+    <ClInclude Include="..\src\Chapter3.D3DApp.h" />
+    <ClInclude Include="..\src\Chapter4.D3DApp.h" />
+    <ClInclude Include="..\src\Console.h" />
+    <ClInclude Include="..\src\DDSTextureLoader12.h" />
+    <ClInclude Include="..\src\GeometryGenerator.h" />
+    <ClInclude Include="..\src\Model.h" />
+    <ClInclude Include="..\src\Resource.h" />
+    <ClInclude Include="..\src\Utils.h" />
+    <ClInclude Include="..\src\WICImage.h" />
+    <ClInclude Include="..\src\framework.h" />
+    <ClInclude Include="..\src\glm.h" />
+    <ClInclude Include="..\src\pch.h" />
+    <ClInclude Include="..\src\targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\DirectX12FromScratch\src\5.Cubemap.cpp" />
-    <ClCompile Include="..\DirectX12FromScratch\src\5.D3DApp.cpp" />
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter1.Triangle.cpp">
+    <ClCompile Include="..\src\5.Cubemap.cpp" />
+    <ClCompile Include="..\src\5.D3DApp.cpp" />
+    <ClCompile Include="..\src\Chapter1.Triangle.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter2.D3DApp.cpp">
+    <ClCompile Include="..\src\Chapter2.D3DApp.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter2.TexturedQuad.cpp">
+    <ClCompile Include="..\src\Chapter2.TexturedQuad.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter3.D3DApp.cpp">
+    <ClCompile Include="..\src\Chapter3.D3DApp.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter3.TexturedQuadAdvance.cpp">
+    <ClCompile Include="..\src\Chapter3.TexturedQuadAdvance.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter4.D3DApp.cpp">
+    <ClCompile Include="..\src\Chapter4.D3DApp.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\Chapter4.TexturedCube.cpp">
+    <ClCompile Include="..\src\Chapter4.TexturedCube.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\DirectX12FromScratch\src\DDSTextureLoader12.cpp" />
-    <ClCompile Include="..\DirectX12FromScratch\src\GeometryGenerator.cpp" />
-    <ClCompile Include="..\DirectX12FromScratch\src\ImGui\ImGuiBuild.cpp" />
-    <ClCompile Include="..\DirectX12FromScratch\src\Model.cpp" />
-    <ClCompile Include="..\DirectX12FromScratch\src\Utils.cpp" />
-    <ClCompile Include="..\DirectX12FromScratch\src\WICImage.cpp" />
-    <ClCompile Include="..\DirectX12FromScratch\src\pch.cpp">
+    <ClCompile Include="..\src\DDSTextureLoader12.cpp" />
+    <ClCompile Include="..\src\GeometryGenerator.cpp" />
+    <ClCompile Include="..\src\ImGui\ImGuiBuild.cpp" />
+    <ClCompile Include="..\src\Model.cpp" />
+    <ClCompile Include="..\src\Utils.cpp" />
+    <ClCompile Include="..\src\WICImage.cpp" />
+    <ClCompile Include="..\src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\DirectX12FromScratch\src\DirectX12FromScratch.ico" />
-    <None Include="..\DirectX12FromScratch\src\small.ico" />
+    <None Include="..\src\DirectX12FromScratch.ico" />
+    <None Include="..\src\small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\DirectX12FromScratch\src\DirectX12FromScratch.rc" />
+    <ResourceCompile Include="..\src\DirectX12FromScratch.rc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThirdParty\imgui-1.89.2\Project\ImGui.vcxproj">
