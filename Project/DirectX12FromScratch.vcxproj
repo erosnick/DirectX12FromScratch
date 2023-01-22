@@ -206,21 +206,25 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\DirectX12FromScratch\src\4.D3DApp.h" />
+    <ClInclude Include="..\DirectX12FromScratch\src\5.D3DApp.h" />
     <ClInclude Include="..\DirectX12FromScratch\src\Chapter2.D3DApp.h" />
     <ClInclude Include="..\DirectX12FromScratch\src\Chapter3.D3DApp.h" />
+    <ClInclude Include="..\DirectX12FromScratch\src\Chapter4.D3DApp.h" />
     <ClInclude Include="..\DirectX12FromScratch\src\Console.h" />
+    <ClInclude Include="..\DirectX12FromScratch\src\DDSTextureLoader12.h" />
+    <ClInclude Include="..\DirectX12FromScratch\src\GeometryGenerator.h" />
     <ClInclude Include="..\DirectX12FromScratch\src\Model.h" />
     <ClInclude Include="..\DirectX12FromScratch\src\Resource.h" />
     <ClInclude Include="..\DirectX12FromScratch\src\Utils.h" />
     <ClInclude Include="..\DirectX12FromScratch\src\WICImage.h" />
     <ClInclude Include="..\DirectX12FromScratch\src\framework.h" />
+    <ClInclude Include="..\DirectX12FromScratch\src\glm.h" />
     <ClInclude Include="..\DirectX12FromScratch\src\pch.h" />
     <ClInclude Include="..\DirectX12FromScratch\src\targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\DirectX12FromScratch\src\4.D3DApp.cpp" />
-    <ClCompile Include="..\DirectX12FromScratch\src\4.TexturedCube.cpp" />
+    <ClCompile Include="..\DirectX12FromScratch\src\5.Cubemap.cpp" />
+    <ClCompile Include="..\DirectX12FromScratch\src\5.D3DApp.cpp" />
     <ClCompile Include="..\DirectX12FromScratch\src\Chapter1.Triangle.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -236,6 +240,14 @@
     <ClCompile Include="..\DirectX12FromScratch\src\Chapter3.TexturedQuadAdvance.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\DirectX12FromScratch\src\Chapter4.D3DApp.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\DirectX12FromScratch\src\Chapter4.TexturedCube.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\DirectX12FromScratch\src\DDSTextureLoader12.cpp" />
+    <ClCompile Include="..\DirectX12FromScratch\src\GeometryGenerator.cpp" />
     <ClCompile Include="..\DirectX12FromScratch\src\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="..\DirectX12FromScratch\src\Model.cpp" />
     <ClCompile Include="..\DirectX12FromScratch\src\Utils.cpp" />

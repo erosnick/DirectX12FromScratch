@@ -27,21 +27,27 @@ public:
 		freopen_s(&stream, "CON", "r", stdin);
 		freopen_s(&stream, "CON", "w", stdout);
 		freopen_s(&stream, "CON", "w", stderr);
+
+		file = nullptr;
+		thread = nullptr;
 	}
 
 	~Console()
 	{
+		CloseHandle(thread);
+		CloseHandle(file);
+
 		FreeConsole();
 	}
 
-	static DWORD WINAPI ods_proc(LPVOID arg)
+	static DWORD WINAPI outputDebugStringProc(LPVOID arg)
 	{
 		DWORD ret = 0;
 
 		HANDLE stderror = GetStdHandle(STD_ERROR_HANDLE);
 		Assert(stderror);
 
-		for (;;)
+		while (true)
 		{
 			SetEvent(outputDebugStringBufferReady);
 
@@ -60,6 +66,8 @@ public:
 				WriteFile(stderror, buffer->data, length, &written, NULL);
 			}
 		}
+
+		return ret;
 	}
 
 	void outputDebugStringCapture()
@@ -69,7 +77,7 @@ public:
 			return;
 		}
 
-		HANDLE file = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, sizeof(OutputDebugStringBuffer), "DBWIN_BUFFER");
+		file = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, sizeof(OutputDebugStringBuffer), "DBWIN_BUFFER");
 		Assert(file != INVALID_HANDLE_VALUE);
 
 		buffer = (OutputDebugStringBuffer*)MapViewOfFile(file, SECTION_MAP_READ, 0, 0, 0);
@@ -81,7 +89,11 @@ public:
 		outputDebugStringBufferDataReady = CreateEventA(NULL, FALSE, FALSE, "DBWIN_DATA_READY");
 		Assert(outputDebugStringBufferDataReady);
 
-		HANDLE thread = CreateThread(NULL, 0, ods_proc, NULL, 0, NULL);
+		thread = CreateThread(NULL, 0, outputDebugStringProc, NULL, 0, NULL);
 		Assert(thread);
 	}
+
+private:
+	HANDLE file;
+	HANDLE thread;
 };

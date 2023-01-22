@@ -104,8 +104,8 @@ void DXModel::convert(const GLMModel& model)
 	for (const auto& glmVertex : model.mesh.vertices)
 	{
 		DXVertex vertex;
-		vertex.position = { glmVertex.position.x, glmVertex.position.y, glmVertex.position.z };
-		vertex.normal = { glmVertex.normal.x, glmVertex.normal.y, glmVertex.normal.z };
+		vertex.position = { glmVertex.position.x, glmVertex.position.y, -glmVertex.position.z };
+		vertex.normal = { glmVertex.normal.x, glmVertex.normal.y, -glmVertex.normal.z };
 		vertex.texcoord = { glmVertex.texcoord.x, glmVertex.texcoord.y };
 		vertex.color = { glmVertex.color.x, glmVertex.color.y, glmVertex.color.z, 1.0f };
 
