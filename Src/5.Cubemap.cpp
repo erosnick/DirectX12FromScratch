@@ -20,7 +20,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	try
 	{
 		D3DApp app;
-		if (!app.initialize())
+		if (!app.initialize(hInstance, nCmdShow))
 			return 0;
 
 		return app.run();

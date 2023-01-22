@@ -23,14 +23,17 @@ using namespace Microsoft::WRL;
 #include <backends/imgui_impl_win32.h>
 
 #include "Model.h"
+#include "Camera.h"
 
 #define MAX_LOADSTRING 100
 
 struct ModelViewProjectionBuffer
 {
-	XMFLOAT4X4 model;
-	XMFLOAT4X4 modelViewProjection;
-	glm::mat4 testMatrix;
+	//XMFLOAT4X4 model;
+	//XMFLOAT4X4 modelViewProjection;
+	glm::mat4 model;
+	glm::mat4 modelViewProjection;
+	//glm::mat4 testMatrix;
 };
 
 class D3DApp
@@ -38,7 +41,7 @@ class D3DApp
 public:
 	D3DApp();
 
-	bool initialize();
+	bool initialize(HINSTANCE hInstance, int32_t cmdShow);
 
 	static D3DApp* getApp();
 	LRESULT msgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -46,9 +49,9 @@ public:
 	int32_t run();
 private:
 	ATOM MyRegisterClass(HINSTANCE hInstance);
-	BOOL InitInstance(HINSTANCE hInstance);
+	BOOL InitInstance(HINSTANCE hInstance, int32_t cmdShow);
 
-	bool initWindow();
+	bool initWindow(HINSTANCE hInstance, int32_t cmdShow);
 
 	void createDebugLayer();
 	void createDXGIFactory();
@@ -97,8 +100,11 @@ private:
 	void processInput(float deltaTime);
 	void render();
 
+	void onMouseMove(float x, float y);
+	void onMouseWheel(float offset);
+
 private:
-	const static uint32_t frameBackbufferCount = 3;
+	const static uint32_t FrameBackbufferCount = 3;
 	int windowWidth = 1600;
 	int windowHeight = 900;
 
@@ -146,7 +152,7 @@ private:
 	ComPtr<ID3D12DescriptorHeap> shaderResourceViewDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> samplerDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> depthStencilDescriptorHeap;
-	ComPtr<ID3D12Resource> renderTargets[frameBackbufferCount];
+	ComPtr<ID3D12Resource> renderTargets[FrameBackbufferCount];
 	ComPtr<ID3D12CommandAllocator> commandAllocatorDirect;
 	ComPtr<ID3D12CommandAllocator> commandAllocatorSkybox;
 	ComPtr<ID3D12CommandAllocator> commandAllocatorScene;
@@ -189,11 +195,8 @@ private:
 	WCHAR szWindowClass[MAX_LOADSTRING];			   // the main window class name
 
 	// 初始的默认摄像机的位置
-	XMFLOAT3 eye = XMFLOAT3(0.0f, 1.0f, -5.0f);
-	XMFLOAT3 center = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	XMFLOAT3 up = XMFLOAT3(0.0f, 1.0f, 0.0f);
 
-	float angularVelocity = 10.0f * XM_PI / 180.0f; // 物体旋转的角速度，单位：弧度/秒
+	float angularVelocity = 10.0f * glm::pi<float>() / 180.0f; // 物体旋转的角速度，单位：弧度/秒
 
 	float boxSize = 3.0f;
 	float texcoordScale = 3.0f;
@@ -224,10 +227,16 @@ private:
 
 	uint32_t frameCount = 0;
 
+	glm::vec2 lastMousePosition;
+	bool rightMouseButtonDown = false;
+
 	ModelViewProjectionBuffer* modelViewProjectionBuffer;
 	ModelViewProjectionBuffer* skyboxModelViewProjectionBuffer;
 
 	DXModel cubeModel;
 	DXModel bunny;
 	DXModel skybox;
+
+	// 初始的默认摄像机的位置
+	Camera camera{ { 0.0f, 1.0f, -5.0f } };
 };
