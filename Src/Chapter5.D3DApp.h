@@ -23,13 +23,17 @@ using namespace Microsoft::WRL;
 #include <backends/imgui_impl_win32.h>
 
 #include "Model.h"
+#include "Camera.h"
 
 #define MAX_LOADSTRING 100
 
 struct ModelViewProjectionBuffer
 {
-	XMFLOAT4X4 model;
-	XMFLOAT4X4 modelViewProjection;
+	//XMFLOAT4X4 model;
+	//XMFLOAT4X4 modelViewProjection;
+	glm::mat4 model;
+	glm::mat4 modelViewProjection;
+	//glm::mat4 testMatrix;
 };
 
 class D3DApp
@@ -37,7 +41,7 @@ class D3DApp
 public:
 	D3DApp();
 
-	bool initialize();
+	bool initialize(HINSTANCE hInstance, int32_t cmdShow);
 
 	static D3DApp* getApp();
 	LRESULT msgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -45,9 +49,9 @@ public:
 	int32_t run();
 private:
 	ATOM MyRegisterClass(HINSTANCE hInstance);
-	BOOL InitInstance(HINSTANCE hInstance);
+	BOOL InitInstance(HINSTANCE hInstance, int32_t cmdShow);
 
-	bool initWindow();
+	bool initWindow(HINSTANCE hInstance, int32_t cmdShow);
 
 	void createDebugLayer();
 	void createDXGIFactory();
@@ -56,20 +60,30 @@ private:
 	void createSwapChain();
 	void createDescriptorHeap();
 	void createDescriptor();
+	void createSkyboxDescriptorHeap();
+	void createSkyboxDescriptors();
 	void createRootSignature();
 	void createGraphicsPipelineState();
+	void createSkyboxGraphicsPipelineState();
 	void createCommandList();
 	void createFence();
 	void createUploadHeap(uint64_t heapSize);
 	void loadCubeResource();
 	void loadResources();
+	void loadSkyboxTexture();
 	void createVertexBuffer(const DXModel& model);
 	void createIndexBuffer(const DXModel& model);
+	void createSkyboxVertexBuffer(const DXModel& model);
+	void createSkyboxIndexBuffer(const DXModel& model);
 	void createConstantBufferView();
+	void createSkyboxConstantBufferView();
 	void createDepthStencilDescriptorHeap();
 	void createDepthStencilBuffer();
 	void createSamplerDescriptorHeap();
 	void createSamplers();
+	void createSkyboxSamplerDescriptorHeap();
+	void createSkyboxSamplerDescriptor();
+	void recordCommands();
 
 	void initDirect3D();
 
@@ -80,13 +94,17 @@ private:
 	void shutdownImGui();
 
 	void updateConstantBuffer();
+	void updateSkyboxConstantBuffer();
 	void updateFPSCounter();
 	void update();
 	void processInput(float deltaTime);
 	void render();
 
+	void onMouseMove(float x, float y);
+	void onMouseWheel(float offset);
+
 private:
-	const static uint32_t frameBackbufferCount = 3;
+	const static uint32_t FrameBackbufferCount = 3;
 	int windowWidth = 1600;
 	int windowHeight = 900;
 
@@ -109,6 +127,9 @@ private:
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView{};
 	D3D12_INDEX_BUFFER_VIEW indexBufferView{};
 
+	D3D12_VERTEX_BUFFER_VIEW skyboxVertexBufferView{};
+	D3D12_INDEX_BUFFER_VIEW skyboxIndexBufferView{};
+
 	uint64_t fenceValue = 0;
 	HANDLE fenceEvent = nullptr;
 
@@ -116,9 +137,6 @@ private:
 	CD3DX12_RECT scissorRect{ 0, 0, static_cast<long>(windowWidth), static_cast<long>(windowHeight) };
 
 	DXGI_FORMAT swapChainFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
-
-	uint32_t vertexCount = 0;
-	uint32_t indexCount = 0;
 
 	ComPtr<IDXGIFactory7> DXGIFactory;
 	ComPtr<IDXGIAdapter1> DXGIAdapter;
@@ -134,11 +152,16 @@ private:
 	ComPtr<ID3D12DescriptorHeap> shaderResourceViewDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> samplerDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> depthStencilViewDescriptorHeap;
-	ComPtr<ID3D12Resource> renderTargets[frameBackbufferCount];
-	ComPtr<ID3D12CommandAllocator> commandAllocator;
+	ComPtr<ID3D12Resource> renderTargets[FrameBackbufferCount];
+	ComPtr<ID3D12CommandAllocator> commandAllocatorDirect;
+	ComPtr<ID3D12CommandAllocator> commandAllocatorSkybox;
+	ComPtr<ID3D12CommandAllocator> commandAllocatorScene;
 	ComPtr<ID3D12RootSignature> rootSignature;
 	ComPtr<ID3D12PipelineState> graphicsPipelineState;
-	ComPtr<ID3D12GraphicsCommandList> commandList;
+	ComPtr<ID3D12PipelineState> skyboxGraphicsPipelineState;
+	ComPtr<ID3D12GraphicsCommandList> commandListDirect;
+	ComPtr<ID3D12GraphicsCommandList> skyboxBundle;
+	ComPtr<ID3D12GraphicsCommandList> sceneBundle;
 	ComPtr<ID3D12Resource> vertexBuffer;
 	ComPtr<ID3D12Resource> indexBuffer;
 	ComPtr<ID3D12Resource> constantBuffer;
@@ -147,6 +170,18 @@ private:
 	ComPtr<ID3D12Resource> texture;
 	ComPtr<ID3D12Heap> textureHeap;
 	ComPtr<ID3D12Heap> uploadHeap;
+
+	uint32_t skyboxSamplerDescriptorSize = 0;
+
+	ComPtr<ID3D12DescriptorHeap> skyboxDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap> skyboxSamplerDescriptorHeap;
+
+	ComPtr<ID3D12Heap> skyboxUploadHeap;
+	ComPtr<ID3D12Resource> skyboxTexture;
+	ComPtr<ID3D12Resource> skyboxTextureUploadBuffer;
+	ComPtr<ID3D12Resource> skyboxConstantBuffer;
+	ComPtr<ID3D12Resource> skyboxVertexBuffer;
+	ComPtr<ID3D12Resource> skyboxIndexBuffer;
 
 	// Our state
 	bool showDemoWindow = true;
@@ -160,20 +195,27 @@ private:
 	WCHAR szWindowClass[MAX_LOADSTRING];			   // the main window class name
 
 	// 初始的默认摄像机的位置
-	XMVECTOR eye = XMVectorSet(0.0f, 3.0f, -5.0f, 0.0f);
-	XMVECTOR center = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
-	float angularVelocity = 10.0f * XM_PI / 180.0f; // 物体旋转的角速度，单位：弧度/秒
+	float angularVelocity = 10.0f * glm::pi<float>() / 180.0f; // 物体旋转的角速度，单位：弧度/秒
 
 	float boxSize = 3.0f;
 	float texcoordScale = 3.0f;
 
 	uint64_t textureUploadBufferSize = 0;
+	uint64_t skyboxTextureUploadBufferSize = 0;
 	uint32_t vertexBufferSize = 0;
 	uint32_t indexBufferSize = 0;
+	uint32_t skyboxVertexBufferSize = 0;
+	uint32_t skyboxIndexBufferSize = 0;
 	uint64_t bufferOffset = 0;
-	uint32_t constantBufferSize;
+	uint64_t skyboxBufferOffset = 0;
+	uint32_t constantBufferSize = 0;
+	uint32_t skyboxConstantBufferSize = 0;
+
+	uint32_t vertexCount = 0;
+	uint32_t indexCount = 0;
+	uint32_t skyboxIndexCount = 0;
+	uint32_t triangleCount = 0;
 
 	float modelRotationYAngle = 0.0f;
 
@@ -181,10 +223,20 @@ private:
 
 	const float FrameTime = 0.0166667f;
 
+	bool renderReady = false;
+
 	uint32_t frameCount = 0;
 
+	glm::vec2 lastMousePosition;
+	bool rightMouseButtonDown = false;
+
 	ModelViewProjectionBuffer* modelViewProjectionBuffer;
+	ModelViewProjectionBuffer* skyboxModelViewProjectionBuffer;
 
 	DXModel cubeModel;
 	DXModel bunny;
+	DXModel skybox;
+
+	// 初始的默认摄像机的位置
+	Camera camera{ { 0.0f, 1.0f, -5.0f } };
 };

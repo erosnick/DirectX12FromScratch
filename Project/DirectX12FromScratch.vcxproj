@@ -206,11 +206,12 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\5.D3DApp.h" />
+    <ClInclude Include="..\src\6.D3DApp.h" />
     <ClInclude Include="..\src\Camera.h" />
     <ClInclude Include="..\src\Chapter2.D3DApp.h" />
     <ClInclude Include="..\src\Chapter3.D3DApp.h" />
     <ClInclude Include="..\src\Chapter4.D3DApp.h" />
+    <ClInclude Include="..\src\Chapter5.D3DApp.h" />
     <ClInclude Include="..\src\Console.h" />
     <ClInclude Include="..\src\DDSTextureLoader12.h" />
     <ClInclude Include="..\src\GeometryGenerator.h" />
@@ -224,8 +225,8 @@
     <ClInclude Include="..\src\targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\5.Cubemap.cpp" />
-    <ClCompile Include="..\src\5.D3DApp.cpp" />
+    <ClCompile Include="..\src\6.D3DApp.cpp" />
+    <ClCompile Include="..\src\6.MultithreadRendering.cpp" />
     <ClCompile Include="..\src\Chapter1.Triangle.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -245,6 +246,12 @@
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\src\Chapter4.TexturedCube.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\src\Chapter5.Cubemap.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\src\Chapter5.D3DApp.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\src\DDSTextureLoader12.cpp" />

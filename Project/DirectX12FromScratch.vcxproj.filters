@@ -12,7 +12,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\5.D3DApp.h">
+    <ClInclude Include="..\src\6.D3DApp.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Camera.h">
@@ -25,6 +25,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Chapter4.D3DApp.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Chapter5.D3DApp.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Console.h">
@@ -62,10 +65,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\5.Cubemap.cpp">
+    <ClCompile Include="..\src\6.D3DApp.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\5.D3DApp.cpp">
+    <ClCompile Include="..\src\6.MultithreadRendering.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Chapter1.Triangle.cpp">
@@ -87,6 +90,12 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Chapter4.TexturedCube.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Chapter5.Cubemap.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Chapter5.D3DApp.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DDSTextureLoader12.cpp">

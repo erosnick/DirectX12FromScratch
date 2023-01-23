@@ -36,6 +36,40 @@ struct ModelViewProjectionBuffer
 	//glm::mat4 testMatrix;
 };
 
+// 渲染子线程参数
+struct RenderThreadPayload
+{
+	uint32_t index;		// 序号
+	uint32_t threadID;
+	HANDLE threadHandle;
+	DWORD mainThreadID;
+	HANDLE mainThreadHandle;
+	HANDLE runEvent;
+	HANDLE eventRenderOver;
+	uint32_t currentFrameIndex;
+	float startTime;
+	float currentTime;
+	std::wstring ddsFile;
+	std::string objFile;
+	glm::vec3 position;
+	ComPtr<ID3D12Device4> device;
+	ComPtr<ID3D12CommandAllocator> commandAllocator;
+	ComPtr<ID3D12GraphicsCommandList> commandList;
+	ComPtr<ID3D12RootSignature> rootSignature;
+	ComPtr<ID3D12PipelineState> pipelineState;
+	ComPtr<ID3D12DescriptorHeap> renderTargetViewDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap> depthStencilViewDescriptorHeap;
+	CD3DX12_VIEWPORT viewport;
+	CD3DX12_RECT scissorRect;
+	uint32_t renderTargetViewDescriptorSize;
+};
+
+const uint32_t MaxThreadCount = 2;
+const uint32_t SkyboxThreadIndex = 0;
+const uint32_t SceneThreadIndex = 1;
+
+static RenderThreadPayload renderThreadPayloads[MaxThreadCount];
+
 class D3DApp
 {
 public:
@@ -45,6 +79,8 @@ public:
 
 	static D3DApp* getApp();
 	LRESULT msgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+	static uint32_t __stdcall renderThread(void* data);
 
 	int32_t run();
 private:
@@ -65,7 +101,7 @@ private:
 	void createRootSignature();
 	void createGraphicsPipelineState();
 	void createSkyboxGraphicsPipelineState();
-	void createCommandList();
+	void createCommandLists();
 	void createFence();
 	void createUploadHeap(uint64_t heapSize);
 	void loadCubeResource();
@@ -84,6 +120,21 @@ private:
 	void createSkyboxSamplerDescriptorHeap();
 	void createSkyboxSamplerDescriptor();
 	void recordCommands();
+	void prepareRenderThreads();
+
+	void createCommandAllocator(D3D12_COMMAND_LIST_TYPE type, ComPtr<ID3D12CommandAllocator>& commandAllocator, 
+								const std::wstring& name = L"", uint32_t index = 0);
+	void createCommandAllocator(D3D12_COMMAND_LIST_TYPE type, ID3D12CommandAllocator** commandAllocator, 
+								const std::wstring& name = L"", uint32_t index = 0);
+
+	void createCommandList(D3D12_COMMAND_LIST_TYPE type, const ComPtr<ID3D12CommandAllocator>& commandAllocator,
+														 const ComPtr<ID3D12PipelineState>& pipelineState, 
+														 ComPtr<ID3D12GraphicsCommandList>& commandList, 
+														 const std::wstring& name = L"", uint32_t index = 0);
+	void createCommandList(D3D12_COMMAND_LIST_TYPE type, ID3D12CommandAllocator* commandAllocator,
+														 const ComPtr<ID3D12PipelineState>& pipelineState,
+														 ID3D12GraphicsCommandList** commandList,
+														 const std::wstring& name = L"", uint32_t index = 0);
 
 	void initDirect3D();
 
@@ -110,7 +161,7 @@ private:
 
 	bool quit = false;
 
-	uint32_t frameIndex = 0;
+	uint32_t currentFrameIndex = 0;
 	uint32_t frame = 0;
 
 	uint32_t DXGIFactoryFlags = 0;
@@ -151,15 +202,17 @@ private:
 	ComPtr<ID3D12DescriptorHeap> imGuiShaderResourceViewDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> shaderResourceViewDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> samplerDescriptorHeap;
-	ComPtr<ID3D12DescriptorHeap> depthStencilDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap> depthStencilViewDescriptorHeap;
 	ComPtr<ID3D12Resource> renderTargets[FrameBackbufferCount];
-	ComPtr<ID3D12CommandAllocator> commandAllocatorDirect;
+	ComPtr<ID3D12CommandAllocator> commandAllocatorDirectPre;
+	ComPtr<ID3D12CommandAllocator> commandAllocatorDirectPost;
 	ComPtr<ID3D12CommandAllocator> commandAllocatorSkybox;
 	ComPtr<ID3D12CommandAllocator> commandAllocatorScene;
 	ComPtr<ID3D12RootSignature> rootSignature;
 	ComPtr<ID3D12PipelineState> graphicsPipelineState;
 	ComPtr<ID3D12PipelineState> skyboxGraphicsPipelineState;
-	ComPtr<ID3D12GraphicsCommandList> commandListDirect;
+	ComPtr<ID3D12GraphicsCommandList> commandListDirectPre;
+	ComPtr<ID3D12GraphicsCommandList> commandListDirectPost;
 	ComPtr<ID3D12GraphicsCommandList> skyboxBundle;
 	ComPtr<ID3D12GraphicsCommandList> sceneBundle;
 	ComPtr<ID3D12Resource> vertexBuffer;
@@ -178,10 +231,13 @@ private:
 
 	ComPtr<ID3D12Heap> skyboxUploadHeap;
 	ComPtr<ID3D12Resource> skyboxTexture;
-	ComPtr<ID3D12Resource> skyboxTextureUpload;
+	ComPtr<ID3D12Resource> skyboxTextureUploadBuffer;
 	ComPtr<ID3D12Resource> skyboxConstantBuffer;
 	ComPtr<ID3D12Resource> skyboxVertexBuffer;
 	ComPtr<ID3D12Resource> skyboxIndexBuffer;
+
+	std::vector<HANDLE> waitedHandles;
+	std::vector<HANDLE> subTheadHandles;
 
 	// Our state
 	bool showDemoWindow = true;
@@ -220,6 +276,7 @@ private:
 	float modelRotationYAngle = 0.0f;
 
 	float startTime = 0.0f;
+	float currentTime = 0.0f;
 
 	const float FrameTime = 0.0166667f;
 
