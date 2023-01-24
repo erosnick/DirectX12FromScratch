@@ -5,6 +5,11 @@
 #include <d3d12.h>
 #include <string>
 
+#include <wrl.h>
+
+using namespace Microsoft;
+using namespace Microsoft::WRL;
+
 // 用于向上取整除法
 #define UPPER_DIV(A, B) (static_cast<uint32_t>(((A) + ((B) - 1)) / (B)))
 
@@ -15,11 +20,14 @@
 #define WIDE1(x) WIDE(x)
 #define FILE_NAME WIDE1(__FILE__)
 #define FUNCTION_NAME WIDE1(__FUNCTION__)
+#define ObjectName(object) L#object
 
 inline void setD3D12DebugName(ID3D12Object * object, const std::wstring& name)
 {
 	object->SetName(name.c_str());
 }
+
+#define setD3D12DebugNameComPtr(object) setD3D12DebugName(object.Get(), ObjectName(object));
 
 inline void setD3D12DebugNameIndexd(ID3D12Object* object, const std::wstring& name, uint32_t index)
 {
