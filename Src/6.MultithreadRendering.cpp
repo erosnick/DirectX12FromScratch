@@ -16,8 +16,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	//Console console;
-	//console.outputDebugStringCapture();
+	Console console;
+	console.outputDebugStringCapture();
 
 	try
 	{
@@ -25,7 +25,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		if (!app.initialize(hInstance, nCmdShow))
 			return 0;
 
-		return app.run();
+		//return app.run();
+		return app.runMultithread();
 	}
 	catch (DxException& e)
 	{

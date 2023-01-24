@@ -39,19 +39,22 @@ struct ModelViewProjectionBuffer
 // 渲染子线程参数
 struct RenderThreadPayload
 {
-	uint32_t index;		// 序号
-	uint32_t threadID;
-	HANDLE threadHandle;
-	DWORD mainThreadID;
-	HANDLE mainThreadHandle;
-	HANDLE runEvent;
-	HANDLE eventRenderOver;
-	uint32_t currentFrameIndex;
-	float startTime;
-	float currentTime;
-	std::wstring ddsFile;
-	std::string objFile;
-	glm::vec3 position;
+	uint32_t index = 0;		// 序号
+	uint32_t threadID = 0;
+	HANDLE threadHandle = nullptr;
+	DWORD mainThreadID = 0;
+	HANDLE mainThreadHandle = nullptr;
+	HANDLE runEvent = nullptr;
+	HANDLE eventRenderOver = nullptr;
+	uint32_t currentFrameIndex = 0;
+	float startTime = 0.0f;
+	float currentTime = 0.0f;
+	std::wstring ddsFile = L"";
+	std::string objFile = "";
+	glm::vec3 position{ 0.0f };
+	glm::vec3 scale{ 1.0f };
+	glm::mat4 view;
+	glm::mat4 projection;
 	ComPtr<ID3D12Device4> device;
 	ComPtr<ID3D12CommandAllocator> commandAllocator;
 	ComPtr<ID3D12GraphicsCommandList> commandList;
@@ -59,14 +62,16 @@ struct RenderThreadPayload
 	ComPtr<ID3D12PipelineState> pipelineState;
 	ComPtr<ID3D12DescriptorHeap> renderTargetViewDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> depthStencilViewDescriptorHeap;
-	CD3DX12_VIEWPORT viewport;
-	CD3DX12_RECT scissorRect;
-	uint32_t renderTargetViewDescriptorSize;
+	CD3DX12_VIEWPORT viewport{};
+	CD3DX12_RECT scissorRect{};
+	uint32_t renderTargetViewDescriptorSize = 0;
+	bool isCubemap = false;
 };
 
-const uint32_t MaxThreadCount = 2;
+const uint32_t MaxThreadCount = 3;
 const uint32_t SkyboxThreadIndex = 0;
-const uint32_t SceneThreadIndex = 1;
+const uint32_t SceneObjectThreadIndex1 = 1;
+const uint32_t SceneObjectThreadIndex2 = 2;
 
 static RenderThreadPayload renderThreadPayloads[MaxThreadCount];
 
@@ -83,6 +88,10 @@ public:
 	static uint32_t __stdcall renderThread(void* data);
 
 	int32_t run();
+	int32_t runMultithread();
+
+	void renderImGui();
+
 private:
 	ATOM MyRegisterClass(HINSTANCE hInstance);
 	BOOL InitInstance(HINSTANCE hInstance, int32_t cmdShow);
@@ -141,7 +150,7 @@ private:
 	void initImGui();
 	void updateImGui();
 	void createImGuiWidgets();
-	void renderImGui();
+	void renderImGui(const ComPtr<ID3D12GraphicsCommandList>& commandList);
 	void shutdownImGui();
 
 	void updateConstantBuffer();
@@ -206,6 +215,7 @@ private:
 	ComPtr<ID3D12Resource> renderTargets[FrameBackbufferCount];
 	ComPtr<ID3D12CommandAllocator> commandAllocatorDirectPre;
 	ComPtr<ID3D12CommandAllocator> commandAllocatorDirectPost;
+	ComPtr<ID3D12CommandAllocator> commandAllocatorDirectImGui;
 	ComPtr<ID3D12CommandAllocator> commandAllocatorSkybox;
 	ComPtr<ID3D12CommandAllocator> commandAllocatorScene;
 	ComPtr<ID3D12RootSignature> rootSignature;
@@ -213,6 +223,7 @@ private:
 	ComPtr<ID3D12PipelineState> skyboxGraphicsPipelineState;
 	ComPtr<ID3D12GraphicsCommandList> commandListDirectPre;
 	ComPtr<ID3D12GraphicsCommandList> commandListDirectPost;
+	ComPtr<ID3D12GraphicsCommandList> commandListDirectImGui;
 	ComPtr<ID3D12GraphicsCommandList> skyboxBundle;
 	ComPtr<ID3D12GraphicsCommandList> sceneBundle;
 	ComPtr<ID3D12Resource> vertexBuffer;
@@ -296,4 +307,6 @@ private:
 
 	// 初始的默认摄像机的位置
 	Camera camera{ { 0.0f, 1.0f, -5.0f } };
+
+	glm::mat4 projection;
 };

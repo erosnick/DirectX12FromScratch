@@ -23,7 +23,7 @@ PSInput VSMain(VSInput input)
     PSInput result;
 
     result.position = mul(modelViewProjection, float4(input.position, 1.0f));
-    result.texcoord = float4(input.position, 1.0f);
+    result.texcoord = input.position;
 
     return result;
 }
