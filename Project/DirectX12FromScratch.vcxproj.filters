@@ -39,6 +39,9 @@
     <ClInclude Include="..\src\DDSTextureLoader12.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\GameTimer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\GeometryGenerator.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -108,6 +111,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DDSTextureLoader12.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GameTimer.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GeometryGenerator.cpp">

@@ -614,7 +614,7 @@ void D3DApp::loadResources()
 	D3D12_HEAP_DESC textureHeapDesc{};
 	// 为堆指定纹理图片至少2倍大小的空间，这里没有详细取计算了，只是指定了一个足够大的空间，够放纹理就行
 	// 实际应用中也是要综合考虑分配堆的大小，以便可以重用堆
-	textureHeapDesc.SizeInBytes = UPPER(2 * imageData.rowPitch * imageData.width, D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT);
+	textureHeapDesc.SizeInBytes = ROUND_UP(2 * imageData.rowPitch * imageData.width, D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT);
 	// 指定堆的对齐方式，这里使用了默认的64K边界对齐，因为我们暂时不需要MSAA支持
 	textureHeapDesc.Alignment = D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT;
 	textureHeapDesc.Properties.Type = D3D12_HEAP_TYPE_DEFAULT;
@@ -652,7 +652,7 @@ void D3DApp::loadResources()
 	// 创建上传堆
 	D3D12_HEAP_DESC uploadHeapDesc{};
 	// 尺寸依然是实际纹理数据大小的2倍并且64K边界对齐大小
-	uploadHeapDesc.SizeInBytes = UPPER(2 * uploadBufferSize, D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT);
+	uploadHeapDesc.SizeInBytes = ROUND_UP(2 * uploadBufferSize, D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT);
 
 	// 注意上传堆肯定是Buffer类型，可以不指定对齐方式，其默认是64k边界对齐
 	uploadHeapDesc.Alignment = 0;

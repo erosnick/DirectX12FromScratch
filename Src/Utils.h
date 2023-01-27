@@ -11,16 +11,18 @@ using namespace Microsoft;
 using namespace Microsoft::WRL;
 
 // 用于向上取整除法
-#define UPPER_DIV(A, B) (static_cast<uint32_t>(((A) + ((B) - 1)) / (B)))
+#define ROUND_UP_DIV(A, B) (static_cast<uint32_t>(((A) + ((B) - 1)) / (B)))
 
 // 更简洁的向上取整算法
-#define UPPER(A, B) (static_cast<uint32_t>(((A) + ((B) - 1)) &~ (B - 1)))
+#define ROUND_UP(A, B) (static_cast<uint32_t>(((A) + ((B) - 1)) &~ (B - 1)))
 
 #define WIDE(x) L##x
 #define WIDE1(x) WIDE(x)
 #define FILE_NAME WIDE1(__FILE__)
 #define FUNCTION_NAME WIDE1(__FUNCTION__)
 #define ObjectName(object) L#object
+#define CPU_DESCRIPTOR_HEAP_START(descriptorHeap) descriptorHeap->GetCPUDescriptorHandleForHeapStart()
+#define GPU_DESCRIPTOR_HEAP_START(descriptorHeap) descriptorHeap->GetGPUDescriptorHandleForHeapStart()
 
 inline void setD3D12DebugName(ID3D12Object * object, const std::wstring& name)
 {

@@ -215,6 +215,7 @@
     <ClInclude Include="..\src\Chapter6.D3DApp.h" />
     <ClInclude Include="..\src\Console.h" />
     <ClInclude Include="..\src\DDSTextureLoader12.h" />
+    <ClInclude Include="..\src\GameTimer.h" />
     <ClInclude Include="..\src\GeometryGenerator.h" />
     <ClInclude Include="..\src\Model.h" />
     <ClInclude Include="..\src\Resource.h" />
@@ -262,6 +263,7 @@
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\src\DDSTextureLoader12.cpp" />
+    <ClCompile Include="..\src\GameTimer.cpp" />
     <ClCompile Include="..\src\GeometryGenerator.cpp" />
     <ClCompile Include="..\src\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="..\src\Model.cpp" />

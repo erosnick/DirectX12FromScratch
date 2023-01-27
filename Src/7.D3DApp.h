@@ -24,6 +24,7 @@ using namespace Microsoft::WRL;
 
 #include "Model.h"
 #include "Camera.h"
+#include "GameTimer.h"
 
 #define MAX_LOADSTRING 100
 
@@ -182,7 +183,7 @@ private:
 
 	void updateConstantBuffer();
 	void updateSkyboxConstantBuffer();
-	void updateFPSCounter();
+	void calculateFrameStats();
 	void update();
 	void processInput(float deltaTime);
 	void render();
@@ -204,6 +205,8 @@ private:
 
 	uint32_t DXGIFactoryFlags = 0;
 	uint32_t renderTargetViewDescriptorSize = 0;
+	uint32_t depthStencilViewDescriptorSize = 0;
+	uint32_t SRVCBVUAVDescriptorSize = 0;
 	uint32_t samplerDescriptorSize = 0;
 
 	uint32_t currentSamplerNo = 0;		//当前使用的采样器索引
@@ -276,8 +279,6 @@ private:
 	ComPtr<ID3D12Heap> textureHeap;
 	ComPtr<ID3D12Heap> uploadHeap;
 
-	uint32_t skyboxSamplerDescriptorSize = 0;
-
 	ComPtr<ID3D12DescriptorHeap> skyboxDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> skyboxSamplerDescriptorHeap;
 
@@ -299,8 +300,9 @@ private:
 	static D3DApp* app;
 
 	// Global Variables:
-	WCHAR szTitle[MAX_LOADSTRING] {};                  // The title bar text
-	WCHAR szWindowClass[MAX_LOADSTRING];			   // the main window class name
+	std::wstring windowTitle = L"7.Render to Texture";	// The title bar text
+	std::wstring windowClass = L"DirectX12Window";	    // the main window class name
+
 
 	// 初始的默认摄像机的位置
 
@@ -308,6 +310,15 @@ private:
 
 	float boxSize = 3.0f;
 	float texcoordScale = 3.0f;
+
+	float modelRotationYAngle = 0.0f;
+
+	float startTime = 0.0f;
+	float currentTime = 0.0f;
+
+	const float FrameTime = 0.0166667f;
+
+	ULONGLONG simulationTime = 0;
 
 	uint64_t textureUploadBufferSize = 0;
 	uint64_t skyboxTextureUploadBufferSize = 0;
@@ -325,19 +336,10 @@ private:
 	uint32_t skyboxIndexCount = 0;
 	uint32_t triangleCount = 0;
 
-	float modelRotationYAngle = 0.0f;
-
-	float startTime = 0.0f;
-	float currentTime = 0.0f;
-
-	const float FrameTime = 0.0166667f;
-
-	bool renderReady = false;
-
-	uint32_t frameCount = 0;
-
 	glm::vec2 lastMousePosition;
 	bool rightMouseButtonDown = false;
+	bool appPaused = false;
+	bool renderReady = false;
 
 	ModelViewProjectionBuffer* modelViewProjectionBuffer;
 	ModelViewProjectionBuffer* skyboxModelViewProjectionBuffer;
@@ -349,6 +351,8 @@ private:
 
 	// 初始的默认摄像机的位置
 	Camera camera{ { 0.0f, 1.0f, -5.0f } };
+
+	GameTimer gameTimer;
 
 	glm::mat4 projection;
 };
