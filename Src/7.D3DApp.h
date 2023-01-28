@@ -119,19 +119,49 @@ private:
 	void createRenderTextureSRV();
 	void createRenderTextureDSVDescriptorHeap();
 	void createRenderTextureDSV();
+
+	/// 用于创建顶点缓冲区的帮助函数
+	///
+	/// \param model: 加载的.obj模型数据
+	/// \param heap: 用于创建顶点缓冲区的堆
+	/// \param offset: 在堆中位置的偏移
+	/// \param vertexBuffer: 顶点缓冲数据
+	/// \param vertexBufferView: 顶点缓冲视图
 	void createVertexBuffer(const DXModel& model, const ComPtr<ID3D12Heap>& heap, uint64_t offset, 
 							ComPtr<ID3D12Resource>& vertexBuffer, D3D12_VERTEX_BUFFER_VIEW& vertexBufferView);
+
 	void createVertexBuffer(const DXModel& model);
+
+	/// 用于创建索引缓冲区的帮助函数
+	///
+	/// \param model: 加载的.obj模型数据
+	/// \param heap: 用于创建索引缓冲区的堆
+	/// \param offset: 在堆中位置的偏移
+	/// \param indexBuffer: 索引缓冲数据
+	/// \param indexBufferView: 索引缓冲视图
 	void createIndexBuffer(const DXModel& model, const ComPtr<ID3D12Heap>& heap, uint64_t offset,
 							ComPtr<ID3D12Resource>& indexBuffer, D3D12_INDEX_BUFFER_VIEW& indexBufferView);
 	void createIndexBuffer(const DXModel& model);
 	void createSkyboxVertexBuffer(const DXModel& model);
 	void createSkyboxIndexBuffer(const DXModel& model);
+
+	/// 用于创建常量缓冲区视图的帮助函数
+	///
+	/// \param heap: 用于创建常量缓冲区的堆
+	/// \param offset: 在堆中位置的偏移
+	/// \param size: 常量缓冲区大小
+	/// \param descriptorHeap: 用于创建常量缓冲区视图的描述符堆
+	/// \param index: 在描述符堆中的索引
+	/// \param constantBuffer: 常量缓冲数据
+	/// \param indexBufferView: 索引缓冲视图
+	/// \param modelViewProjectionBuffer: 映射到CPU的常量缓冲区指针
 	void createConstantBufferView(const ComPtr<ID3D12Heap>& heap, 
-								  const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, 
-								  uint64_t offset, uint32_t size, uint32_t index,
+								  uint64_t offset, uint32_t size, 
+								  const ComPtr<ID3D12DescriptorHeap>& descriptorHeap,
+								  uint32_t index,
 								  ComPtr<ID3D12Resource>& constantBuffer, 
 								  ModelViewProjectionBuffer** modelViewProjectionBuffer);
+
 	void createConstantBufferView();
 	void createSkyboxConstantBufferView();
 	void createRenderTextureConstantBufferView();
@@ -144,11 +174,23 @@ private:
 	void recordCommands();
 	void prepareRenderThreads();
 
+	/// 用于创建命令列表分配器的帮助函数
+	/// \param type: 命令列表分配器类型
+	/// \param commandAllocator: 创建好的命令列表分配器
+	/// \param name: 可选的命令列表分配器调试名称
+	/// \param index: 可选的调试名称索引(比如创建多个的时候)
 	void createCommandAllocator(D3D12_COMMAND_LIST_TYPE type, ComPtr<ID3D12CommandAllocator>& commandAllocator, 
 								const std::wstring& name = L"", uint32_t index = 0);
 	void createCommandAllocator(D3D12_COMMAND_LIST_TYPE type, ID3D12CommandAllocator** commandAllocator, 
 								const std::wstring& name = L"", uint32_t index = 0);
 
+	/// 用于创建命令列表的帮助函数
+	/// \param type: 命令列表类型
+	/// \param commandAllocator: 命令列表分配器
+	/// \param pipelineState: 初始的图形渲染管线状态对象(执行非图形渲染命令时可以为nullptr)
+	/// \param commandList: 创建好的命令列表分配器
+	/// \param name: 可选的命令列表分配器调试名称
+	/// \param index: 可选的调试名称索引(比如创建多个的时候)
 	void createCommandList(D3D12_COMMAND_LIST_TYPE type, const ComPtr<ID3D12CommandAllocator>& commandAllocator,
 														 const ComPtr<ID3D12PipelineState>& pipelineState, 
 														 ComPtr<ID3D12GraphicsCommandList>& commandList, 
@@ -158,15 +200,37 @@ private:
 														 ID3D12GraphicsCommandList** commandList,
 														 const std::wstring& name = L"", uint32_t index = 0);
 
+	/// 用于创建深度/模板缓冲视图的帮助函数
+	/// \param width: 深度/模板缓冲区宽度
+	/// \param height: 深度/模板缓冲区高度
+	/// \param format: 深度/模板缓冲区格式
+	/// \param depthStencilDescriptorHeap: 用于创建深度/模板缓冲视图的描述符堆
+	/// \param depthStencilBuffer: 深度/模板缓冲区
 	void createDepthStencilView(uint32_t width, uint32_t height, DXGI_FORMAT format,
-		const ComPtr<ID3D12DescriptorHeap>& depthStencilDescriptorHeap, 
-		ComPtr<ID3D12Resource>& depthStencilBuffer);
+								const ComPtr<ID3D12DescriptorHeap>& depthStencilDescriptorHeap, 
+								ComPtr<ID3D12Resource>& depthStencilBuffer);
 
+	/// 用于创建描述符堆的帮助函数
+	/// \param type: 描述符堆类型
+	/// \param numDescriptors: 描述符堆包含的描述符数量
+	/// \param shaderVisible: 是否作为Shader可见资源
+	/// \param descriptorHeap: 创建好的描述符堆
+	/// \param name: 可选的描述符堆调试名称
 	void createDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t numDescriptors, bool shaderVisible, ComPtr<ID3D12DescriptorHeap>& descriptorHeap, const std::wstring& name = L"");
 	ComPtr<ID3D12DescriptorHeap> createDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t numDescriptors, bool shaderVisible, const std::wstring& name = L"");
 
+	/// 用于创建采样器的帮助函数
+	/// \param filter: 过滤器类型
+	/// \param addressMode: 寻址模式 
+	/// \param descriptorHeap: 用于创建采样器的描述符堆
+	/// \param index: 在描述符堆中的索引
 	void createSampler(D3D12_FILTER filter, D3D12_TEXTURE_ADDRESS_MODE addressMode, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t index = 0);
 
+	/// 用于创建SRV的帮助函数
+	/// \param dimension: SRV的维度(1D, 2D, CUBE)
+	/// \param texture: 用于创建SRV的纹理资源
+	/// \param descriptorHeap: 用于创建SRV的描述符堆
+	/// \param index: 在描述符堆中的索引
 	void createShaderResourceView(D3D12_SRV_DIMENSION dimension, const ComPtr<ID3D12Resource>& texture, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t index = 0);
 
 	void initDirect3D();
@@ -186,8 +250,12 @@ private:
 
 	void waitCommandListComplete();
 
-	void onMouseMove(float x, float y);
+	virtual void onMouseDown(WPARAM buttonState, int x, int y);
+	virtual void onMouseUp(WPARAM buttonState, int x, int y);
+	void onMouseMove(WPARAM buttonState, int x, int y);
 	void onMouseWheel(float offset);
+
+	void onResize();
 
 private:
 	const static uint32_t FrameBackbufferCount = 3;
@@ -332,9 +400,11 @@ private:
 	uint32_t skyboxIndexCount = 0;
 	uint32_t triangleCount = 0;
 
-	glm::vec2 lastMousePosition;
-	bool rightMouseButtonDown = false;
+	glm::ivec2 lastMousePosition;
 	bool appPaused = false;
+	bool minimized = true;
+	bool maximized = false;
+	bool resizing = false;
 	bool renderReady = false;
 
 	ModelViewProjectionBuffer* modelViewProjectionBuffer;
