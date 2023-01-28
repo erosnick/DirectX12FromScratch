@@ -45,6 +45,9 @@
     <ClInclude Include="..\src\GeometryGenerator.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ImGuiLayer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\Model.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -71,10 +74,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\7..RenderToTexture.cpp">
+    <ClCompile Include="..\src\7.D3DApp.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\7.D3DApp.cpp">
+    <ClCompile Include="..\src\7.RenderToTexture.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Chapter1.Triangle.cpp">
@@ -120,6 +123,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ImGui\ImGuiBuild.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ImGuiLayer.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Model.cpp">

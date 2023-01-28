@@ -217,6 +217,7 @@
     <ClInclude Include="..\src\DDSTextureLoader12.h" />
     <ClInclude Include="..\src\GameTimer.h" />
     <ClInclude Include="..\src\GeometryGenerator.h" />
+    <ClInclude Include="..\src\ImGuiLayer.h" />
     <ClInclude Include="..\src\Model.h" />
     <ClInclude Include="..\src\Resource.h" />
     <ClInclude Include="..\src\Utils.h" />
@@ -227,8 +228,8 @@
     <ClInclude Include="..\src\targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\7..RenderToTexture.cpp" />
     <ClCompile Include="..\src\7.D3DApp.cpp" />
+    <ClCompile Include="..\src\7.RenderToTexture.cpp" />
     <ClCompile Include="..\src\Chapter1.Triangle.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -266,6 +267,7 @@
     <ClCompile Include="..\src\GameTimer.cpp" />
     <ClCompile Include="..\src\GeometryGenerator.cpp" />
     <ClCompile Include="..\src\ImGui\ImGuiBuild.cpp" />
+    <ClCompile Include="..\src\ImGuiLayer.cpp" />
     <ClCompile Include="..\src\Model.cpp" />
     <ClCompile Include="..\src\Utils.cpp" />
     <ClCompile Include="..\src\WICImage.cpp" />

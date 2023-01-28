@@ -18,15 +18,11 @@ using namespace Microsoft::WRL;
 
 #include <d3dx12.h>
 
-#define IMGUI_UNLIMITED_FRAME_RATE
-#include <backends/imgui_impl_dx12.h>
-#include <backends/imgui_impl_win32.h>
+#include "ImGuiLayer.h"
 
 #include "Model.h"
 #include "Camera.h"
 #include "GameTimer.h"
-
-#define MAX_LOADSTRING 100
 
 struct ModelViewProjectionBuffer
 {
@@ -177,7 +173,7 @@ private:
 
 	void initImGui();
 	void updateImGui();
-	void createImGuiWidgets();
+	void onGUIRender();
 	void renderImGui(const ComPtr<ID3D12GraphicsCommandList>& commandList);
 	void shutdownImGui();
 
@@ -353,6 +349,8 @@ private:
 	Camera camera{ { 0.0f, 1.0f, -5.0f } };
 
 	GameTimer gameTimer;
+
+	ImGuiLayer imGuiLayer;
 
 	glm::mat4 projection;
 };
