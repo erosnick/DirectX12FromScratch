@@ -55,7 +55,7 @@ private:
 	void createCommandQueue();
 	void createSwapChain();
 	void createDescriptorHeap();
-	void createDescriptor();
+	void createRenderTargetView();
 	void createRootSignature();
 	void createGraphicsPipelineState();
 	void createVertexBuffer();

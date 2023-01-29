@@ -100,8 +100,8 @@ private:
 	void createDevice();
 	void createCommandQueue();
 	void createSwapChain();
-	void createDescriptorHeap();
-	void createDescriptor();
+	void createShaderResourceViewDescriptorHeap();
+	void createRenderTargetView();
 	void createSkyboxDescriptorHeap();
 	void createSkyboxDescriptors();
 	void createRootSignature();
@@ -112,6 +112,9 @@ private:
 	void createUploadHeap(uint64_t heapSize);
 	void loadCubeResource();
 	void loadResources();
+
+	void flushCommandQueue();
+
 	void loadSkyboxTexture();
 	void createRenderTextureRTVDescriptorHeap();
 	void createRenderTextureRTV();
@@ -141,6 +144,7 @@ private:
 	/// \param indexBufferView: Ë÷Òý»º³åÊÓÍ¼
 	void createIndexBuffer(const DXModel& model, const ComPtr<ID3D12Heap>& heap, uint64_t offset,
 							ComPtr<ID3D12Resource>& indexBuffer, D3D12_INDEX_BUFFER_VIEW& indexBufferView);
+
 	void createIndexBuffer(const DXModel& model);
 	void createSkyboxVertexBuffer(const DXModel& model);
 	void createSkyboxIndexBuffer(const DXModel& model);
@@ -287,7 +291,8 @@ private:
 	D3D12_INDEX_BUFFER_VIEW skyboxIndexBufferView{};
 
 	uint64_t fenceValue = 0;
-	HANDLE fenceEvent = nullptr;
+
+	HANDLE fenceEvent;
 
 	CD3DX12_VIEWPORT viewport{ 0.0f, 0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight) };
 	CD3DX12_RECT scissorRect{ 0, 0, static_cast<long>(windowWidth), static_cast<long>(windowHeight) };

@@ -285,7 +285,7 @@ void D3DApp::createDescriptorHeap()
 	DXCheck(device->CreateDescriptorHeap(&shaderResourceViewDescriptorHeapDesc, IID_PPV_ARGS(&shaderResourceViewDescriptorHeap)), "ID3D12Device::CreateDescriptorHeap failed!");
 }
 
-void D3DApp::createDescriptor()
+void D3DApp::createRenderTargetView()
 {
 	CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetViewDescriptorHandle(renderTargetViewDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
@@ -595,7 +595,7 @@ void D3DApp::initDirect3D()
 	createCommandQueue();
 	createSwapChain();
 	createDescriptorHeap();
-	createDescriptor();
+	createRenderTargetView();
 	createSamplerDescriptorHeap();
 	createSamplers();
 	createRootSignature();

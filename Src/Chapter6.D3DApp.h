@@ -104,7 +104,7 @@ private:
 	void createCommandQueue();
 	void createSwapChain();
 	void createDescriptorHeap();
-	void createDescriptor();
+	void createRenderTargetView();
 	void createSkyboxDescriptorHeap();
 	void createSkyboxDescriptors();
 	void createRootSignature();
