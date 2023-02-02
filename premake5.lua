@@ -73,7 +73,8 @@ project "DirectX12FromScratch"
         { 
             './src',
             './ThirdParty/stb',
-            './ThirdParty/imgui-1.89.2',
+            -- './ThirdParty/imgui-1.89.2',
+            './ThirdParty/imgui-docking',
             './ThirdParty/tinyobjloader',
             './ThirdParty/glm-0.9.9.8/glm',
             './ThirdParty/fmt-9.1.0/include',
@@ -111,7 +112,8 @@ project "DirectX12FromScratch"
         { 
             './src',
             './ThirdParty/stb',
-            './ThirdParty/imgui-1.89.2',
+            -- './ThirdParty/imgui-1.89.2',
+            './ThirdParty/imgui-docking',
             './ThirdParty/tinyobjloader',
             './ThirdParty/glm-0.9.9.8/glm',
             './ThirdParty/fmt-9.1.0/include',

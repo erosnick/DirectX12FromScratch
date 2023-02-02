@@ -80,7 +80,6 @@ public:
 	bool initialize(HINSTANCE hInstance, int32_t cmdShow);
 
 	static D3DApp* getApp();
-	LRESULT msgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	static uint32_t __stdcall renderThread(void* data);
 
@@ -412,7 +411,7 @@ private:
 	glm::vec2 lastMousePosition;
 
 	bool appPaused = false;
-	bool minimized = true;
+	bool minimized = false;
 	bool maximized = false;
 	bool resizing = false;
 	int32_t restore = -1;

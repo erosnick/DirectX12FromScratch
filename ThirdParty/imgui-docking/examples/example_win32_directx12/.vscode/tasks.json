@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+     "tasks": [
+        {
+            "label": "Win32 Debug Build",
+            "type": "shell",
+            "command": "D:/Development/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/amd64/MSBuild.exe",
+            "args": [
+                "${workspaceRoot}/example_win32_directx12.vcxproj",
+                "/p:Configuration=Debug",
+                "/p:Platform=x64",
+                "/m",
+                "/t:build",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Win32 Release Build",
+            "type": "shell",
+            "command": "D:/Development/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/amd64/MSBuild.exe",
+            "args": [
+                "${workspaceRoot}/example_win32_directx12.vcxproj",
+                "/p:Configuration=Release",
+                "/p:Platform=x64",
+                "/m",
+                "/t:build",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        }
+    ]
+   }
