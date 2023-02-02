@@ -78,12 +78,14 @@ project "DirectX12FromScratch"
             './ThirdParty/glm-0.9.9.8/glm',
             './ThirdParty/fmt-9.1.0/include',
             './ThirdParty/DirectXMath/Inc',
+            './ThirdParty/glfw-3.3.8.bin.WIN64/include',
             './ThirdParty/DirectX-Headers/include/directx',
             './ThirdParty/WinPixEventRuntime.1.0.220810001/Include/WinPixEventRuntime'
         }
 
 		libdirs 
         { 
+            "./ThirdParty/glfw-3.3.8.bin.WIN64/lib-vc2022",
             "./ThirdParty/WinPixEventRuntime.1.0.220810001/bin/x64"
         }
 
@@ -91,6 +93,7 @@ project "DirectX12FromScratch"
         {
             "ImGui" ,
             "dxgi.lib", 
+            "glfw3.lib",
             "dxguid.lib",
             "d3d12.lib",
             "d3dcompiler.lib",
@@ -113,12 +116,14 @@ project "DirectX12FromScratch"
             './ThirdParty/glm-0.9.9.8/glm',
             './ThirdParty/fmt-9.1.0/include',
             './ThirdParty/DirectXMath/Inc',
+            './ThirdParty/glfw-3.3.8.bin.WIN64/include',
             './ThirdParty/DirectX-Headers/include/directx',
             './ThirdParty/WinPixEventRuntime.1.0.220810001/Include/WinPixEventRuntime'
         }
 
 		libdirs 
         { 
+            "./ThirdParty/glfw-3.3.8.bin.WIN64/lib-vc2022",
             "./ThirdParty/WinPixEventRuntime.1.0.220810001/bin/x64"
         }
 
@@ -126,9 +131,10 @@ project "DirectX12FromScratch"
         { 
             "ImGui" ,
             "dxgi.lib", 
+            "glfw3.lib",
             "dxguid.lib",
             "d3d12.lib",
-            "d3dcompiler.lib",            
+            "d3dcompiler.lib",
             "WinPixEventRuntime.lib"
         }
 

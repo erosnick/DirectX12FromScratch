@@ -82,7 +82,7 @@ private:
 	void createSamplerDescriptorHeap();
 	void createSamplers();
 	void createSkyboxSamplerDescriptorHeap();
-	void createSkyboxSamplerDescriptor();
+	void createSkyboxSampler();
 	void recordCommands();
 
 	void initDirect3D();

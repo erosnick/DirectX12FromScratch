@@ -174,7 +174,7 @@ private:
 	void createSamplerDescriptorHeap();
 	void createSamplers();
 	void createSkyboxSamplerDescriptorHeap();
-	void createSkyboxSamplerDescriptor();
+	void createSkyboxSampler();
 	void recordCommands();
 	void prepareRenderThreads();
 
@@ -254,8 +254,8 @@ private:
 
 	void waitCommandListComplete();
 
-	virtual void onMouseDown(WPARAM buttonState, int x, int y);
-	virtual void onMouseUp(WPARAM buttonState, int x, int y);
+	virtual void onMouseButtonDown(WPARAM buttonState, int x, int y);
+	virtual void onMouseButtonUp(WPARAM buttonState, int x, int y);
 	void onMouseMove(WPARAM buttonState, int x, int y);
 	void onMouseWheel(float offset);
 
@@ -385,9 +385,9 @@ private:
 	float startTime = 0.0f;
 	float currentTime = 0.0f;
 
-	const float FrameTime = 0.0166667f;
+	const float FrameTime = 0.01666667f;
 
-	ULONGLONG simulationTime = 0;
+	double simulationTime = 0;
 
 	uint64_t textureUploadBufferSize = 0;
 	uint64_t skyboxTextureUploadBufferSize = 0;

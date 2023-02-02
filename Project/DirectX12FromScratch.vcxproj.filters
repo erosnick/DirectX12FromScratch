@@ -12,7 +12,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\7.D3DApp.h">
+    <ClInclude Include="..\src\7.D3DAppGLFW.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Camera.h">
@@ -31,6 +31,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Chapter6.D3DApp.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Chapter7.D3DApp.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Console.h">
@@ -74,7 +77,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\7.D3DApp.cpp">
+    <ClCompile Include="..\src\7.D3DAppGLFW.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\7.RenderToTexture.cpp">
@@ -111,6 +114,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Chapter6.MultithreadRendering.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Chapter7.D3DApp.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DDSTextureLoader12.cpp">

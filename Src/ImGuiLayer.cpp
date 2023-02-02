@@ -19,7 +19,7 @@ void ImGuiLayer::initialize(const ImGuiInitData& initData)
 	//ImGui::StyleColorsLight();
 
 	// Setup Platform/Renderer backends
-	ImGui_ImplWin32_Init(initData.mainWindow);
+	ImGui_ImplGlfw_InitForOther(initData.window, false);
 	ImGui_ImplDX12_Init(initData.device.Get(), initData.frameBackbufferCount,
 		DXGI_FORMAT_R8G8B8A8_UNORM, initData.shaderResourceViewDescriptorHeap.Get(),
 		initData.shaderResourceViewDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
@@ -47,7 +47,7 @@ void ImGuiLayer::update()
 {
 	// Start the Dear ImGui frame
 	ImGui_ImplDX12_NewFrame();
-	ImGui_ImplWin32_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 }
 

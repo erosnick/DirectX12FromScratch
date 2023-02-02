@@ -3,7 +3,7 @@
 
 #include "pch.h"
 #include "Console.h"
-#include "7.D3DApp.h"
+#include "7.D3DAppGLFW.h"
 #include "Utils.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,

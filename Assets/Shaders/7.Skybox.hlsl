@@ -31,5 +31,6 @@ PSInput VSMain(VSInput input)
 float4 PSMain(PSInput input) : SV_TARGET
 {
     float4 color = environmentTexture.Sample(textureSampler, input.texcoord);
+    // color = float4(input.texcoord, 1.0f);
     return color;
 }
