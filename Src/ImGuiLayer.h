@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <wrl.h>
+#include <memory>
 
 using namespace Microsoft;
 using namespace Microsoft::WRL;
@@ -25,8 +26,10 @@ class ImGuiLayer
 {
 public:
 	void initialize(const ImGuiInitData& initData);
+	void initializeImGuiConsole();
 	void update();
 	void render(const ComPtr<struct ID3D12GraphicsCommandList>& commandList);
 private:
-
+	// Create ImGui Console
+	std::shared_ptr<class ImGuiConsole> console;
 };

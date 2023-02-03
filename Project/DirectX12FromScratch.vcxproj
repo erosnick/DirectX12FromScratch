@@ -98,16 +98,16 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\imgui-console\include;..\ThirdParty\imgui-console\include\imgui_console;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\imgui-console\include;..\ThirdParty\imgui-console\include\imgui_console;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,16 +124,16 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\imgui-console\include;..\ThirdParty\imgui-console\include\imgui_console;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DEBUG;FMT_HEADER_ONLY;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\imgui-console\include;..\ThirdParty\imgui-console\include\imgui_console;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,8 +150,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\imgui-console\include;..\ThirdParty\imgui-console\include\imgui_console;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -161,8 +161,8 @@
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\imgui-console\include;..\ThirdParty\imgui-console\include\imgui_console;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -180,8 +180,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\imgui-console\include;..\ThirdParty\imgui-console\include\imgui_console;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -191,8 +191,8 @@
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;FMT_HEADER_ONLY;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\src;..\ThirdParty\stb;..\ThirdParty\imgui-docking;..\ThirdParty\tinyobjloader;..\ThirdParty\glm-0.9.9.8\glm;..\ThirdParty\fmt-9.1.0\include;..\ThirdParty\DirectXMath\Inc;..\ThirdParty\imgui-console\include;..\ThirdParty\imgui-console\include\imgui_console;..\ThirdParty\glfw-3.3.8.bin.WIN64\include;..\ThirdParty\DirectX-Headers\include\directx;..\ThirdParty\WinPixEventRuntime.1.0.220810001\Include\WinPixEventRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -229,6 +229,7 @@
     <ClInclude Include="..\src\targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\ThirdParty\imgui-console\src\imgui_console.cpp" />
     <ClCompile Include="..\src\7.D3DAppGLFW.cpp" />
     <ClCompile Include="..\src\7.RenderToTexture.cpp" />
     <ClCompile Include="..\src\Chapter1.Triangle.cpp">

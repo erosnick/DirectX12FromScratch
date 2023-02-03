@@ -3,6 +3,27 @@
 
 #include <d3d12.h>
 
+#include "imgui_console.h"
+
+csys::ItemLog& operator<<(csys::ItemLog& log, ImVec4& vec)
+{
+	log << "ImVec4: [" << vec.x << ", "
+		<< vec.y << ", "
+		<< vec.z << ", "
+		<< vec.w << "]";
+	return log;
+}
+
+static void imvec4_setter(ImVec4& my_type, std::vector<int> vec)
+{
+	if (vec.size() < 4) return;
+
+	my_type.x = vec[0] / 255.f;
+	my_type.y = vec[1] / 255.f;
+	my_type.z = vec[2] / 255.f;
+	my_type.w = vec[3] / 255.f;
+}
+
 void ImGuiLayer::initialize(const ImGuiInitData& initData)
 {
 	ImGui_ImplWin32_EnableDpiAwareness();
@@ -54,6 +75,49 @@ void ImGuiLayer::initialize(const ImGuiInitData& initData)
 	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
 	//ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 	//IM_ASSERT(font != NULL);
+
+	initializeImGuiConsole();
+}
+
+void ImGuiLayer::initializeImGuiConsole()
+{
+	// Our state
+	ImVec4 clear_color = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+
+	///////////////////////////////////////////////////////////////////////////
+	// IMGUI CONSOLE //////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+	console = std::make_shared<ImGuiConsole>();
+
+	// Register variables
+	console->System().RegisterVariable("background_color", clear_color, imvec4_setter);
+
+	// Register scripts
+	console->System().RegisterScript("test_script", "./Assets/Scripts/console.script");
+
+	// Register custom commands
+	console->System().RegisterCommand("random_background_color", "Assigns a random color to the background application",
+	[&clear_color]()
+	{
+		clear_color.x = (rand() % 256) / 256.f;
+		clear_color.y = (rand() % 256) / 256.f;
+		clear_color.z = (rand() % 256) / 256.f;
+		clear_color.w = (rand() % 256) / 256.f;
+	});
+	console->System().RegisterCommand("reset_background_color", "Reset background color to its original value",
+	[&clear_color, val = clear_color]()
+	{
+		clear_color = val;
+	});
+
+	// Log example information:
+	console->System().Log(csys::ItemType::INFO) << "Welcome to the imgui-console example!" << csys::endl;
+	console->System().Log(csys::ItemType::INFO) << "The following variables have been exposed to the console:" << csys::endl << csys::endl;
+	console->System().Log(csys::ItemType::INFO) << "\tbackground_color - set: [int int int int]" << csys::endl;
+	console->System().Log(csys::ItemType::INFO) << csys::endl << "Try running the following command:" << csys::endl;
+	console->System().Log(csys::ItemType::INFO) << "\tset background_color [255 0 0 255]" << csys::endl << csys::endl;
+
+	///////////////////////////////////////////////////////////////////////////
 }
 
 void ImGuiLayer::update()
@@ -66,6 +130,9 @@ void ImGuiLayer::update()
 
 void ImGuiLayer::render(const ComPtr<struct ID3D12GraphicsCommandList>& commandList)
 {
+	// ImGui Console
+	console->Draw();
+
 	// Rendering
 	ImGui::Render();
 

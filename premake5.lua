@@ -39,7 +39,8 @@ project "DirectX12FromScratch"
         "src/**.h", 
         "src/**.cpp",
         'src/**.rc', 
-        'src/**.ico'
+        'src/**.ico',
+        './ThirdParty/imgui-console/src/**.cpp'
     }                                       --指定加载哪些文件或哪些类型的文件
 
     -- removefiles 
@@ -67,7 +68,7 @@ project "DirectX12FromScratch"
 
     --Debug配置项属性
     filter "configurations:Debug"
-        defines { "DEBUG", "FMT_HEADER_ONLY" }                 --定义Debug宏(这可以算是默认配置)
+        defines { "DEBUG", "FMT_HEADER_ONLY", "NOMINMAX" }                 --定义Debug宏(这可以算是默认配置)
         symbols "On"                        --开启调试符号
         includedirs 
         { 
@@ -79,6 +80,8 @@ project "DirectX12FromScratch"
             './ThirdParty/glm-0.9.9.8/glm',
             './ThirdParty/fmt-9.1.0/include',
             './ThirdParty/DirectXMath/Inc',
+            './ThirdParty/imgui-console/include',
+            './ThirdParty/imgui-console/include/imgui_console',
             './ThirdParty/glfw-3.3.8.bin.WIN64/include',
             './ThirdParty/DirectX-Headers/include/directx',
             './ThirdParty/WinPixEventRuntime.1.0.220810001/Include/WinPixEventRuntime'
@@ -106,7 +109,7 @@ project "DirectX12FromScratch"
 
     --Release配置项属性
     filter "configurations:Release"
-        defines { "NDEBUG", "FMT_HEADER_ONLY" }                 --定义NDebug宏(这可以算是默认配置)
+        defines { "NDEBUG", "FMT_HEADER_ONLY", "NOMINMAX" }                 --定义NDebug宏(这可以算是默认配置)
         optimize "On"                        --开启优化参数
         includedirs 
         { 
@@ -118,6 +121,8 @@ project "DirectX12FromScratch"
             './ThirdParty/glm-0.9.9.8/glm',
             './ThirdParty/fmt-9.1.0/include',
             './ThirdParty/DirectXMath/Inc',
+            './ThirdParty/imgui-console/include',
+            './ThirdParty/imgui-console/include/imgui_console',
             './ThirdParty/glfw-3.3.8.bin.WIN64/include',
             './ThirdParty/DirectX-Headers/include/directx',
             './ThirdParty/WinPixEventRuntime.1.0.220810001/Include/WinPixEventRuntime'
