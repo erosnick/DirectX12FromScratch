@@ -114,11 +114,11 @@ private:
 
 	void loadSkyboxTexture();
 	void createRenderTextureRTVDescriptorHeap();
-	void createRenderTextureRTV();
+	void createRenderTextureRTV(uint32_t width, uint32_t height);
 	void createRenderTextureSRVDescriptorHeap();
 	void createRenderTextureSRV();
 	void createRenderTextureDSVDescriptorHeap();
-	void createRenderTextureDSV();
+	void createRenderTextureDSV(uint32_t width, uint32_t height);
 
 	/// 用于创建顶点缓冲区的帮助函数
 	///
@@ -264,15 +264,24 @@ private:
 	static void onKeyDown(GLFWwindow* inWindow, int key, int scancode, int action, int mods);
 
 	void onResize();
-
+	void onRenderTextureResize(uint32_t width, uint32_t height);
 private:
 	const static uint32_t FrameBackbufferCount = 3;
-	int windowWidth = 1600;
-	int windowHeight = 900;
+	int32_t windowWidth = 1920;
+	int32_t windowHeight = 1080;
+	int32_t viewportWidth = 800;
+	int32_t viewportHeight = 600;
+	int32_t imGuiWindowWidth = 800;
+	int32_t imGuiWindowHeight = 600;
+
+	const float StandardAspectRatio = 16.0f / 9.0f;
+	float aspectRatio = static_cast<float>(windowWidth) / 
+						static_cast<float>(windowHeight);
 
 	bool quit = false;
 
 	uint32_t currentFrameIndex = 0;
+	uint32_t imGuiCurrentFrameIndex = 0;
 	uint32_t frame = 0;
 
 	uint32_t DXGIFactoryFlags = 0;
@@ -285,8 +294,6 @@ private:
 	uint32_t sampleMaxCount = 5;		//创建五个典型的采样器
 
 	HWND mainWindow = nullptr;
-
-	float aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
 
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView{};
 	D3D12_INDEX_BUFFER_VIEW indexBufferView{};
@@ -301,6 +308,9 @@ private:
 	CD3DX12_VIEWPORT viewport{ 0.0f, 0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight) };
 	CD3DX12_RECT scissorRect{ 0, 0, static_cast<long>(windowWidth), static_cast<long>(windowHeight) };
 
+	CD3DX12_VIEWPORT imGuiViewport{ 0.0f, 0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight) };
+	CD3DX12_RECT imGuiScissorRect{ 0, 0, static_cast<long>(viewportWidth), static_cast<long>(windowHeight) };
+
 	DXGI_FORMAT swapChainFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 	DXGI_FORMAT depthStencilFormat = DXGI_FORMAT_D32_FLOAT;
 
@@ -312,6 +322,7 @@ private:
 
 	// DXR stuff
 	ComPtr<IDXGISwapChain4> swapChain;
+	ComPtr<IDXGISwapChain4> imGuiSwapChain;
 	//ComPtr<IDXGISwapChain3> swapChain;
 	ComPtr<ID3D12DescriptorHeap> renderTargetViewDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> renderTextureRTVDescriptorHeap;
@@ -322,6 +333,7 @@ private:
 	ComPtr<ID3D12DescriptorHeap> depthStencilViewDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> renderTextureDSVDescriptorHeap;
 	ComPtr<ID3D12Resource> renderTargets[FrameBackbufferCount];
+	ComPtr<ID3D12Resource> imGuiRenderTargets[FrameBackbufferCount];
 	ComPtr<ID3D12CommandAllocator> commandAllocatorDirectPre;
 	ComPtr<ID3D12CommandAllocator> commandAllocatorDirectPost;
 	ComPtr<ID3D12CommandAllocator> commandAllocatorDirectImGui;
@@ -417,6 +429,7 @@ private:
 	int32_t restore = -1;
 	bool renderReady = false;
 	bool rightMouseButtonDown = false;
+	bool middleMouseButtonDown = false;
 
 	ModelViewProjectionBuffer* modelViewProjectionBuffer;
 	ModelViewProjectionBuffer* skyboxModelViewProjectionBuffer;
