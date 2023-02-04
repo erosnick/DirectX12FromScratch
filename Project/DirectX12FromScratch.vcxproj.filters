@@ -75,8 +75,14 @@
     <ClInclude Include="..\src\targetver.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\D3D12Slim.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\ThirdParty\D3D12MemoryAllocator\D3D12MemAlloc.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="..\ThirdParty\imgui-console\src\imgui_console.cpp">
       <Filter>Sources</Filter>
     </ClCompile>

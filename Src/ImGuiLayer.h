@@ -29,6 +29,9 @@ public:
 	void initializeImGuiConsole();
 	void update();
 	void render(const ComPtr<struct ID3D12GraphicsCommandList>& commandList);
+
+	void dockSpaceBegin();
+	void docSpaceEnd();
 private:
 	// Create ImGui Console
 	std::shared_ptr<class ImGuiConsole> console;

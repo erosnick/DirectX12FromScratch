@@ -40,7 +40,8 @@ project "DirectX12FromScratch"
         "src/**.cpp",
         'src/**.rc', 
         'src/**.ico',
-        './ThirdParty/imgui-console/src/**.cpp'
+        './ThirdParty/imgui-console/src/**.cpp',
+        './ThirdParty/D3D12MemoryAllocator/D3D12MemAlloc.cpp'
     }                                       --指定加载哪些文件或哪些类型的文件
 
     -- removefiles 
@@ -65,6 +66,8 @@ project "DirectX12FromScratch"
 
     -- excludes "files:%{prj.name}/src/1.Triangle.cpp"
 
+    filter { "files:ThirdParty/**cpp" }
+        flags {"NoPCH"}
 
     --Debug配置项属性
     filter "configurations:Debug"
@@ -73,13 +76,14 @@ project "DirectX12FromScratch"
         includedirs 
         { 
             './src',
+            './ThirdParty',
             './ThirdParty/stb',
             -- './ThirdParty/imgui-1.89.2',
             './ThirdParty/imgui-docking',
             './ThirdParty/tinyobjloader',
+            './ThirdParty/DirectXMath/Inc',
             './ThirdParty/glm-0.9.9.8/glm',
             './ThirdParty/fmt-9.1.0/include',
-            './ThirdParty/DirectXMath/Inc',
             './ThirdParty/imgui-console/include',
             './ThirdParty/imgui-console/include/imgui_console',
             './ThirdParty/glfw-3.3.8.bin.WIN64/include',
@@ -89,6 +93,7 @@ project "DirectX12FromScratch"
 
 		libdirs 
         { 
+            "./ThirdParty/dxc/lib/x64",
             "./ThirdParty/glfw-3.3.8.bin.WIN64/lib-vc2022",
             "./ThirdParty/WinPixEventRuntime.1.0.220810001/bin/x64"
         }
@@ -114,6 +119,7 @@ project "DirectX12FromScratch"
         includedirs 
         { 
             './src',
+            './ThirdParty',
             './ThirdParty/stb',
             -- './ThirdParty/imgui-1.89.2',
             './ThirdParty/imgui-docking',
@@ -130,6 +136,7 @@ project "DirectX12FromScratch"
 
 		libdirs 
         { 
+            "./ThirdParty/dxc/lib/x64",
             "./ThirdParty/glfw-3.3.8.bin.WIN64/lib-vc2022",
             "./ThirdParty/WinPixEventRuntime.1.0.220810001/bin/x64"
         }

@@ -3,7 +3,6 @@
 
 //#pragma once
 
-#include "pch.h"
 #include <string>
 #include "imgui_console.h"
 #include "imgui_internal.h"
