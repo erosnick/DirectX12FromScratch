@@ -9,8 +9,8 @@ using namespace Microsoft::WRL;
 #include <dxgi1_6.h>
 
 #include <d3d12.h>
+#include <dxcapi.h>
 #include <d3d12shader.h>
-#include <d3dcompiler.h>
 
 #if defined(_DEBUG)
 #include <dxgidebug.h>
@@ -234,7 +234,7 @@ private:
 	/// \param index: 在描述符堆中的索引
 	void createShaderResourceView(D3D12_SRV_DIMENSION dimension, const ComPtr<ID3D12Resource>& texture, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t index = 0);
 
-	void initDirect3D();
+	void initializeDirect3D();
 
 	void initImGui();
 	void updateImGui();

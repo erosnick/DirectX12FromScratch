@@ -40,8 +40,9 @@ project "DirectX12FromScratch"
         "src/**.cpp",
         'src/**.rc', 
         'src/**.ico',
-        './ThirdParty/imgui-console/src/**.cpp',
-        './ThirdParty/D3D12MemoryAllocator/D3D12MemAlloc.cpp'
+        'ThirdParty/imgui-console/src/**.cpp',
+        'ThirdParty/D3D12MemoryAllocator/D3D12MemAlloc.cpp',
+        'Assets/Shaders/**.hlsl'
     }                                       --指定加载哪些文件或哪些类型的文件
 
     -- removefiles 
@@ -53,14 +54,19 @@ project "DirectX12FromScratch"
     {
         -- ["Headers/*"] = { "*.h", "*.hpp" },  --包含具体路径
         -- ["Sources/*"] = { "*.c", "*.cpp" },  --包含具体路径
-        ["Headers"] = { "**.h", "**.hpp" },     --不包含具体路径
-        ["Sources"] = { "**.c", "**.cpp" },     --不包含具体路径
-        ["Resources"] = { "**.rc", "**.ico" },   --不包含具体路径
-        ["Docs"] = "**.md"
+        {["Resources"] = {"**.rc", "**.ico"} },   --不包含具体路径
+        {["Resources/Shaders"] = {"**.hlsl"} },   --不包含具体路径
+        {["Headers"] = {"**.h", "**.hpp"} },     --不包含具体路径
+        {["Sources"] = {"**.c", "**.cpp"} },     --不包含具体路径
+        {["Docs"] = "**.md"}
     }
 
         -- Exclude template files
     filter { "files:**Chapter**.cpp" }
+        -- buildaction("None")
+        flags {"ExcludeFromBuild"}
+
+    filter { "files:**.hlsl" }
         -- buildaction("None")
         flags {"ExcludeFromBuild"}
 
@@ -75,27 +81,29 @@ project "DirectX12FromScratch"
         symbols "On"                        --开启调试符号
         includedirs 
         { 
-            './src',
-            './ThirdParty',
-            './ThirdParty/stb',
+            'src',
+            'ThirdParty',
+            'ThirdParty/stb',
             -- './ThirdParty/imgui-1.89.2',
-            './ThirdParty/imgui-docking',
-            './ThirdParty/tinyobjloader',
-            './ThirdParty/DirectXMath/Inc',
-            './ThirdParty/glm-0.9.9.8/glm',
-            './ThirdParty/fmt-9.1.0/include',
-            './ThirdParty/imgui-console/include',
-            './ThirdParty/imgui-console/include/imgui_console',
-            './ThirdParty/glfw-3.3.8.bin.WIN64/include',
-            './ThirdParty/DirectX-Headers/include/directx',
-            './ThirdParty/WinPixEventRuntime.1.0.220810001/Include/WinPixEventRuntime'
+            'ThirdParty/imgui-docking',
+            'Tools/dxc_2022_12_16/inc',
+            'ThirdParty/tinyobjloader',
+            'ThirdParty/DirectXMath/Inc',
+            'ThirdParty/glm-0.9.9.8/glm',
+            'ThirdParty/fmt-9.1.0/include',
+            'ThirdParty/imgui-console/include',
+            'ThirdParty/imgui-console/include/imgui_console',
+            'ThirdParty/glfw-3.3.8.bin.WIN64/include',
+            'ThirdParty/DirectX-Headers/include/directx',
+            'ThirdParty/WinPixEventRuntime.1.0.220810001/Include/WinPixEventRuntime'
         }
 
 		libdirs 
         { 
-            "./ThirdParty/dxc/lib/x64",
-            "./ThirdParty/glfw-3.3.8.bin.WIN64/lib-vc2022",
-            "./ThirdParty/WinPixEventRuntime.1.0.220810001/bin/x64"
+            "ThirdParty/dxc/lib/x64",
+            "Tools/dxc_2022_12_16/lib/x64",
+            "ThirdParty/glfw-3.3.8.bin.WIN64/lib-vc2022",
+            "ThirdParty/WinPixEventRuntime.1.0.220810001/bin/x64"
         }
 
 		links 
@@ -105,6 +113,7 @@ project "DirectX12FromScratch"
             "glfw3.lib",
             "dxguid.lib",
             "d3d12.lib",
+            "dxcompiler.lib",
             "d3dcompiler.lib",
             "WinPixEventRuntime.lib"
         }
@@ -118,27 +127,29 @@ project "DirectX12FromScratch"
         optimize "On"                        --开启优化参数
         includedirs 
         { 
-            './src',
-            './ThirdParty',
-            './ThirdParty/stb',
+            'src',
+            'ThirdParty',
+            'ThirdParty/stb',
             -- './ThirdParty/imgui-1.89.2',
-            './ThirdParty/imgui-docking',
-            './ThirdParty/tinyobjloader',
-            './ThirdParty/glm-0.9.9.8/glm',
-            './ThirdParty/fmt-9.1.0/include',
-            './ThirdParty/DirectXMath/Inc',
-            './ThirdParty/imgui-console/include',
-            './ThirdParty/imgui-console/include/imgui_console',
-            './ThirdParty/glfw-3.3.8.bin.WIN64/include',
-            './ThirdParty/DirectX-Headers/include/directx',
-            './ThirdParty/WinPixEventRuntime.1.0.220810001/Include/WinPixEventRuntime'
+            'ThirdParty/imgui-docking',
+            'Tools/dxc_2022_12_16/inc',
+            'ThirdParty/tinyobjloader',
+            'ThirdParty/glm-0.9.9.8/glm',
+            'ThirdParty/fmt-9.1.0/include',
+            'ThirdParty/DirectXMath/Inc',
+            'ThirdParty/imgui-console/include',
+            'ThirdParty/imgui-console/include/imgui_console',
+            'ThirdParty/glfw-3.3.8.bin.WIN64/include',
+            'ThirdParty/DirectX-Headers/include/directx',
+            'ThirdParty/WinPixEventRuntime.1.0.220810001/Include/WinPixEventRuntime'
         }
 
 		libdirs 
         { 
-            "./ThirdParty/dxc/lib/x64",
-            "./ThirdParty/glfw-3.3.8.bin.WIN64/lib-vc2022",
-            "./ThirdParty/WinPixEventRuntime.1.0.220810001/bin/x64"
+            "ThirdParty/dxc/lib/x64",
+            "Tools/dxc_2022_12_16/lib/x64",
+            "ThirdParty/glfw-3.3.8.bin.WIN64/lib-vc2022",
+            "ThirdParty/WinPixEventRuntime.1.0.220810001/bin/x64"
         }
 
 		links 
@@ -148,6 +159,7 @@ project "DirectX12FromScratch"
             "glfw3.lib",
             "dxguid.lib",
             "d3d12.lib",
+            "dxcompiler.lib",
             "d3dcompiler.lib",
             "WinPixEventRuntime.lib"
         }

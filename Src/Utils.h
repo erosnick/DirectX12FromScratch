@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <d3d12.h>
 #include <string>
-
+#include <dxcapi.h>
 #include <wrl.h>
 
 using namespace Microsoft;
@@ -23,6 +23,9 @@ using namespace Microsoft::WRL;
 #define ObjectName(object) L#object
 #define CPU_DESCRIPTOR_HEAP_START(descriptorHeap) descriptorHeap->GetCPUDescriptorHandleForHeapStart()
 #define GPU_DESCRIPTOR_HEAP_START(descriptorHeap) descriptorHeap->GetGPUDescriptorHandleForHeapStart()
+
+extern ComPtr<IDxcUtils> dxcUtils;
+extern ComPtr<IDxcCompiler3> dxcCompiler;
 
 inline void setD3D12DebugName(ID3D12Object * object, const std::wstring& name)
 {
@@ -55,3 +58,8 @@ public:
 #define DXThrow(result, message) throw DxException(result, FUNCTION_NAME, FILE_NAME, __LINE__, message);
 
 #define DXCheck(result, message) if (FAILED(result)) { DXThrow(result, message); }
+
+void createDXCCompiler();
+
+void compileShader(const std::wstring& path, const std::wstring& entryPoint, const std::wstring& targetProfile, ComPtr<IDxcBlob>& shader);
+ID3DBlob* loadShaderBinary(const std::string& path);
