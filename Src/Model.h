@@ -94,7 +94,8 @@ struct DXMesh
 
 struct DXModel
 {
-	void load(const std::string& path);
+	void load(const std::string& path, const std::string& inName = "");
 	void convert(const GLMModel& model);
 	DXMesh mesh;
+	std::string name;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <memory>
 #include <wrl.h>
 
 using namespace Microsoft;
@@ -234,6 +235,8 @@ private:
 	/// \param index: 在描述符堆中的索引
 	void createShaderResourceView(D3D12_SRV_DIMENSION dimension, const ComPtr<ID3D12Resource>& texture, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t index = 0);
 
+	std::shared_ptr<struct MeshGeometry> createMeshGeometry(const DXModel& model);
+
 	void initializeDirect3D();
 
 	void initImGui();
@@ -430,6 +433,7 @@ private:
 	bool renderReady = false;
 	bool rightMouseButtonDown = false;
 	bool middleMouseButtonDown = false;
+	bool compileOnTheFly = true;
 
 	ModelViewProjectionBuffer* modelViewProjectionBuffer;
 	ModelViewProjectionBuffer* skyboxModelViewProjectionBuffer;
@@ -438,6 +442,8 @@ private:
 	DXModel cubeModel;
 	DXModel bunny;
 	DXModel skybox;
+
+	std::shared_ptr<struct MeshGeometry> meshGeometry;
 
 	// 初始的默认摄像机的位置
 	Camera camera{ { 0.0f, 1.0f, -5.0f } };

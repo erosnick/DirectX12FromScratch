@@ -118,9 +118,10 @@ void DXModel::convert(const GLMModel& model)
 	mesh.indexBufferSize = static_cast<uint32_t>(sizeof(uint32_t) * mesh.indices.size());
 }
 
-void DXModel::load(const std::string& path)
+void DXModel::load(const std::string& path, const std::string& inName)
 {
 	GLMModel model;
 	model.load(path);
 	convert(model);
+	name = inName;
 }
