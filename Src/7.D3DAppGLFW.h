@@ -443,6 +443,8 @@ private:
 	DXModel bunny;
 	DXModel skybox;
 
+	std::shared_ptr<MeshGeometry> model;
+
 	std::shared_ptr<struct MeshGeometry> meshGeometry;
 
 	// 初始的默认摄像机的位置
