@@ -60,6 +60,9 @@
     <ClInclude Include="..\src\ImGuiLayer.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\MathHelper.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\Model.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -153,6 +156,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ImGuiLayer.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MathHelper.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Model.cpp">

@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <windows.h>
 #include <d3d12.h>
+#include <d3dx12.h>
 #include <DirectXMath.h>
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
