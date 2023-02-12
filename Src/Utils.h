@@ -32,6 +32,7 @@ using namespace Microsoft::WRL;
 
 extern ComPtr<IDxcUtils> dxcUtils;
 extern ComPtr<IDxcCompiler3> dxcCompiler;
+extern const uint32_t NumFrameResources;
 
 inline void setD3D12DebugName(ID3D12Object * object, const std::wstring& name)
 {

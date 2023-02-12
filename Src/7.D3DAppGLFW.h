@@ -24,14 +24,37 @@ using namespace Microsoft::WRL;
 #include "Model.h"
 #include "Camera.h"
 #include "GameTimer.h"
+#include "FrameResource.h"
 
-struct ModelViewProjectionBuffer
+// Lightweight structure stores parameters to draw a shape.  This will
+// vary from app-to-app.
+struct RenderItem
 {
-	//XMFLOAT4X4 model;
-	//XMFLOAT4X4 modelViewProjection;
-	glm::mat4 model;
-	glm::mat4 modelViewProjection;
-	//glm::mat4 testMatrix;
+	RenderItem() = default;
+
+	// World matrix of the shape that describes the object's local space
+	// relative to the world space, which defines the position, orientation,
+	// and scale of the object in the world.
+	glm::mat4 model = glm::mat4(1.0f);
+
+	// Dirty flag indicating the object data has changed and we need to update the constant buffer.
+	// Because we have an object cbuffer for each FrameResource, we have to apply the
+	// update to each FrameResource.  Thus, when we modify object data we should set 
+	// NumFramesDirty = gNumFrameResources so that each frame resource gets the update.
+	uint32_t NumFramesDirty = NumFrameResources;
+
+	// Index into GPU constant buffer corresponding to the ObjectCB for this render item.
+	uint32_t objectConstantBufferIndex = -1;
+
+	MeshGeometry* meshGeometry = nullptr;
+
+	// Primitive topology.
+	D3D12_PRIMITIVE_TOPOLOGY PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+	// DrawIndexedInstanced parameters.
+	uint32_t indexCount = 0;
+	uint32_t startIndexLocation = 0;
+	uint32_t baseVertexLocation = 0;
 };
 
 // 渲染子线程参数
@@ -162,7 +185,7 @@ private:
 								  const ComPtr<ID3D12DescriptorHeap>& descriptorHeap,
 								  uint32_t index,
 								  ComPtr<ID3D12Resource>& constantBuffer, 
-								  ModelViewProjectionBuffer** modelViewProjectionBuffer);
+								  ObjectConstants** modelViewProjectionBuffer);
 
 	void createConstantBufferView();
 	void createSkyboxConstantBufferView();
@@ -175,6 +198,7 @@ private:
 	void createSkyboxSampler();
 	void recordCommands();
 	void prepareRenderThreads();
+	void createRenderItems();
 
 	/// 用于创建命令列表分配器的帮助函数
 	/// \param type: 命令列表分配器类型
@@ -251,6 +275,7 @@ private:
 	void update();
 	void processInput(float deltaTime);
 	void render();
+	void drawRenderItems(const ComPtr<ID3D12GraphicsCommandList>& commandList, const std::vector<RenderItem*>& renderItmes);
 
 	void waitCommandListComplete();
 
@@ -286,6 +311,16 @@ private:
 	uint32_t currentFrameIndex = 0;
 	uint32_t imGuiCurrentFrameIndex = 0;
 	uint32_t frame = 0;
+
+	std::vector<std::unique_ptr<FrameResource>> frameResources;
+	FrameResource* currentFrameResource;
+	uint32_t currentFrameResourceIndex = 0;
+
+	// List of all the render items.
+	std::vector<std::unique_ptr<RenderItem>> allRitems;
+
+	// Render items divided by PSO.
+	std::vector<RenderItem*> opaqueRitems;
 
 	uint32_t DXGIFactoryFlags = 0;
 	uint32_t renderTargetViewDescriptorSize = 0;
@@ -435,9 +470,9 @@ private:
 	bool middleMouseButtonDown = false;
 	bool compileOnTheFly = true;
 
-	ModelViewProjectionBuffer* modelViewProjectionBuffer;
-	ModelViewProjectionBuffer* skyboxModelViewProjectionBuffer;
-	ModelViewProjectionBuffer* renderTextureModelViewProjectionBuffer;
+	ObjectConstants* modelViewProjectionBuffer;
+	ObjectConstants* skyboxModelViewProjectionBuffer;
+	ObjectConstants* renderTextureModelViewProjectionBuffer;
 
 	DXModel cubeModel;
 	DXModel bunny;
@@ -445,7 +480,9 @@ private:
 
 	std::shared_ptr<MeshGeometry> model;
 
-	std::shared_ptr<struct MeshGeometry> meshGeometry;
+	std::shared_ptr<MeshGeometry> meshGeometry;
+
+	std::unordered_map<std::string, std::unique_ptr<MeshGeometry>> meshGeometries;
 
 	// 初始的默认摄像机的位置
 	Camera camera{ { 0.0f, 1.0f, -5.0f } };

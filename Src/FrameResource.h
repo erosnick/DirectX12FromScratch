@@ -6,9 +6,12 @@
 
 #include <memory>
 
+#include "glm.h"
+
 struct ObjectConstants
 {
-    DirectX::XMFLOAT4X4 World = MathHelper::Identity4x4();
+	glm::mat4 model;
+	glm::mat4 modelViewProjection;
 };
 
 struct PassConstants
@@ -29,12 +32,6 @@ struct PassConstants
     float DeltaTime = 0.0f;
 };
 
-struct Vertex
-{
-    DirectX::XMFLOAT3 Pos;
-    DirectX::XMFLOAT4 Color;
-};
-
 // Stores the resources needed for the CPU to build the command lists
 // for a frame.  
 struct FrameResource
@@ -48,14 +45,14 @@ public:
 
     // We cannot reset the allocator until the GPU is done processing the commands.
     // So each frame needs their own allocator.
-    Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CmdListAlloc;
+    Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandListAllocator;
 
     // We cannot update a cbuffer until the GPU is done processing the commands
     // that reference it.  So each frame needs their own cbuffers.
-    std::unique_ptr<UploadBuffer<PassConstants>> PassCB = nullptr;
-    std::unique_ptr<UploadBuffer<ObjectConstants>> ObjectCB = nullptr;
+    std::unique_ptr<UploadBuffer<PassConstants>> passConstantBuffer = nullptr;
+    std::unique_ptr<UploadBuffer<ObjectConstants>> objectConstantBuffer = nullptr;
 
     // Fence value to mark commands up to this fence point.  This lets us
     // check if these frame resources are still in use by the GPU.
-    UINT64 Fence = 0;
+    UINT64 fence = 0;
 };
