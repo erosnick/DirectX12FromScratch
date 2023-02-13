@@ -317,10 +317,10 @@ private:
 	uint32_t currentFrameResourceIndex = 0;
 
 	// List of all the render items.
-	std::vector<std::unique_ptr<RenderItem>> allRitems;
+	std::vector<std::unique_ptr<RenderItem>> allRenderItems;
 
 	// Render items divided by PSO.
-	std::vector<RenderItem*> opaqueRitems;
+	std::vector<RenderItem*> opaqueRenderItems;
 
 	uint32_t DXGIFactoryFlags = 0;
 	uint32_t renderTargetViewDescriptorSize = 0;
@@ -477,8 +477,6 @@ private:
 	DXModel cubeModel;
 	DXModel bunny;
 	DXModel skybox;
-
-	std::shared_ptr<MeshGeometry> model;
 
 	std::shared_ptr<MeshGeometry> meshGeometry;
 
