@@ -14,10 +14,28 @@ struct PSInput
     float4 color : COLOR;
 };
 
-cbuffer ModelViewProjectionBuffer : register(b0)
+cbuffer ObjectConstants : register(b0)
 {
     float4x4 model;
+};
+
+cbuffer PassConstants : register(b1)
+{
+    float4x4 view;
+    float4x4 inverseView;
+    float4x4 projection;
+    float4x4 inverseProjection;
+    float4x4 viewProjection;
+    float4x4 inverseViewProjection;
     float4x4 modelViewProjection;
+    float3 eyePositionW;
+    float constantPerObjectPad;
+    float2 renderTargetSize;
+    float2 inverseRenderTargetSize;
+    float nearZ;
+    float farZ;
+    float totalTime;
+    float deltaTime;
 };
 
 Texture2D albedo : register(t0);

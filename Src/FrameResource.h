@@ -11,25 +11,25 @@
 struct ObjectConstants
 {
 	glm::mat4 model;
-	glm::mat4 modelViewProjection;
 };
 
 struct PassConstants
 {
-    DirectX::XMFLOAT4X4 View = MathHelper::Identity4x4();
-    DirectX::XMFLOAT4X4 InvView = MathHelper::Identity4x4();
-    DirectX::XMFLOAT4X4 Proj = MathHelper::Identity4x4();
-    DirectX::XMFLOAT4X4 InvProj = MathHelper::Identity4x4();
-    DirectX::XMFLOAT4X4 ViewProj = MathHelper::Identity4x4();
-    DirectX::XMFLOAT4X4 InvViewProj = MathHelper::Identity4x4();
-    DirectX::XMFLOAT3 EyePosW = { 0.0f, 0.0f, 0.0f };
-    float cbPerObjectPad1 = 0.0f;
-    DirectX::XMFLOAT2 RenderTargetSize = { 0.0f, 0.0f };
-    DirectX::XMFLOAT2 InvRenderTargetSize = { 0.0f, 0.0f };
-    float NearZ = 0.0f;
-    float FarZ = 0.0f;
-    float TotalTime = 0.0f;
-    float DeltaTime = 0.0f;
+    glm::mat4 view = glm::mat4(1.0f);
+    glm::mat4 inverseView = glm::mat4(1.0f);
+    glm::mat4 projection = glm::mat4(1.0f);
+    glm::mat4 inverseProjection = glm::mat4(1.0f);
+    glm::mat4 viewProjection = glm::mat4(1.0f);
+    glm::mat4 inverseViewProjection = glm::mat4(1.0f);
+    glm::mat4 modelViewProjection;
+    glm::vec3 eyePositionW = { 0.0f, 0.0f, 0.0f };
+    float constantPerObjectPad = 0.0f;
+    glm::vec2 renderTargetSize = { 0.0f, 0.0f };
+    glm::vec2 inverseRenderTargetSize = { 0.0f, 0.0f };
+    float nearZ = 0.0f;
+    float farZ = 0.0f;
+    float totalTime = 0.0f;
+    float deltaTime = 0.0f;
 };
 
 // Stores the resources needed for the CPU to build the command lists

@@ -199,6 +199,8 @@ private:
 	void recordCommands();
 	void prepareRenderThreads();
 	void createRenderItems();
+	void createFrameResources();
+	void createFrameResourceConstantBufferViews();
 
 	/// 用于创建命令列表分配器的帮助函数
 	/// \param type: 命令列表分配器类型
@@ -259,7 +261,7 @@ private:
 	/// \param index: 在描述符堆中的索引
 	void createShaderResourceView(D3D12_SRV_DIMENSION dimension, const ComPtr<ID3D12Resource>& texture, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t index = 0);
 
-	std::shared_ptr<struct MeshGeometry> createMeshGeometry(const DXModel& model);
+	std::unique_ptr<struct MeshGeometry> createMeshGeometry(const DXModel& model);
 
 	void initializeDirect3D();
 
@@ -271,8 +273,12 @@ private:
 
 	void updateConstantBuffer();
 	void updateSkyboxConstantBuffer();
+	void updateMainPassConstantBuffer();
 	void calculateFrameStats();
 	void update();
+
+	void updateFrameResourceAndIndex();
+
 	void processInput(float deltaTime);
 	void render();
 	void drawRenderItems(const ComPtr<ID3D12GraphicsCommandList>& commandList, const std::vector<RenderItem*>& renderItmes);
@@ -295,8 +301,8 @@ private:
 	void onRenderTextureResize(uint32_t width, uint32_t height);
 private:
 	const static uint32_t FrameBackbufferCount = 3;
-	int32_t windowWidth = 1920;
-	int32_t windowHeight = 1080;
+	int32_t windowWidth = 1280;
+	int32_t windowHeight = 720;
 	int32_t viewportWidth = 800;
 	int32_t viewportHeight = 600;
 	int32_t imGuiWindowWidth = 800;
@@ -327,6 +333,8 @@ private:
 	uint32_t depthStencilViewDescriptorSize = 0;
 	uint32_t SRVCBVUAVDescriptorSize = 0;
 	uint32_t samplerDescriptorSize = 0;
+
+	uint32_t passConstantBufferViewOffset = 0;
 
 	uint32_t currentSamplerNo = 0;		//当前使用的采样器索引
 	uint32_t sampleMaxCount = 5;		//创建五个典型的采样器
@@ -477,8 +485,6 @@ private:
 	DXModel cubeModel;
 	DXModel bunny;
 	DXModel skybox;
-
-	std::shared_ptr<MeshGeometry> meshGeometry;
 
 	std::unordered_map<std::string, std::unique_ptr<MeshGeometry>> meshGeometries;
 

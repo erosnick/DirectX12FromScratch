@@ -13,7 +13,7 @@ public:
 
         // Constant buffer elements need to be multiples of 256 bytes.
         // This is because the hardware can only view constant data 
-        // at m*256 byte offsets and of n*256 byte lengths. 
+        // at m * 256 byte offsets and of n * 256 byte lengths. 
         // typedef struct D3D12_CONSTANT_BUFFER_VIEW_DESC {
         // UINT64 OffsetInBytes; // multiple of 256
         // UINT   SizeInBytes;   // multiple of 256
@@ -52,7 +52,7 @@ public:
 
     void CopyData(int elementIndex, const T& data)
     {
-        memcpy_s(&mMappedData[elementIndex*mElementByteSize], sizeof(T), &data, sizeof(T));
+        memcpy_s(&mMappedData[elementIndex * mElementByteSize], sizeof(T), &data, sizeof(T));
     }
 
 private:
