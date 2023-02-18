@@ -47,7 +47,7 @@ PSInput VSMain(VSInput input)
     PSInput result;
 
     // result.position = mul(float4(input.position, 1.0f), testMatrix);
-    result.position = mul(modelViewProjection, float4(input.position, 1.0f));
+    result.position = mul(modelViewProjection1, float4(input.position, 1.0f));
     result.normal = mul(model, float4(input.normal, 0.0f)).xyz;
     result.texcoord = input.texcoord;
     result.color = input.color;
