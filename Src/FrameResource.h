@@ -11,6 +11,7 @@
 struct ObjectConstants
 {
 	glm::mat4 model;
+	glm::mat4 modelViewProjection;
 };
 
 struct PassConstants

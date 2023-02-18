@@ -17,6 +17,7 @@ struct PSInput
 cbuffer ObjectConstants : register(b0)
 {
     float4x4 model;
+    float4x4 modelViewProjection;
 };
 
 cbuffer PassConstants : register(b1)
@@ -27,7 +28,7 @@ cbuffer PassConstants : register(b1)
     float4x4 inverseProjection;
     float4x4 viewProjection;
     float4x4 inverseViewProjection;
-    float4x4 modelViewProjection;
+    float4x4 modelViewProjection1;
     float3 eyePositionW;
     float constantPerObjectPad;
     float2 renderTargetSize;

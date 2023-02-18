@@ -41,7 +41,7 @@ struct RenderItem
 	// Because we have an object cbuffer for each FrameResource, we have to apply the
 	// update to each FrameResource.  Thus, when we modify object data we should set 
 	// NumFramesDirty = gNumFrameResources so that each frame resource gets the update.
-	uint32_t NumFramesDirty = NumFrameResources;
+	uint32_t numFramesDirty = NumFrameResources;
 
 	// Index into GPU constant buffer corresponding to the ObjectCB for this render item.
 	uint32_t objectConstantBufferIndex = -1;
@@ -100,6 +100,7 @@ class D3DApp
 {
 public:
 	D3DApp();
+	~D3DApp();
 
 	bool initialize(HINSTANCE hInstance, int32_t cmdShow);
 
@@ -368,7 +369,6 @@ private:
 
 	// DXR stuff
 	ComPtr<IDXGISwapChain4> swapChain;
-	ComPtr<IDXGISwapChain4> imGuiSwapChain;
 	//ComPtr<IDXGISwapChain3> swapChain;
 	ComPtr<ID3D12DescriptorHeap> renderTargetViewDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> renderTextureRTVDescriptorHeap;
