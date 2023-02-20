@@ -28,9 +28,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return app.run();
 		//return app.runMultithread();
 	}
-	catch (DxException& e)
+	catch (DXException& e)
 	{
-		MessageBox(nullptr, e.ToString().c_str(), L"HR Failed", MB_OK);
+		MessageBox(nullptr, e.ToWString().c_str(), L"HR Failed", MB_OK);
 		return 0;
 	}
 

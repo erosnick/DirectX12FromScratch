@@ -11,7 +11,7 @@
 ComPtr<IDxcUtils> dxcUtils;
 ComPtr<IDxcCompiler3> dxcCompiler;
 
-DxException::DxException(HRESULT hr, const std::wstring& inFunctionName, const std::wstring& inFilename, int inLineNumber, const std::wstring& inErrorMessage) :
+DXException::DXException(HRESULT hr, const std::wstring& inFunctionName, const std::wstring& inFilename, int inLineNumber, const std::wstring& inErrorMessage) :
 	errorCode(hr),
 	functionName(inFunctionName),
 	filename(inFilename),
@@ -20,13 +20,18 @@ DxException::DxException(HRESULT hr, const std::wstring& inFunctionName, const s
 {
 }
 
-std::wstring DxException::ToString()const
+std::wstring DXException::ToWString() const
 {
 	// Get the string description of the error code.
 	_com_error err(errorCode);
 	std::wstring msg = err.ErrorMessage();
 
 	return functionName + L" failed in " + filename + L"; line " + std::to_wstring(lineNumber) + L"; error: " + msg + L"[" + errorMessage + L"]";
+}
+
+std::string DXException::ToString() const
+{
+	return TCHAR2String(ToWString().c_str());
 }
 
 ComPtr<ID3D12Resource> Utils::createDefaultBuffer(const ComPtr<ID3D12Device>& device, const ComPtr<ID3D12GraphicsCommandList>& commandList, const void* initData, UINT64 byteSize, ComPtr<ID3D12Resource>& uploadBuffer)

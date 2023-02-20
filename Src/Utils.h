@@ -47,6 +47,33 @@ inline void setD3D12DebugNameIndexd(ID3D12Object* object, const std::wstring& na
 	object->SetName(fullName.c_str());
 }
 
+/******************************************************************************************
+Function:        TCHAR2STRING
+Description:     TCHAR转string
+Input:           str:待转化的TCHAR*类型字符串
+Return:          转化后的string类型字符串
+*******************************************************************************************/
+inline std::string TCHAR2String(const TCHAR* wideString)
+{
+	std::string result;
+
+	try
+	{
+		auto length = WideCharToMultiByte(CP_ACP, 0, wideString, -1, NULL, 0, NULL, NULL);
+
+		char* temp = new char[length * sizeof(char)];
+
+		WideCharToMultiByte(CP_ACP, 0, wideString, -1, temp, length, NULL, NULL);
+
+		result = temp;
+	}
+	catch (std::exception e)
+	{
+	}
+
+	return result;
+}
+
 class Utils
 {
 public:
@@ -79,13 +106,14 @@ public:
 	static ID3DBlob* loadShaderBinary(const std::string& path);
 };
 
-class DxException
+class DXException
 {
 public:
-	DxException() = default;
-	DxException(HRESULT hr, const std::wstring& inFunctionName, const std::wstring& inFilename, int inLineNumber, const std::wstring& inErrorMessage = L"");
+	DXException() = default;
+	DXException(HRESULT hr, const std::wstring& inFunctionName, const std::wstring& inFilename, int inLineNumber, const std::wstring& inErrorMessage = L"");
 
-	std::wstring ToString() const;
+	std::wstring ToWString() const;
+	std::string ToString() const;
 
 	HRESULT errorCode = S_OK;
 	std::wstring functionName;
@@ -94,7 +122,7 @@ public:
 	std::wstring errorMessage;
 };
 
-#define DXThrow(result, message) throw DxException(result, FUNCTION_NAME, FILE_NAME, __LINE__, message);
+#define DXThrow(result, message) throw DXException(result, FUNCTION_NAME, FILE_NAME, __LINE__, message);
 
 #define DXCheck(result, message) if (FAILED(result)) { DXThrow(result, message); }
 

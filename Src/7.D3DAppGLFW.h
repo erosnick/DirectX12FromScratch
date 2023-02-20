@@ -106,10 +106,7 @@ public:
 
 	static D3DApp* getApp();
 
-	static uint32_t __stdcall renderThread(void* data);
-
 	int32_t run();
-	int32_t runMultithread();
 
 	void renderImGui();
 
@@ -123,6 +120,7 @@ private:
 	void createCommandQueue();
 	void createSwapChain();
 	void createShaderResourceViewDescriptorHeap();
+	void createTextureShaderResourceView(D3D12_RESOURCE_DESC& textureDesc);
 	void createRenderTargetView();
 	void createSkyboxDescriptorHeap();
 	void createSkyboxDescriptors();
@@ -134,7 +132,6 @@ private:
 	void createUploadHeap(uint64_t heapSize);
 	void loadCubeResource();
 	void loadResources();
-
 	void flushCommandQueue();
 
 	void loadSkyboxTexture();
@@ -186,7 +183,7 @@ private:
 								  const ComPtr<ID3D12DescriptorHeap>& descriptorHeap,
 								  uint32_t index,
 								  ComPtr<ID3D12Resource>& constantBuffer, 
-								  ObjectConstants** modelViewProjectionBuffer);
+								  ObjectConstants** objectConstantBuffer);
 
 	void createConstantBufferView();
 	void createSkyboxConstantBufferView();
@@ -198,7 +195,6 @@ private:
 	void createSkyboxSamplerDescriptorHeap();
 	void createSkyboxSampler();
 	void recordCommands();
-	void prepareRenderThreads();
 	void createRenderItems();
 	void createFrameResources();
 	void createFrameResourceConstantBufferViews();
@@ -277,6 +273,8 @@ private:
 	void updateMainPassConstantBuffer();
 	void calculateFrameStats();
 	void update();
+
+	void waitFrameResource();
 
 	void updateFrameResourceAndIndex();
 
@@ -478,11 +476,12 @@ private:
 	bool middleMouseButtonDown = false;
 	bool compileOnTheFly = true;
 
-	ObjectConstants* modelViewProjectionBuffer;
-	ObjectConstants* skyboxModelViewProjectionBuffer;
-	ObjectConstants* renderTextureModelViewProjectionBuffer;
+	ObjectConstants* objectConstants;
+	ObjectConstants* skyboxConstants;
+	ObjectConstants* renderTextureConstants;
 
 	DXModel cubeModel;
+	DXModel cube;
 	DXModel bunny;
 	DXModel skybox;
 
