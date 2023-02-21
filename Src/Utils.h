@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <dxcapi.h>
 #include <wrl.h>
+#include "glm.h"
 
 using namespace DirectX;
 using namespace Microsoft;
@@ -194,4 +195,66 @@ struct MeshGeometry
 		vertexBufferUploader = nullptr;
 		indexBufferUploader = nullptr;
 	}
+};
+
+struct Light
+{
+	glm::vec3 strength = { 0.5f, 0.5f, 0.5f };
+	float falloffStart = 1.0f;                          // point/spot light only
+	glm::vec3 direction = { 0.0f, -1.0f, 0.0f };		// directional/spot light only
+	float falloffEnd = 10.0f;                           // point/spot light only
+	glm::vec3 position = { 0.0f, 0.0f, 0.0f };			// point/spot light only
+	float spotPower = 64.0f;                            // spot light only
+};
+
+const uint32_t MaxLights = 16;
+
+struct MaterialConstants
+{
+	glm::vec4 diffuseAlbedo = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glm::vec3 fresnelR0 = { 0.01f, 0.01f, 0.01f };
+	float roughness = 0.25f;
+
+	// Used in texture mapping.
+	glm::mat4 transform = glm::mat4(1.0f);
+};
+
+// Simple struct to represent a material for our demos.  A production 3D engine
+// would likely create a class hierarchy of Materials.
+struct Material
+{
+	// Unique material name for lookup.
+	std::string name;
+
+	// Index into constant buffer corresponding to this material.
+	int32_t materialConstantBufferIndex = -1;
+
+	// Index into SRV heap for diffuse texture.
+	int32_t diffuseSRVHeapIndex = -1;
+
+	// Index into SRV heap for normal texture.
+	int32_t normalSRVHeapIndex = -1;
+
+	// Dirty flag indicating the material has changed and we need to update the constant buffer.
+	// Because we have a material constant buffer for each FrameResource, we have to apply the
+	// update to each FrameResource.  Thus, when we modify a material we should set 
+	// NumFramesDirty = gNumFrameResources so that each frame resource gets the update.
+	int32_t numFramesDirty = NumFrameResources;
+
+	// Material constant buffer data used for shading.
+	glm::vec4 diffuseAlbedo = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glm::vec3 fresnelR0 = { 0.01f, 0.01f, 0.01f };
+	float roughness = 0.25f;
+	glm::mat4 transform = glm::mat4(1.0f);
+};
+
+struct Texture
+{
+	// Unique material name for lookup.
+	std::string name;
+
+	std::wstring filename;
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> resource = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> uploadHeap = nullptr;
 };

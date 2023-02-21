@@ -18,7 +18,6 @@ struct PSInput
 cbuffer ObjectConstants : register(b0)
 {
     float4x4 model;
-    float4x4 modelViewProjection;
 };
 
 cbuffer PassConstants : register(b1)

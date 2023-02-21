@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <memory>
+#include <unordered_map>
 #include <wrl.h>
 
 using namespace Microsoft;
@@ -37,6 +38,8 @@ struct RenderItem
 	// and scale of the object in the world.
 	glm::mat4 model = glm::mat4(1.0f);
 
+	glm::mat4 textureTransform = glm::mat4(1.0f);
+
 	// Dirty flag indicating the object data has changed and we need to update the constant buffer.
 	// Because we have an object cbuffer for each FrameResource, we have to apply the
 	// update to each FrameResource.  Thus, when we modify object data we should set 
@@ -46,6 +49,7 @@ struct RenderItem
 	// Index into GPU constant buffer corresponding to the ObjectCB for this render item.
 	uint32_t objectConstantBufferIndex = -1;
 
+	Material* material = nullptr;
 	MeshGeometry* meshGeometry = nullptr;
 
 	// Primitive topology.
@@ -120,7 +124,7 @@ private:
 	void createCommandQueue();
 	void createSwapChain();
 	void createShaderResourceViewDescriptorHeap();
-	void createTextureShaderResourceView(D3D12_RESOURCE_DESC& textureDesc);
+	void createTextureShaderResourceView(std::unique_ptr<Texture>& texture, uint32_t index = 0);
 	void createRenderTargetView();
 	void createSkyboxDescriptorHeap();
 	void createSkyboxDescriptors();
@@ -131,7 +135,11 @@ private:
 	void createFence();
 	void createUploadHeap(uint64_t heapSize);
 	void loadCubeResource();
+	void createTexture(std::unique_ptr<Texture>& texture);
 	void loadResources();
+
+	void loadModels();
+
 	void flushCommandQueue();
 
 	void loadSkyboxTexture();
@@ -195,6 +203,7 @@ private:
 	void createSkyboxSamplerDescriptorHeap();
 	void createSkyboxSampler();
 	void recordCommands();
+	void createMaterials();
 	void createRenderItems();
 	void createFrameResources();
 	void createFrameResourceConstantBufferViews();
@@ -334,6 +343,7 @@ private:
 	uint32_t samplerDescriptorSize = 0;
 
 	uint32_t passConstantBufferViewOffset = 0;
+	uint32_t textureCount = 0;
 
 	uint32_t currentSamplerNo = 0;		//当前使用的采样器索引
 	uint32_t sampleMaxCount = 5;		//创建五个典型的采样器
@@ -404,7 +414,9 @@ private:
 	ComPtr<ID3D12Resource> renderTexture;
 	ComPtr<ID3D12Resource> renderTextureDepthStencilBuffer;
 	ComPtr<ID3D12Fence> fence;
-	ComPtr<ID3D12Resource> texture;
+
+	std::unordered_map<std::string, std::unique_ptr<Material>> materials;
+	std::unordered_map<std::string, std::unique_ptr<Texture>> textures;
 	ComPtr<ID3D12Heap> textureHeap;
 	ComPtr<ID3D12Heap> uploadHeap;
 

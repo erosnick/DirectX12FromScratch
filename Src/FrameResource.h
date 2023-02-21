@@ -12,6 +12,7 @@ struct ObjectConstants
 {
 	glm::mat4 model;
 	glm::mat4 modelViewProjection;
+    glm::mat4 textureTransform;
 };
 
 struct PassConstants
@@ -30,6 +31,14 @@ struct PassConstants
     float farZ = 0.0f;
     float totalTime = 0.0f;
     float deltaTime = 0.0f;
+
+    glm::vec4 ambientLight = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+	// Indices [0, NUM_DIR_LIGHTS) are directional lights;
+	// indices [NUM_DIR_LIGHTS, NUM_DIR_LIGHTS+NUM_POINT_LIGHTS) are point lights;
+	// indices [NUM_DIR_LIGHTS+NUM_POINT_LIGHTS, NUM_DIR_LIGHTS+NUM_POINT_LIGHT+NUM_SPOT_LIGHTS)
+	// are spot lights for a maximum of MaxLights per object.
+	Light lights[MaxLights];
 };
 
 // Stores the resources needed for the CPU to build the command lists
@@ -38,7 +47,7 @@ struct FrameResource
 {
 public:
     
-    FrameResource(ID3D12Device* device, UINT passCount, UINT objectCount);
+    FrameResource(ID3D12Device* device, uint32_t passCount, uint32_t objectCount, uint32_t materialCount);
     FrameResource(const FrameResource& rhs) = delete;
     FrameResource& operator=(const FrameResource& rhs) = delete;
     ~FrameResource();
@@ -50,6 +59,7 @@ public:
     // We cannot update a cbuffer until the GPU is done processing the commands
     // that reference it.  So each frame needs their own cbuffers.
     std::unique_ptr<UploadBuffer<PassConstants>> passConstantBuffer = nullptr;
+	std::unique_ptr<UploadBuffer<MaterialConstants>> materialConstantBuffer = nullptr;
     std::unique_ptr<UploadBuffer<ObjectConstants>> objectConstantBuffer = nullptr;
 
     // Fence value to mark commands up to this fence point.  This lets us
