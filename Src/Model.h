@@ -12,10 +12,10 @@ using namespace DirectX;
 
 struct DXVertex
 {
-	XMFLOAT3 position;
-	XMFLOAT3 normal;
-	XMFLOAT2 texcoord;
-	XMFLOAT4 color;
+	glm::vec3 position;
+	glm::vec3 normal;
+	glm::vec2 texcoord;
+	glm::vec4 color;
 };
 
 struct GLMVertex

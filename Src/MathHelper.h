@@ -9,6 +9,7 @@
 #include <Windows.h>
 #include <DirectXMath.h>
 #include <cstdint>
+#include "glm.h"
 
 class MathHelper
 {
@@ -57,12 +58,12 @@ public:
 	// Returns the polar angle of the point (x,y) in [0, 2*PI).
 	static float AngleFromXY(float x, float y);
 
-	static DirectX::XMVECTOR SphericalToCartesian(float radius, float theta, float phi)
+	static glm::vec4 SphericalToCartesian(float radius, float theta, float phi)
 	{
-		return DirectX::XMVectorSet(
-			radius*sinf(phi)*cosf(theta),
-			radius*cosf(phi),
-			radius*sinf(phi)*sinf(theta),
+		return glm::vec4(
+			radius * std::sinf(phi) * std::cosf(theta),
+			radius * std::cosf(phi),
+			radius * std::sinf(phi) * std::sinf(theta),
 			1.0f);
 	}
 

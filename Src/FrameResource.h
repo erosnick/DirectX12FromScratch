@@ -23,7 +23,7 @@ struct PassConstants
     glm::mat4 inverseProjection = glm::mat4(1.0f);
     glm::mat4 viewProjection = glm::mat4(1.0f);
     glm::mat4 inverseViewProjection = glm::mat4(1.0f);
-    glm::vec3 eyePositionW = { 0.0f, 0.0f, 0.0f };
+    glm::vec3 eyePosition = { 0.0f, 0.0f, 0.0f };
     float constantPerObjectPad = 0.0f;
     glm::vec2 renderTargetSize = { 0.0f, 0.0f };
     glm::vec2 inverseRenderTargetSize = { 0.0f, 0.0f };

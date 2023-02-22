@@ -78,7 +78,7 @@ inline std::string TCHAR2String(const TCHAR* wideString)
 class Utils
 {
 public:
-	static UINT calcConstantBufferByteSize(UINT byteSize)
+	static UINT calculateConstantBufferByteSize(UINT byteSize)
 	{
 		// Constant buffers must be a multiple of the minimum hardware
 		// allocation size (usually 256 bytes).  So round up to nearest

@@ -1,41 +1,73 @@
+// Defaults for number of lights.
+#ifndef NUM_DIR_LIGHTS
+    #define NUM_DIR_LIGHTS 1
+#endif
+
+#ifndef NUM_POINT_LIGHTS
+    #define NUM_POINT_LIGHTS 0
+#endif
+
+#ifndef NUM_SPOT_LIGHTS
+    #define NUM_SPOT_LIGHTS 0
+#endif
+
+// Include structures and functions for lighting.
+#include "LightingUtil.hlsl"
+
 struct VSInput
 {
-    float3 position : POSITION;
-    float3 normal : NORMAL;
-    float2 texcoord : TEXCOORD;
-    float4 color : COLOR;
+    float3 Position : POSITION;
+    float3 Normal : NORMAL;
+    float2 Texcoord : TEXCOORD;
+    float4 Color : COLOR;
 };
 
 struct PSInput
 {
-    float4 position : SV_POSITION;
-    float3 worldPosition : POSITION;
-    float3 normal : NORMAL;
-    float2 texcoord : TEXCOORD;
-    float4 color : COLOR;
+    float4 Position : SV_POSITION;
+    float3 WorldPosition : POSITION;
+    float3 Normal : NORMAL;
+    float2 Texcoord : TEXCOORD;
+    float4 Color : COLOR;
 };
 
 cbuffer ObjectConstants : register(b0)
 {
-    float4x4 model;
+    float4x4 Model;
 };
 
-cbuffer PassConstants : register(b1)
+cbuffer MaterialConstants : register(b1)
 {
-    float4x4 view;
-    float4x4 inverseView;
-    float4x4 projection;
-    float4x4 inverseProjection;
-    float4x4 viewProjection;
-    float4x4 inverseViewProjection;
-    float3 eyePositionW;
-    float constantPerObjectPad;
-    float2 renderTargetSize;
-    float2 inverseRenderTargetSize;
-    float nearZ;
-    float farZ;
-    float totalTime;
-    float deltaTime;
+	float4 DiffuseAlbedo;
+    float3 FresnelR0;
+    float  Roughness;
+	float4x4 Transform;
+};
+
+cbuffer PassConstants : register(b2)
+{
+    float4x4 View;
+    float4x4 InverseView;
+    float4x4 Projection;
+    float4x4 InverseProjection;
+    float4x4 ViewProjection;
+    float4x4 InverseViewProjection;
+    float3 EyePosition;
+    float ConstantPerObjectPad;
+    float2 RenderTargetSize;
+    float2 InverseRenderTargetSize;
+    float NearZ;
+    float FarZ;
+    float TotalTime;
+    float DeltaTime;
+
+    float4 ambientLight;
+
+    // Indices [0, NUM_DIR_LIGHTS) are directional lights;
+    // indices [NUM_DIR_LIGHTS, NUM_DIR_LIGHTS+NUM_POINT_LIGHTS) are point lights;
+    // indices [NUM_DIR_LIGHTS+NUM_POINT_LIGHTS, NUM_DIR_LIGHTS+NUM_POINT_LIGHT+NUM_SPOT_LIGHTS)
+    // are spot lights for a maximum of MaxLights per object.
+    Light lights[MaxLights];
 };
 
 Texture2D albedo : register(t0);
@@ -46,28 +78,38 @@ PSInput VSMain(VSInput input)
     PSInput result;
 
     // result.position = mul(float4(input.position, 1.0f), testMatrix);
-    result.worldPosition = mul(model, float4(input.position, 1.0f)).xyz;
-    result.position = mul(viewProjection, float4(result.worldPosition, 1.0));
-    result.normal = mul(model, float4(input.normal, 0.0f)).xyz;
-    result.texcoord = input.texcoord;
-    result.color = input.color;
+    result.WorldPosition = mul(Model, float4(input.Position, 1.0f)).xyz;
+    result.Position = mul(ViewProjection, float4(result.WorldPosition, 1.0));
+    result.Normal = mul(Model, float4(input.Normal, 0.0f)).xyz;
+    result.Texcoord = input.Texcoord;
+    result.Color = input.Color;
 
     return result;
 }
 
 float4 PSMain(PSInput input) : SV_TARGET
 {
-    float3 n = normalize(input.normal);
+    float3 normal = normalize(input.Normal);
 
-    float3 lightDir1 = normalize(float3(-1.0f, -1.0f, 1.0f));
-    float3 lightDir2 = normalize(float3(1.0f, -1.0f, 1.0f));
+    float3 viewDirection = normalize(EyePosition - input.WorldPosition);
 
-    float diffuse1 = max(0.0f, dot(n, -lightDir1));
-    float diffuse2 = max(0.0f, dot(n, -lightDir2));
+    float4 diffuseAlbedo = albedo.Sample(textureSampler, input.Texcoord) * DiffuseAlbedo;
 
-    float3 color = albedo.Sample(textureSampler, input.texcoord).rgb;
+    // Indirect lighting.
+    float4 ambient = ambientLight * diffuseAlbedo;
 
-    // color = float3(1.0f, 1.0f, 1.0f);
+    const float shininess = 1.0f - Roughness;
 
-    return float4(color * (diffuse1 + diffuse2) * 0.5f, 1.0f);
+    Material material = {diffuseAlbedo, FresnelR0, shininess};
+
+    float3 shadowFactor = 1.0f;
+    float4 directLight = ComputeLighting(lights, material, input.WorldPosition,
+                                         normal, viewDirection, shadowFactor);
+
+    float4 litColor = ambient + directLight;
+
+    // Common convention to take alpha from diffuse material.
+    litColor.a = diffuseAlbedo.a;
+    // litColor = float4(lights[0].Direction, 1.0);
+    return litColor;
 }

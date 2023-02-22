@@ -61,45 +61,6 @@ struct RenderItem
 	uint32_t baseVertexLocation = 0;
 };
 
-// 渲染子线程参数
-struct RenderThreadPayload
-{
-	uint32_t index = 0;		// 序号
-	uint32_t threadID = 0;
-	HANDLE threadHandle = nullptr;
-	DWORD mainThreadID = 0;
-	HANDLE mainThreadHandle = nullptr;
-	HANDLE runEvent = nullptr;
-	HANDLE eventRenderOver = nullptr;
-	uint32_t currentFrameIndex = 0;
-	double startTime = 0.0f;
-	double currentTime = 0.0f;
-	std::wstring ddsFile = L"";
-	std::string objFile = "";
-	glm::vec3 position{ 0.0f };
-	glm::vec3 scale{ 1.0f };
-	glm::mat4 view;
-	glm::mat4 projection;
-	ComPtr<ID3D12Device4> device;
-	ComPtr<ID3D12CommandAllocator> commandAllocator;
-	ComPtr<ID3D12GraphicsCommandList> commandList;
-	ComPtr<ID3D12RootSignature> rootSignature;
-	ComPtr<ID3D12PipelineState> pipelineState;
-	ComPtr<ID3D12DescriptorHeap> renderTargetViewDescriptorHeap;
-	ComPtr<ID3D12DescriptorHeap> depthStencilViewDescriptorHeap;
-	CD3DX12_VIEWPORT viewport{};
-	CD3DX12_RECT scissorRect{};
-	uint32_t renderTargetViewDescriptorSize = 0;
-	bool isCubemap = false;
-};
-
-const uint32_t MaxThreadCount = 3;
-const uint32_t SkyboxThreadIndex = 0;
-const uint32_t SceneObjectThreadIndex1 = 1;
-const uint32_t SceneObjectThreadIndex2 = 2;
-
-static RenderThreadPayload renderThreadPayloads[MaxThreadCount];
-
 class D3DApp
 {
 public:
@@ -268,6 +229,7 @@ private:
 	void createShaderResourceView(D3D12_SRV_DIMENSION dimension, const ComPtr<ID3D12Resource>& texture, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t index = 0);
 
 	std::unique_ptr<struct MeshGeometry> createMeshGeometry(const DXModel& model);
+	void createLandMeshGeometry();
 
 	void initializeDirect3D();
 
@@ -277,7 +239,8 @@ private:
 	void renderImGui(const ComPtr<ID3D12GraphicsCommandList>& commandList);
 	void shutdownImGui();
 
-	void updateConstantBuffer();
+	void updateConstantBuffers();
+	void updateMaterialConstantBuffers();
 	void updateSkyboxConstantBuffer();
 	void updateMainPassConstantBuffer();
 	void calculateFrameStats();
@@ -344,6 +307,8 @@ private:
 
 	uint32_t passConstantBufferViewOffset = 0;
 	uint32_t textureCount = 0;
+	uint32_t objectCount = 0;
+	uint32_t materialCount = 0;
 
 	uint32_t currentSamplerNo = 0;		//当前使用的采样器索引
 	uint32_t sampleMaxCount = 5;		//创建五个典型的采样器
@@ -459,6 +424,9 @@ private:
 	const float FrameTime = 0.01666667f;
 
 	double simulationTime = 0;
+
+	float sunTheta = glm::pi<float>() * 1.25f;
+	float sunPhi = glm::pi<float>() * 0.25f;
 
 	uint64_t textureUploadBufferSize = 0;
 	uint64_t skyboxTextureUploadBufferSize = 0;

@@ -119,6 +119,10 @@ void Utils::compileShader(const std::wstring& path, const std::wstring& entryPoi
 	arguments.push_back(L"-T");
 	arguments.push_back(targetProfile.c_str());
 
+	// -I for include directory
+	arguments.push_back(L"-I");
+	arguments.push_back(L"Assets/Shaders");
+
 	// Strip reflection data and pdbs(see later)
 	arguments.push_back(L"-Qstrip_debug");
 	arguments.push_back(L"-Qstrip_reflect");
@@ -129,12 +133,17 @@ void Utils::compileShader(const std::wstring& path, const std::wstring& entryPoi
 	arguments.push_back(DXC_ARG_DEBUG);					// -Zi
 #endif
 	//arguments.push_back(DXC_ARG_PACK_MATRIX_ROW_MAJOR);		// -zP
+	
+	// 创建一个默认的IDxcIncludeHandler，并指定-I参数(这个路径是相对于工作目录的)，
+	// 让HLSL中的#include语法可以正常工作
+	IDxcIncludeHandler* includeHandler = nullptr;
+	dxcUtils->CreateDefaultIncludeHandler(&includeHandler);
 
 	auto hr = dxcCompiler->Compile(
 		&shaderSourceBuffer,							// pSource
 		arguments.data(),							// pArguments
 		static_cast<uint32_t>(arguments.size()),	// argCount
-		nullptr, IID_PPV_ARGS(&compileResult));
+		includeHandler, IID_PPV_ARGS(&compileResult));
 
 	// Error handling
 	ComPtr<IDxcBlobUtf8> errors;
