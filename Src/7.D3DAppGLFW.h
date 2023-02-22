@@ -252,6 +252,9 @@ private:
 
 	void processInput(float deltaTime);
 	void render();
+
+	void resetFrameResourceCommandAllocator();
+
 	void drawRenderItems(const ComPtr<ID3D12GraphicsCommandList>& commandList, const std::vector<RenderItem*>& renderItmes);
 
 	void waitCommandListComplete();
