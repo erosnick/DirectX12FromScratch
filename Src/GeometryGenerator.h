@@ -99,7 +99,7 @@ public:
         std::vector<uint16> mIndices16;
     };
 
-	DXModel toDXModel(const MeshData& meshData, const std::string& name = "Grid");
+	static DXModel toDXModel(const MeshData& meshData, const std::string& name = "Grid");
 
     template <typename T>
     void buildSplitBuffers(const std::vector<T>& vertices, std::vector<glm::vec3>& positions, std::vector<glm::vec3>& normals, std::vector<glm::vec2>& texcoords)

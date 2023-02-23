@@ -1,12 +1,12 @@
 #pragma once
 
+#include "glm.h"
 #include "Utils.h"
+#include "Model.h"
 #include "MathHelper.h"
 #include "UploadBuffer.h"
 
 #include <memory>
-
-#include "glm.h"
 
 struct ObjectConstants
 {
@@ -47,7 +47,7 @@ struct FrameResource
 {
 public:
     
-    FrameResource(ID3D12Device* device, uint32_t passCount, uint32_t objectCount, uint32_t materialCount);
+    FrameResource(ID3D12Device* device, uint32_t passCount, uint32_t objectCount, uint32_t materialCount, uint32_t waveVertexCount);
     FrameResource(const FrameResource& rhs) = delete;
     FrameResource& operator=(const FrameResource& rhs) = delete;
     ~FrameResource();
@@ -61,6 +61,10 @@ public:
     std::unique_ptr<UploadBuffer<PassConstants>> passConstantBuffer = nullptr;
 	std::unique_ptr<UploadBuffer<MaterialConstants>> materialConstantBuffer = nullptr;
     std::unique_ptr<UploadBuffer<ObjectConstants>> objectConstantBuffer = nullptr;
+
+	// We cannot update a dynamic vertex buffer until the GPU is done processing
+	// the commands that reference it.  So each frame needs their own.
+	std::unique_ptr<UploadBuffer<DXVertex>> wavesVertexBuffer = nullptr;
 
     // Fence value to mark commands up to this fence point.  This lets us
     // check if these frame resources are still in use by the GPU.

@@ -26,7 +26,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			return 0;
 
 		return app.run();
-		//return app.runMultithread();
 	}
 	catch (DXException& e)
 	{

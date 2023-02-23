@@ -253,7 +253,7 @@ struct Texture
 	// Unique material name for lookup.
 	std::string name;
 
-	std::wstring filename;
+	std::wstring path;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> resource = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> uploadHeap = nullptr;

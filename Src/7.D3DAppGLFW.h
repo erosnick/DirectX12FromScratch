@@ -23,9 +23,11 @@ using namespace Microsoft::WRL;
 #include "ImGuiLayer.h"
 
 #include "Model.h"
+#include "Waves.h"
 #include "Camera.h"
 #include "GameTimer.h"
 #include "FrameResource.h"
+#include "GeometryGenerator.h"
 
 // Lightweight structure stores parameters to draw a shape.  This will
 // vary from app-to-app.
@@ -53,12 +55,18 @@ struct RenderItem
 	MeshGeometry* meshGeometry = nullptr;
 
 	// Primitive topology.
-	D3D12_PRIMITIVE_TOPOLOGY PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	D3D12_PRIMITIVE_TOPOLOGY primitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 	// DrawIndexedInstanced parameters.
 	uint32_t indexCount = 0;
 	uint32_t startIndexLocation = 0;
 	uint32_t baseVertexLocation = 0;
+};
+
+enum class RenderLayer : int
+{
+	Opaque = 0,
+	Count
 };
 
 class D3DApp
@@ -97,6 +105,7 @@ private:
 	void createUploadHeap(uint64_t heapSize);
 	void loadCubeResource();
 	void createTexture(std::unique_ptr<Texture>& texture);
+	void createTexture(const std::string& name, const std::wstring& path);
 	void loadResources();
 
 	void loadModels();
@@ -229,7 +238,8 @@ private:
 	void createShaderResourceView(D3D12_SRV_DIMENSION dimension, const ComPtr<ID3D12Resource>& texture, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t index = 0);
 
 	std::unique_ptr<struct MeshGeometry> createMeshGeometry(const DXModel& model);
-	void createLandMeshGeometry();
+	void createMeshDataGeometry(const GeometryGenerator::MeshData& meshData, const std::string& name);
+	void createOceanMeshGeometry();
 
 	void initializeDirect3D();
 
@@ -244,6 +254,7 @@ private:
 	void updateSkyboxConstantBuffer();
 	void updateMainPassConstantBuffer();
 	void calculateFrameStats();
+	void updateOcean();
 	void update();
 
 	void waitFrameResource();
@@ -253,6 +264,18 @@ private:
 	void processInput(float deltaTime);
 	void render();
 
+	void present();
+
+	void executeCommandLists();
+
+	void advanceFrameResourceFence();
+
+	void beginRenderTargetTransition(const ComPtr<ID3D12Resource>& renderTarget);
+	void endRenderTargetTransition(const ComPtr<ID3D12Resource>& renderTarget);
+
+	void beginResourceTransition(const ComPtr<ID3D12Resource>& resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
+	void endResourceTransition(const ComPtr<ID3D12Resource>& resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
+
 	void resetFrameResourceCommandAllocator();
 
 	void drawRenderItems(const ComPtr<ID3D12GraphicsCommandList>& commandList, const std::vector<RenderItem*>& renderItmes);
@@ -260,6 +283,10 @@ private:
 	void waitCommandListComplete();
 
 	void registerGLFWEventCallbacks();
+
+	void toggleWireframe();
+
+	float getHillsHeight(float x, float z) const;
 
 	static void onFramebufferResize(struct GLFWwindow* inWindow, int width, int height);
 	static void onWindowResize(struct GLFWwindow* inWindow, int width, int height);
@@ -271,6 +298,7 @@ private:
 	static void onMouseWheel(GLFWwindow* inWindow, double xoffset, double yoffset);
 	static void onKeyDown(GLFWwindow* inWindow, int key, int scancode, int action, int mods);
 
+	void preprareResize();
 	void onResize();
 	void onRenderTextureResize(uint32_t width, uint32_t height);
 private:
@@ -296,11 +324,18 @@ private:
 	FrameResource* currentFrameResource;
 	uint32_t currentFrameResourceIndex = 0;
 
+	RenderItem* wavesRenderItem = nullptr;
+
 	// List of all the render items.
 	std::vector<std::unique_ptr<RenderItem>> allRenderItems;
 
 	// Render items divided by PSO.
 	std::vector<RenderItem*> opaqueRenderItems;
+
+	// Render items divided by PSO.
+	std::vector<RenderItem*> renderItemLayer[(int)RenderLayer::Count];
+
+	std::unique_ptr<Waves> waves;
 
 	uint32_t DXGIFactoryFlags = 0;
 	uint32_t renderTargetViewDescriptorSize = 0;
@@ -365,6 +400,7 @@ private:
 	ComPtr<ID3D12RootSignature> rootSignature;
 	ComPtr<ID3D12RootSignature> renderTextureRootSignature;
 	ComPtr<ID3D12PipelineState> graphicsPipelineState;
+	ComPtr<ID3D12PipelineState> wireframeGraphicsPipelineState;
 	ComPtr<ID3D12PipelineState> skyboxGraphicsPipelineState;
 	ComPtr<ID3D12PipelineState> renderTextureGraphicsPipelineState;
 	ComPtr<ID3D12GraphicsCommandList> commandListDirectPre;
@@ -428,8 +464,8 @@ private:
 
 	double simulationTime = 0;
 
-	float sunTheta = glm::pi<float>() * 1.25f;
-	float sunPhi = glm::pi<float>() * 0.25f;
+	float sunTheta = glm::pi<float>() * 0.625f;
+	float sunPhi = glm::pi<float>() * 0.8f;
 
 	uint64_t textureUploadBufferSize = 0;
 	uint64_t skyboxTextureUploadBufferSize = 0;
@@ -458,6 +494,7 @@ private:
 	bool rightMouseButtonDown = false;
 	bool middleMouseButtonDown = false;
 	bool compileOnTheFly = true;
+	bool wireframe = false;
 
 	ObjectConstants* objectConstants;
 	ObjectConstants* skyboxConstants;

@@ -78,6 +78,9 @@
     <ClInclude Include="..\src\WICImage.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Waves.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\framework.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -99,9 +102,6 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\7.D3DAppGLFW.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\7.RenderToTexture.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Chapter1.Triangle.cpp">
@@ -158,6 +158,9 @@
     <ClCompile Include="..\src\ImGuiLayer.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\LandAndOcean.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\MathHelper.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -168,6 +171,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\WICImage.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Waves.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\pch.cpp">
@@ -188,6 +194,12 @@
       <Filter>Resources\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\Assets\Shaders\7.Skybox.hlsl">
+      <Filter>Resources\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Assets\Shaders\LandAndOcean.hlsl">
+      <Filter>Resources\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Assets\Shaders\LightingUtil.hlsl">
       <Filter>Resources\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\Assets\Shaders\Shader.hlsl">
