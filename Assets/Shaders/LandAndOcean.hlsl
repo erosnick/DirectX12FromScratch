@@ -1,6 +1,6 @@
 // Defaults for number of lights.
 #ifndef NUM_DIR_LIGHTS
-    #define NUM_DIR_LIGHTS 1
+    #define NUM_DIR_LIGHTS 4
 #endif
 
 #ifndef NUM_POINT_LIGHTS
@@ -34,6 +34,7 @@ struct PSInput
 cbuffer ObjectConstants : register(b0)
 {
     float4x4 Model;
+    float4x4 TextureTransform;
 };
 
 cbuffer MaterialConstants : register(b1)
@@ -41,7 +42,7 @@ cbuffer MaterialConstants : register(b1)
 	float4 DiffuseAlbedo;
     float3 FresnelR0;
     float  Roughness;
-	float4x4 Transform;
+	float4x4 MaterialTransform;
 };
 
 cbuffer PassConstants : register(b2)
@@ -82,6 +83,8 @@ PSInput VSMain(VSInput input)
     result.Position = mul(ViewProjection, float4(result.WorldPosition, 1.0));
     result.Normal = mul(Model, float4(input.Normal, 0.0f)).xyz;
     result.Texcoord = input.Texcoord;
+    float4 texcoord = mul(TextureTransform, float4(input.Texcoord, 0.0f, 1.0f));
+    result.Texcoord = mul(MaterialTransform, texcoord).xy;
     result.Color = input.Color;
 
     return result;
@@ -89,11 +92,18 @@ PSInput VSMain(VSInput input)
 
 float4 PSMain(PSInput input) : SV_TARGET
 {
+    float4 diffuseAlbedo = albedo.Sample(textureSampler, input.Texcoord) * DiffuseAlbedo;
+
+#ifdef ALPHA_TEST
+	// Discard pixel if texture alpha < 0.1.  We do this test as soon 
+	// as possible in the shader so that we can potentially exit the
+	// shader early, thereby skipping the rest of the shader code.
+	clip(diffuseAlbedo.a - 0.1f);
+#endif
+
     float3 normal = normalize(input.Normal);
 
     float3 viewDirection = normalize(EyePosition - input.WorldPosition);
-
-    float4 diffuseAlbedo = albedo.Sample(textureSampler, input.Texcoord) * DiffuseAlbedo;
 
     // Indirect lighting.
     float4 ambient = ambientLight * diffuseAlbedo;
@@ -110,6 +120,7 @@ float4 PSMain(PSInput input) : SV_TARGET
 
     // Common convention to take alpha from diffuse material.
     litColor.a = diffuseAlbedo.a;
-    // litColor = float4(lights[0].Direction, 1.0);
+    // litColor = float4(diffuseAlbedo.a, diffuseAlbedo.a, diffuseAlbedo.a, 1.0);
+    
     return litColor;
 }

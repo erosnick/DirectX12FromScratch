@@ -105,16 +105,16 @@ float3 ComputePointLight(Light light, Material material, float3 position, float3
 //---------------------------------------------------------------------------------------
 // Evaluates the lighting equation for spot lights.
 //---------------------------------------------------------------------------------------
-float3 ComputeSpotLight(Light L, Material mat, float3 pos, float3 normal, float3 toEye)
+float3 ComputeSpotLight(Light light, Material material, float3 position, float3 normal, float3 toEye)
 {
     // The vector from the surface to the light.
-    float3 lightVector = L.Position - pos;
+    float3 lightVector = light.Position - position;
 
     // The distance from surface to light.
     float d = length(lightVector);
 
     // Range test.
-    if(d > L.FalloffEnd)
+    if (d > light.FalloffEnd)
         return 0.0f;
 
     // Normalize the light vector.
@@ -122,17 +122,17 @@ float3 ComputeSpotLight(Light L, Material mat, float3 pos, float3 normal, float3
 
     // Scale light down by Lambert's cosine law.
     float ndotl = max(dot(lightVector, normal), 0.0f);
-    float3 lightStrength = L.Strength * ndotl;
+    float3 lightStrength = light.Strength * ndotl;
 
     // Attenuate light by distance.
-    float att = CalculateAttenuation(d, L.FalloffStart, L.FalloffEnd);
-    lightStrength *= att;
+    float attenuation = CalculateAttenuation(d, light.FalloffStart, light.FalloffEnd);
+    lightStrength *= attenuation;
 
     // Scale by spotlight
-    float spotFactor = pow(max(dot(-lightVector, L.Direction), 0.0f), L.SpotPower);
+    float spotFactor = pow(max(dot(-lightVector, light.Direction), 0.0f), light.SpotPower);
     lightStrength *= spotFactor;
 
-    return BlinnPhong(lightStrength, lightVector, normal, toEye, mat);
+    return BlinnPhong(lightStrength, lightVector, normal, toEye, material);
 }
 
 float4 ComputeLighting(Light lights[MaxLights], Material material,

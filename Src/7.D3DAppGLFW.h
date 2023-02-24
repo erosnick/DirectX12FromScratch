@@ -66,6 +66,8 @@ struct RenderItem
 enum class RenderLayer : int
 {
 	Opaque = 0,
+	Transparent,
+	AlphaTested,
 	Count
 };
 
@@ -93,11 +95,13 @@ private:
 	void createCommandQueue();
 	void createSwapChain();
 	void createShaderResourceViewDescriptorHeap();
-	void createTextureShaderResourceView(std::unique_ptr<Texture>& texture, uint32_t index = 0);
+	void createTextureShaderResourceView(const std::unique_ptr<Texture>& texture, uint32_t index = 0);
+	void createTextureShaderResourceViews();
 	void createRenderTargetView();
 	void createSkyboxDescriptorHeap();
 	void createSkyboxDescriptors();
 	void createRootSignature();
+	void createShadersAndInputlayouts();
 	void createGraphicsPipelineState();
 	void createSkyboxGraphicsPipelineState();
 	void createCommandLists();
@@ -112,7 +116,7 @@ private:
 
 	void flushCommandQueue();
 
-	void loadSkyboxTexture();
+	void loadDDSTexture(const std::wstring& path, ComPtr<ID3D12Resource>& texture);
 	void createRenderTextureRTVDescriptorHeap();
 	void createRenderTextureRTV(uint32_t width, uint32_t height);
 	void createRenderTextureSRVDescriptorHeap();
@@ -174,6 +178,7 @@ private:
 	void createSkyboxSampler();
 	void recordCommands();
 	void createMaterials();
+	void setMaterialSRVHeapHandles();
 	void createRenderItems();
 	void createFrameResources();
 	void createFrameResourceConstantBufferViews();
@@ -255,6 +260,7 @@ private:
 	void updateMainPassConstantBuffer();
 	void calculateFrameStats();
 	void updateOcean();
+	void animateOceanTexture();
 	void update();
 
 	void waitFrameResource();
@@ -273,8 +279,7 @@ private:
 	void beginRenderTargetTransition(const ComPtr<ID3D12Resource>& renderTarget);
 	void endRenderTargetTransition(const ComPtr<ID3D12Resource>& renderTarget);
 
-	void beginResourceTransition(const ComPtr<ID3D12Resource>& resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
-	void endResourceTransition(const ComPtr<ID3D12Resource>& resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
+	void resourceTransition(const ComPtr<ID3D12Resource>& resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
 
 	void resetFrameResourceCommandAllocator();
 
@@ -321,16 +326,13 @@ private:
 	uint32_t frame = 0;
 
 	std::vector<std::unique_ptr<FrameResource>> frameResources;
-	FrameResource* currentFrameResource;
+	FrameResource* currentFrameResource = nullptr;
 	uint32_t currentFrameResourceIndex = 0;
 
 	RenderItem* wavesRenderItem = nullptr;
 
 	// List of all the render items.
 	std::vector<std::unique_ptr<RenderItem>> allRenderItems;
-
-	// Render items divided by PSO.
-	std::vector<RenderItem*> opaqueRenderItems;
 
 	// Render items divided by PSO.
 	std::vector<RenderItem*> renderItemLayer[(int)RenderLayer::Count];
@@ -399,10 +401,9 @@ private:
 	ComPtr<ID3D12CommandAllocator> commandAllocatorRenderTextureObject;
 	ComPtr<ID3D12RootSignature> rootSignature;
 	ComPtr<ID3D12RootSignature> renderTextureRootSignature;
-	ComPtr<ID3D12PipelineState> graphicsPipelineState;
-	ComPtr<ID3D12PipelineState> wireframeGraphicsPipelineState;
 	ComPtr<ID3D12PipelineState> skyboxGraphicsPipelineState;
 	ComPtr<ID3D12PipelineState> renderTextureGraphicsPipelineState;
+	std::unordered_map<std::string, ComPtr<ID3D12PipelineState>> pipelineStates;
 	ComPtr<ID3D12GraphicsCommandList> commandListDirectPre;
 	ComPtr<ID3D12GraphicsCommandList> commandListDirectPost;
 	ComPtr<ID3D12GraphicsCommandList> commandListDirectImGui;
@@ -421,6 +422,8 @@ private:
 
 	std::unordered_map<std::string, std::unique_ptr<Material>> materials;
 	std::unordered_map<std::string, std::unique_ptr<Texture>> textures;
+	std::unordered_map<std::string, ComPtr<IDxcBlob>> shaders;
+
 	ComPtr<ID3D12Heap> textureHeap;
 	ComPtr<ID3D12Heap> uploadHeap;
 
@@ -429,6 +432,7 @@ private:
 
 	ComPtr<ID3D12Heap> skyboxUploadHeap;
 	ComPtr<ID3D12Resource> skyboxTexture;
+	ComPtr<ID3D12Resource> wireFenceTexture;
 	ComPtr<ID3D12Resource> skyboxTextureUploadBuffer;
 	ComPtr<ID3D12Resource> skyboxConstantBuffer;
 	ComPtr<ID3D12Resource> skyboxVertexBuffer;
@@ -436,6 +440,9 @@ private:
 
 	std::vector<HANDLE> waitedHandles;
 	std::vector<HANDLE> subTheadHandles;
+
+	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout;
+	std::vector<D3D12_INPUT_ELEMENT_DESC> skyboxInputLayout;
 
 	// Our state
 	bool showDemoWindow = true;
@@ -445,7 +452,7 @@ private:
 	static D3DApp* app;
 
 	// Global Variables:
-	std::wstring windowTitle = L"7.Render to Texture";	// The title bar text
+	std::wstring windowTitle = L"Land and Ocean";	// The title bar text
 	std::wstring windowClass = L"DirectX12Window";	    // the main window class name
 
 	// 初始的默认摄像机的位置
@@ -499,6 +506,8 @@ private:
 	ObjectConstants* objectConstants;
 	ObjectConstants* skyboxConstants;
 	ObjectConstants* renderTextureConstants;
+
+	PassConstants passConstants;
 
 	DXModel cubeModel;
 	DXModel cube;

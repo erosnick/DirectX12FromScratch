@@ -10,9 +10,19 @@
 
 struct ObjectConstants
 {
-	glm::mat4 model;
-	glm::mat4 modelViewProjection;
-    glm::mat4 textureTransform;
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 modelViewProjection = glm::mat4(1.0f);
+    glm::mat4 textureTransform = glm::mat4(1.0f);
+};
+
+struct MaterialConstants
+{
+	glm::vec4 diffuseAlbedo = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glm::vec3 fresnelR0 = { 0.01f, 0.01f, 0.01f };
+	float roughness = 0.25f;
+
+	// Used in texture mapping.
+	glm::mat4 materialTransform = glm::mat4(1.0f);
 };
 
 struct PassConstants

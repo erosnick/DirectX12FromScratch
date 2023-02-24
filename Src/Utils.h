@@ -8,6 +8,8 @@
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
 #include <string>
+#include <locale>
+#include <codecvt>
 #include <unordered_map>
 #include <dxcapi.h>
 #include <wrl.h>
@@ -75,6 +77,36 @@ inline std::string TCHAR2String(const TCHAR* wideString)
 	return result;
 }
 
+// Convert a wide Unicode string to an UTF8 string
+inline std::string utf8_encode(const std::wstring& wstr)
+{
+	if (wstr.empty()) return std::string();
+	int size_needed = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
+	std::string strTo(size_needed, 0);
+	WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), &strTo[0], size_needed, NULL, NULL);
+	return strTo;
+}
+
+// Convert an UTF8 string to a wide Unicode String
+inline std::wstring utf8_decode(const std::string& str)
+{
+	if (str.empty()) return std::wstring();
+	int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
+	std::wstring wstrTo(size_needed, 0);
+	MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &wstrTo[0], size_needed);
+	return wstrTo;
+}
+
+struct ShaderCompileParameters
+{
+	ShaderCompileParameters() {}
+
+	std::wstring path;
+	std::wstring entryPoint;
+	std::wstring targetProfile;
+	std::vector<std::wstring> defines;
+};
+
 class Utils
 {
 public:
@@ -103,7 +135,7 @@ public:
 
 	static void createDXCCompiler();
 
-	static void compileShader(const std::wstring& path, const std::wstring& entryPoint, const std::wstring& targetProfile, ComPtr<IDxcBlob>& shader);
+	static void compileShader(const ShaderCompileParameters& parameters, ComPtr<IDxcBlob>& shader);
 	static ID3DBlob* loadShaderBinary(const std::string& path);
 };
 
@@ -209,16 +241,6 @@ struct Light
 
 const uint32_t MaxLights = 16;
 
-struct MaterialConstants
-{
-	glm::vec4 diffuseAlbedo = { 1.0f, 1.0f, 1.0f, 1.0f };
-	glm::vec3 fresnelR0 = { 0.01f, 0.01f, 0.01f };
-	float roughness = 0.25f;
-
-	// Used in texture mapping.
-	glm::mat4 transform = glm::mat4(1.0f);
-};
-
 // Simple struct to represent a material for our demos.  A production 3D engine
 // would likely create a class hierarchy of Materials.
 struct Material
@@ -245,7 +267,9 @@ struct Material
 	glm::vec4 diffuseAlbedo = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glm::vec3 fresnelR0 = { 0.01f, 0.01f, 0.01f };
 	float roughness = 0.25f;
-	glm::mat4 transform = glm::mat4(1.0f);
+	glm::mat4 materialTransform = glm::mat4(1.0f);
+
+	CD3DX12_GPU_DESCRIPTOR_HANDLE textureHandle;
 };
 
 struct Texture
@@ -254,6 +278,8 @@ struct Texture
 	std::string name;
 
 	std::wstring path;
+
+	uint32_t index = 0;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> resource = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> uploadHeap = nullptr;

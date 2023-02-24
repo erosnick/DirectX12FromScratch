@@ -84,12 +84,12 @@ void Utils::createDXCCompiler()
 	DXCheck(DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&dxcCompiler)), L"DxcCreateInstance failed!");
 }
 
-void Utils::compileShader(const std::wstring& path, const std::wstring& entryPoint, const std::wstring& targetProfile, ComPtr<IDxcBlob>& shader)
+void Utils::compileShader(const ShaderCompileParameters& parameters, ComPtr<IDxcBlob>& shader)
 {
 	uint32_t codePage = CP_UTF8;
 	uint32_t sourceSize = 0;
 
-	std::ifstream shaderFile(path);
+	std::ifstream shaderFile(parameters.path);
 
 	std::stringstream shaderStream;
 
@@ -113,11 +113,11 @@ void Utils::compileShader(const std::wstring& path, const std::wstring& entryPoi
 
 	// -E for the entry point(eg. PSMain)
 	arguments.push_back(L"-E");
-	arguments.push_back(entryPoint.c_str());
+	arguments.push_back(parameters.entryPoint.c_str());
 
 	// -T for the target profile(eg. ps_6_2)
 	arguments.push_back(L"-T");
-	arguments.push_back(targetProfile.c_str());
+	arguments.push_back(parameters.targetProfile.c_str());
 
 	// -I for include directory
 	arguments.push_back(L"-I");
@@ -133,6 +133,12 @@ void Utils::compileShader(const std::wstring& path, const std::wstring& entryPoi
 	arguments.push_back(DXC_ARG_DEBUG);					// -Zi
 #endif
 	//arguments.push_back(DXC_ARG_PACK_MATRIX_ROW_MAJOR);		// -zP
+
+	for (const std::wstring& define : parameters.defines)
+	{
+		arguments.push_back(L"-D");
+		arguments.push_back(define.c_str());
+	}
 	
 	// 创建一个默认的IDxcIncludeHandler，并指定-I参数(这个路径是相对于工作目录的)，
 	// 让HLSL中的#include语法可以正常工作
