@@ -34,7 +34,7 @@ struct PassConstants
     glm::mat4 viewProjection = glm::mat4(1.0f);
     glm::mat4 inverseViewProjection = glm::mat4(1.0f);
     glm::vec3 eyePosition = { 0.0f, 0.0f, 0.0f };
-    float constantPerObjectPad = 0.0f;
+    float constantPerObjectPad1 = 0.0f;
     glm::vec2 renderTargetSize = { 0.0f, 0.0f };
     glm::vec2 inverseRenderTargetSize = { 0.0f, 0.0f };
     float nearZ = 0.0f;
@@ -43,6 +43,13 @@ struct PassConstants
     float deltaTime = 0.0f;
 
     glm::vec4 ambientLight = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+	// Allow application to change fog parameters once per frame.
+    // For example, we may only use fog for certain times of day.
+    glm::vec4 fogColor = { 0.7f, 0.7f, 0.7f, 1.0f };
+	float fogStart = 5.0f;
+	float fogRange = 150.0f;
+    glm::vec2 constantPerObjectPad2;
 
 	// Indices [0, NUM_DIR_LIGHTS) are directional lights;
 	// indices [NUM_DIR_LIGHTS, NUM_DIR_LIGHTS+NUM_POINT_LIGHTS) are point lights;

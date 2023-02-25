@@ -54,7 +54,7 @@ cbuffer PassConstants : register(b2)
     float4x4 ViewProjection;
     float4x4 InverseViewProjection;
     float3 EyePosition;
-    float ConstantPerObjectPad;
+    float ConstantPerObjectPad1;
     float2 RenderTargetSize;
     float2 InverseRenderTargetSize;
     float NearZ;
@@ -63,6 +63,13 @@ cbuffer PassConstants : register(b2)
     float DeltaTime;
 
     float4 ambientLight;
+
+    // Allow application to change fog parameters once per frame.
+    // For example, we may only use fog for certain times of day.
+    float4 FogColor;
+    float FogStart;
+    float FogRange;
+    float2 ConstantPerObjectPad2;
 
     // Indices [0, NUM_DIR_LIGHTS) are directional lights;
     // indices [NUM_DIR_LIGHTS, NUM_DIR_LIGHTS+NUM_POINT_LIGHTS) are point lights;
@@ -103,7 +110,10 @@ float4 PSMain(PSInput input) : SV_TARGET
 
     float3 normal = normalize(input.Normal);
 
-    float3 viewDirection = normalize(EyePosition - input.WorldPosition);
+    float3 viewDirection = EyePosition - input.WorldPosition;
+
+    float distToEye = length(viewDirection);
+    viewDirection /= distToEye; // normalize
 
     // Indirect lighting.
     float4 ambient = ambientLight * diffuseAlbedo;
@@ -118,9 +128,15 @@ float4 PSMain(PSInput input) : SV_TARGET
 
     float4 litColor = ambient + directLight;
 
+// #ifdef FOG
+    float fogAmount = saturate((distToEye - FogStart) / FogRange);
+    litColor = lerp(litColor, FogColor, fogAmount);
+// #endif
+
     // Common convention to take alpha from diffuse material.
     litColor.a = diffuseAlbedo.a;
-    // litColor = float4(diffuseAlbedo.a, diffuseAlbedo.a, diffuseAlbedo.a, 1.0);
-    
+    // litColor = float4(fogAmount, fogAmount, fogAmount, 1.0);
+    // litColor = FogColor;
+
     return litColor;
 }
