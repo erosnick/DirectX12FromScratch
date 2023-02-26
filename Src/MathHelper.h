@@ -67,6 +67,16 @@ public:
 			1.0f);
 	}
 
+	static glm::mat4 matrixReflect(glm::vec4 plane) {
+
+		return glm::mat4{
+			1 - 2 * plane.x * plane.x,    -2 * plane.x * plane.y,    -2 * plane.x * plane.z, -2 * plane.x * plane.w,
+			   -2 * plane.y * plane.x, 1 - 2 * plane.y * plane.y,	 -2 * plane.y * plane.z, -2 * plane.y * plane.w,
+			   -2 * plane.z * plane.x,  -  2 * plane.z * plane.y, 1 - 2 * plane.z * plane.z, -2 * plane.z * plane.w,
+									0,						   0,                         0,                      1
+		};
+	}
+
     static DirectX::XMMATRIX InverseTranspose(DirectX::CXMMATRIX M)
 	{
 		// Inverse-transpose is just applied to normals.  So zero out 

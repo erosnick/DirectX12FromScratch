@@ -128,10 +128,10 @@ float4 PSMain(PSInput input) : SV_TARGET
 
     float4 litColor = ambient + directLight;
 
-// #ifdef FOG
+#ifdef FOG
     float fogAmount = saturate((distToEye - FogStart) / FogRange);
     litColor = lerp(litColor, FogColor, fogAmount);
-// #endif
+#endif
 
     // Common convention to take alpha from diffuse material.
     litColor.a = diffuseAlbedo.a;

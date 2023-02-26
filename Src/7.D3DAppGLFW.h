@@ -68,6 +68,9 @@ enum class RenderLayer : int
 	Opaque = 0,
 	Transparent,
 	AlphaTested,
+	Mirrors,
+	Reflected,
+	Shadow,
 	Count
 };
 
@@ -258,6 +261,7 @@ private:
 	void updateMaterialConstantBuffers();
 	void updateSkyboxConstantBuffer();
 	void updateMainPassConstantBuffer();
+	void updateReflectedPassConstantBuffer();
 	void calculateFrameStats();
 	void updateOcean();
 	void animateOceanTexture();
@@ -330,6 +334,7 @@ private:
 	uint32_t currentFrameResourceIndex = 0;
 
 	RenderItem* wavesRenderItem = nullptr;
+	RenderItem* reflectedSphereRenderItem = nullptr;
 
 	// List of all the render items.
 	std::vector<std::unique_ptr<RenderItem>> allRenderItems;
@@ -433,8 +438,10 @@ private:
 	ComPtr<ID3D12Heap> skyboxUploadHeap;
 	ComPtr<ID3D12Resource> skyboxTexture;
 	ComPtr<ID3D12Resource> wireFenceTexture;
+	ComPtr<ID3D12Resource> iceTexture;
 	ComPtr<ID3D12Resource> skyboxTextureUploadBuffer;
 	ComPtr<ID3D12Resource> skyboxConstantBuffer;
+	ComPtr<ID3D12Resource> skyboxPassConstantBuffer;
 	ComPtr<ID3D12Resource> skyboxVertexBuffer;
 	ComPtr<ID3D12Resource> skyboxIndexBuffer;
 
@@ -507,7 +514,9 @@ private:
 	ObjectConstants* skyboxConstants;
 	ObjectConstants* renderTextureConstants;
 
-	PassConstants passConstants;
+	PassConstants mainPassConstants;
+	PassConstants skyboxPassConstants;
+	PassConstants reflectedPassConstants;
 
 	DXModel cubeModel;
 	DXModel cube;
