@@ -334,6 +334,7 @@ private:
 	uint32_t currentFrameResourceIndex = 0;
 
 	RenderItem* wavesRenderItem = nullptr;
+	RenderItem* sphereRenderItem = nullptr;
 	RenderItem* reflectedSphereRenderItem = nullptr;
 
 	// List of all the render items.
@@ -377,7 +378,7 @@ private:
 	CD3DX12_RECT imGuiScissorRect{ 0, 0, static_cast<long>(viewportWidth), static_cast<long>(windowHeight) };
 
 	DXGI_FORMAT swapChainFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
-	DXGI_FORMAT depthStencilFormat = DXGI_FORMAT_D32_FLOAT;
+	DXGI_FORMAT depthStencilFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	ComPtr<IDXGIFactory7> DXGIFactory;
 	ComPtr<IDXGIAdapter1> DXGIAdapter;
