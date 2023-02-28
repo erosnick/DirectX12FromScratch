@@ -86,8 +86,6 @@ public:
 
 	int32_t run();
 
-	void renderImGui();
-
 private:
 	bool initGLFW();
 	bool initWindow(HINSTANCE hInstance, int32_t cmdShow);
@@ -274,6 +272,8 @@ private:
 	void processInput(float deltaTime);
 	void render();
 
+	void renderScene();
+
 	void present();
 
 	void executeCommandLists();
@@ -310,6 +310,8 @@ private:
 	void preprareResize();
 	void onResize();
 	void onRenderTextureResize(uint32_t width, uint32_t height);
+
+	void disableAlphaBlend();
 private:
 	const static uint32_t FrameBackbufferCount = 3;
 	int32_t windowWidth = 1280;
@@ -387,8 +389,8 @@ private:
 	ComPtr<IDXGISwapChain1> swapChain1;
 
 	// DXR stuff
-	ComPtr<IDXGISwapChain4> swapChain;
-	//ComPtr<IDXGISwapChain3> swapChain;
+	//ComPtr<IDXGISwapChain4> swapChain;
+	ComPtr<IDXGISwapChain> swapChain;
 	ComPtr<ID3D12DescriptorHeap> renderTargetViewDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> renderTextureRTVDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> shaderResourceViewDescriptorHeap;
@@ -455,7 +457,7 @@ private:
 	// Our state
 	bool showDemoWindow = true;
 	bool showAnotherWindow = false;
-	ImVec4 clearColor = ImVec4(0.4f, 0.6f, 0.9f, 1.00f);
+	ImVec4 clearColor = ImVec4(0.4f, 0.6f, 0.9f, 1.0f);
 
 	static D3DApp* app;
 

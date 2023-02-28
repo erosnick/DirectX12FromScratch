@@ -133,10 +133,16 @@ float4 PSMain(PSInput input) : SV_TARGET
     litColor = lerp(litColor, FogColor, fogAmount);
 #endif
 
-    // Common convention to take alpha from diffuse material.
     litColor.a = diffuseAlbedo.a;
+
+#ifdef NO_ALPHA
+    // Common convention to take alpha from diffuse material.
+    litColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
+    litColor.a = 1.0f;
+#endif
     // litColor = float4(fogAmount, fogAmount, fogAmount, 1.0);
     // litColor = FogColor;
+    // litColor = float4(litColor.a, litColor.a, litColor.a, 1.0f);
 
     return litColor;
 }
