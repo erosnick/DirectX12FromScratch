@@ -338,6 +338,7 @@ private:
 	RenderItem* wavesRenderItem = nullptr;
 	RenderItem* sphereRenderItem = nullptr;
 	RenderItem* reflectedSphereRenderItem = nullptr;
+	RenderItem* shadowedMarryRenderItem = nullptr;
 
 	// List of all the render items.
 	std::vector<std::unique_ptr<RenderItem>> allRenderItems;
@@ -442,6 +443,8 @@ private:
 	ComPtr<ID3D12Resource> skyboxTexture;
 	ComPtr<ID3D12Resource> wireFenceTexture;
 	ComPtr<ID3D12Resource> iceTexture;
+	ComPtr<ID3D12Resource> groundTexture;
+	ComPtr<ID3D12Resource> defaultTexture;
 	ComPtr<ID3D12Resource> skyboxTextureUploadBuffer;
 	ComPtr<ID3D12Resource> skyboxConstantBuffer;
 	ComPtr<ID3D12Resource> skyboxPassConstantBuffer;
@@ -525,6 +528,7 @@ private:
 	DXModel cube;
 	DXModel bunny;
 	DXModel skybox;
+	DXModel marry;
 
 	std::unordered_map<std::string, std::unique_ptr<MeshGeometry>> meshGeometries;
 
