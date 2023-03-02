@@ -18,6 +18,12 @@ struct DXVertex
 	glm::vec4 color;
 };
 
+struct TreeSpriteVertex
+{
+	glm::vec3 position;
+	glm::vec2 size;
+};
+
 struct GLMVertex
 {
 	GLMVertex() = default;

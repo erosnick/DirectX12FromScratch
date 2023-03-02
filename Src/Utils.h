@@ -272,6 +272,13 @@ struct Material
 	CD3DX12_GPU_DESCRIPTOR_HANDLE textureHandle;
 };
 
+enum class TextureDimension : int
+{
+	Texture2D,
+	TextureCube,
+	TextureArray
+};
+
 struct Texture
 {
 	// Unique material name for lookup.
@@ -280,6 +287,8 @@ struct Texture
 	std::wstring path;
 
 	uint32_t index = 0;
+
+	TextureDimension dimension;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> resource = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> uploadHeap = nullptr;

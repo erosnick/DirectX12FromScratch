@@ -71,6 +71,7 @@ enum class RenderLayer : int
 	Mirrors,
 	Reflected,
 	Shadow,
+	AlphaTestedTreeSprites,
 	Count
 };
 
@@ -97,6 +98,7 @@ private:
 	void createSwapChain();
 	void createShaderResourceViewDescriptorHeap();
 	void createTextureShaderResourceView(const std::unique_ptr<Texture>& texture, uint32_t index = 0);
+	void createTextureArrayShaderResourceView(const std::unique_ptr<Texture>& texture, uint32_t index = 0);
 	void createTextureShaderResourceViews();
 	void createRenderTargetView();
 	void createSkyboxDescriptorHeap();
@@ -241,11 +243,12 @@ private:
 	/// \param texture: 用于创建SRV的纹理资源
 	/// \param descriptorHeap: 用于创建SRV的描述符堆
 	/// \param index: 在描述符堆中的索引
-	void createShaderResourceView(D3D12_SRV_DIMENSION dimension, const ComPtr<ID3D12Resource>& texture, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t index = 0);
+	void createShaderResourceView(TextureDimension dimension, const ComPtr<ID3D12Resource>& texture, const ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t index = 0);
 
 	std::unique_ptr<struct MeshGeometry> createMeshGeometry(const DXModel& model);
 	void createMeshDataGeometry(const GeometryGenerator::MeshData& meshData, const std::string& name);
 	void createOceanMeshGeometry();
+	void createTreeSpritesGeometry();
 
 	void initializeDirect3D();
 
@@ -445,6 +448,7 @@ private:
 	ComPtr<ID3D12Resource> iceTexture;
 	ComPtr<ID3D12Resource> groundTexture;
 	ComPtr<ID3D12Resource> defaultTexture;
+	ComPtr<ID3D12Resource> treeTexture;
 	ComPtr<ID3D12Resource> skyboxTextureUploadBuffer;
 	ComPtr<ID3D12Resource> skyboxConstantBuffer;
 	ComPtr<ID3D12Resource> skyboxPassConstantBuffer;
@@ -456,6 +460,7 @@ private:
 
 	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout;
 	std::vector<D3D12_INPUT_ELEMENT_DESC> skyboxInputLayout;
+	std::vector<D3D12_INPUT_ELEMENT_DESC> treeSpriteInputLayout;
 
 	// Our state
 	bool showDemoWindow = true;
