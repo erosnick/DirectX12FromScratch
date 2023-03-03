@@ -150,7 +150,7 @@ void GSMain(point VertexOut input[1], uint primitiveID : SV_PrimitiveID, inout T
 
 float4 PSMain(GeometryOut input) : SV_Target
 {
-    float3 uvw = float3(input.Texcoord, input.PrimitiveID % 3);
+    float3 uvw = float3(input.Texcoord, input.PrimitiveID % 6);
     float4 diffuseAlbedo = treeMapArray.Sample(textureSampler, uvw) * DiffuseAlbedo;
 
 #ifdef ALPHA_TEST

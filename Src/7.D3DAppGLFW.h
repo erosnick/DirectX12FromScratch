@@ -119,7 +119,7 @@ private:
 
 	void flushCommandQueue();
 
-	void loadDDSTexture(const std::wstring& path, ComPtr<ID3D12Resource>& texture);
+	void loadDDSTexture(const std::string& name, const std::wstring& path, TextureDimension dimension = TextureDimension::Texture2D);
 	void createRenderTextureRTVDescriptorHeap();
 	void createRenderTextureRTV(uint32_t width, uint32_t height);
 	void createRenderTextureSRVDescriptorHeap();
@@ -248,7 +248,7 @@ private:
 	std::unique_ptr<struct MeshGeometry> createMeshGeometry(const DXModel& model);
 	void createMeshDataGeometry(const GeometryGenerator::MeshData& meshData, const std::string& name);
 	void createOceanMeshGeometry();
-	void createTreeSpritesGeometry();
+	void createTreeSpritesGeometry(uint32_t treeCount);
 
 	void initializeDirect3D();
 
@@ -443,12 +443,6 @@ private:
 	ComPtr<ID3D12DescriptorHeap> skyboxSamplerDescriptorHeap;
 
 	ComPtr<ID3D12Heap> skyboxUploadHeap;
-	ComPtr<ID3D12Resource> skyboxTexture;
-	ComPtr<ID3D12Resource> wireFenceTexture;
-	ComPtr<ID3D12Resource> iceTexture;
-	ComPtr<ID3D12Resource> groundTexture;
-	ComPtr<ID3D12Resource> defaultTexture;
-	ComPtr<ID3D12Resource> treeTexture;
 	ComPtr<ID3D12Resource> skyboxTextureUploadBuffer;
 	ComPtr<ID3D12Resource> skyboxConstantBuffer;
 	ComPtr<ID3D12Resource> skyboxPassConstantBuffer;
