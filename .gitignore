@@ -4,6 +4,7 @@ bin/
 bin-int/
 JSON/
 RGBConverter/
+obj/
 
 # Files
 # *.vcxproj
