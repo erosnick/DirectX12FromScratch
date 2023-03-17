@@ -317,8 +317,8 @@ private:
 	void disableAlphaBlend();
 private:
 	const static uint32_t FrameBackbufferCount = 3;
-	int32_t windowWidth = 1280;
-	int32_t windowHeight = 720;
+	int32_t windowWidth = 1920;
+	int32_t windowHeight = 1080;
 	int32_t viewportWidth = 800;
 	int32_t viewportHeight = 600;
 	int32_t imGuiWindowWidth = 800;
