@@ -30,6 +30,8 @@
 #include "../Common/glm/gtx/euler_angles.hpp"		// glm::yawPitchRoll
 
 #include "../Common/GeometryGenerator.h"
+#include "../Common/Camera.h"
+
 #include <dxcapi.h>
 
 //linker
@@ -120,7 +122,6 @@ public:
 private:
 	const HRESULT m_hrError;
 };
-
 
 struct Vertex
 {
@@ -976,9 +977,7 @@ public:
 	void createShaders();
 	void createPipelineStateObjects();
     void createVertexBuffer();
-    void createIndexBuffer();
 	void createEarthVertexBuffer();
-	void createEarthIndexBuffer();
 	void createSkyboxVertexBuffer();
 	void createQuadVertexBuffer();
 	void createTexture();
@@ -1018,16 +1017,23 @@ public:
 
 	void DrawBindless();
 
-	void processInput();
+	void processInput(const GameTimer& gt);
 
-	void updateSceneBuffers();
+	void updateSceneBuffers(const GameTimer& gt);
 	void beginCopy();
 	void endCopy();
 	
 	private:
-	virtual void OnResize()override;
-	virtual void Update(const GameTimer& gt)override;
-	virtual void Draw(const GameTimer& gt)override;
+	virtual void OnResize() override;
+	virtual void Update(const GameTimer& gt) override;
+	virtual void Draw(const GameTimer& gt) override;
+
+	// Convenience overrides for handling mouse input.
+    virtual void OnRightMouseDown(WPARAM btnState, int x, int y) override;
+    virtual void OnRightMouseUp(WPARAM btnState, int x, int y) override;
+    virtual void OnMouseMove(WPARAM btnState, int x, int y) override;
+
+    virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
 
 	DXGI_FORMAT	emRenderTargetFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 
@@ -1046,24 +1052,11 @@ public:
 	ComPtr<ID3D12PipelineState>	mPipelineState;
 	ComPtr<ID3D12PipelineState>	mPipelineStateSkybox;
 
-	ComPtr<ID3D12Resource> mVertexBuffer;
-	ComPtr<ID3D12Resource> mIndexBuffer;
-
-	D3D12_VERTEX_BUFFER_VIEW mVertexBufferView = {};
-	D3D12_INDEX_BUFFER_VIEW mIndexBufferView = {};
-
 	ComPtr<ID3D12Resource> mVertexBufferSkybox;
 	ComPtr<ID3D12Resource> mIndexBufferSkybox;
  
 	D3D12_VERTEX_BUFFER_VIEW mVertexBufferViewSkybox = {};
 	D3D12_INDEX_BUFFER_VIEW mIndexBufferViewSkybox = {};
-
-	ComPtr<ID3D12Resource> mVertexBufferEarth;
-	ComPtr<ID3D12Resource> mIndexBufferEarth;
- 
-	D3D12_VERTEX_BUFFER_VIEW mVertexBufferViewEarth = {};
-	D3D12_INDEX_BUFFER_VIEW mIndexBufferViewEarth = {};
-
 
 	float mAspectRatio = 3.0f;
 
@@ -1130,9 +1123,6 @@ public:
 
 	//计算旋转角度需要的变量
 	float dModelRotationYAngle = 0.0f;
-
-	//球体的网格数据
-	uint32_t mSphereIndexCnt = 0;
  
 	//Sky Box的网格数据
 	uint32_t mSkyboxIndexCnt = 4;
@@ -1217,6 +1207,13 @@ public:
 	std::vector<Actor> actors;
 
 	uint32_t actorIndex = 0;
+
+	Camera camera{float3(0.0f, 0.0f, -20.0f), float3(0.0f, 1.0f, 0.0f)};
+
+	float3 lastMousePosition;
+
+	bool leftMouseDown = false;
+	bool rightMouseDown = false;
 };
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
@@ -1402,9 +1399,7 @@ bool RenderToTexture::Initialize()
 	createShaders();
 	createPipelineStateObjects();
 	createVertexBuffer();
-	createIndexBuffer();
 	createEarthVertexBuffer();
-	createEarthIndexBuffer();
 	createSkyboxVertexBuffer();
 	createTexture();
 	createBindlessResources();
@@ -2200,30 +2195,14 @@ void RenderToTexture::createVertexBuffer()
 {
 	box = geometryGenerator.createBox(mBoxSize, mBoxSize, mBoxSize, 0);
 
-	auto boxVertices = geometryGenerator.toSimpleVertices(box.vertices);
-
-	createVertexBuffer(boxVertices, mVertexBuffer, mVertexBufferView);
-
-	createActor(box, 1, float3(0, 1, 0), float3(0, 0, 0), float3(2, 2, 2));
-}
-
-void RenderToTexture::createIndexBuffer()
-{
-	mIndexCount = createIndexBuffer(box.indices32, mIndexBuffer, mIndexBufferView);
+	createActor(box, 1, float3(0, 1, 0), float3(0, 0, 0), float3(1, 1, 1));
 }
 
 void RenderToTexture::createEarthVertexBuffer()
 {
 	sphere = geometryGenerator.createSphere(1.0f, 16, 16);
 
-	createVertexBuffer(sphere.vertices, mVertexBufferEarth, mVertexBufferViewEarth);
-
-	createActor(sphere, 0, float3(0, 1, 0), float3(0, 0, 0), float3(2, 2, 2));
-}
-
-void RenderToTexture::createEarthIndexBuffer()
-{
-	mSphereIndexCnt = createIndexBuffer(sphere.indices32, mIndexBufferEarth, mIndexBufferViewEarth);
+	createActor(sphere, 0, float3(0, 1, 0), float3(0, 0, 0), float3(1, 1, 1));
 }
 
 void RenderToTexture::createSkyboxVertexBuffer()
@@ -2288,54 +2267,99 @@ void RenderToTexture::recordBundles()
 
 	ID3D12DescriptorHeap* ppHeaps[] = { mSRVHeap.Get(), mSamplerHeap.Get() };
 	mBundlesCube->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-	MaterialBuffer buffer = 
-	{
-		.textureID = 0,
-		.samplerID = 0
-	};
-
-	uint32_t count = sizeof(buffer) / sizeof(uint32_t);
-
-	mBundlesCube->SetGraphicsRoot32BitConstants(0, count, &buffer, 0);
-
-	CD3DX12_GPU_DESCRIPTOR_HANDLE stGPUCBVHandle(mSRVHeap->GetGPUDescriptorHandleForHeapStart()
-	, 3
-	, nSRVDescriptorSize);
 	
-	mBundlesCube->SetGraphicsRootDescriptorTable(1, stGPUCBVHandle);
+	std::vector<ComPtr<ID3D12GraphicsCommandList>> bundles;
 
-	mBundlesCube->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	mBundlesCube->IASetVertexBuffers(0, 1, &mVertexBufferView);
-	mBundlesCube->IASetIndexBuffer(&mIndexBufferView);
+	bundles.emplace_back(mBundlesCube);
+	bundles.emplace_back(mBundlesEarth);
 
-	mBundlesCube->DrawIndexedInstanced(mIndexCount, 1, 0, 0, 0);
+	uint32_t index = 0;
 
-	ThrowIfFailed(mBundlesCube->Close());
-
-	// Earth
-	mBundlesEarth->SetGraphicsRootSignature(mRootSignature.Get());
-	mBundlesEarth->SetPipelineState(mPipelineState.Get());
-
-	mBundlesEarth->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-	buffer = 
+	for (const auto& actor : actors)
 	{
-		.textureID = 1,
-		.samplerID = 0
-	};
+		const Mesh& mesh = meshes[actor.renderData.meshID];
 
-	mBundlesEarth->SetGraphicsRoot32BitConstants(0, count, &buffer, 0);
+		MaterialBuffer buffer = 
+		{
+			.textureID = actor.renderData.meshID,
+			.samplerID = 0,
+			.objectIndex = actor.renderData.objectIndex
+		};
+
+		uint32_t count = sizeof(buffer) / sizeof(uint32_t);
+
+		mCommandList->SetGraphicsRoot32BitConstants(0, count, &buffer, 0);
+
+		CD3DX12_GPU_DESCRIPTOR_HANDLE stGPUCBVHandle(mSRVHeap->GetGPUDescriptorHandleForHeapStart()
+		, 3
+		, nSRVDescriptorSize);
+
+		mCommandList->SetGraphicsRootDescriptorTable(1, stGPUCBVHandle);
+
+		mCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		mCommandList->IASetVertexBuffers(0, 1, &mesh.vertexBufferView);
+		mCommandList->IASetIndexBuffer(&mesh.indexBufferView);
+
+		mCommandList->DrawIndexedInstanced(mesh.indexCount, 1, 0, 0, 0);
+
+		ThrowIfFailed(bundles[index]->Close());
+
+		index++;
+	}
+
+
+	// MaterialBuffer buffer = 
+	// {
+	// 	.textureID = 0,
+	// 	.samplerID = 0
+	// };
+
+	// uint32_t count = sizeof(buffer) / sizeof(uint32_t);
+
+	// mBundlesCube->SetGraphicsRoot32BitConstants(0, count, &buffer, 0);
+
+	// CD3DX12_GPU_DESCRIPTOR_HANDLE stGPUCBVHandle(mSRVHeap->GetGPUDescriptorHandleForHeapStart()
+	// , 3
+	// , nSRVDescriptorSize);
 	
-	mBundlesEarth->SetGraphicsRootDescriptorTable(1, stGPUCBVHandle);
+	// mBundlesCube->SetGraphicsRootDescriptorTable(1, stGPUCBVHandle);
 
-	mBundlesEarth->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	mBundlesEarth->IASetVertexBuffers(0, 1, &mVertexBufferViewEarth);
-	mBundlesEarth->IASetIndexBuffer(&mIndexBufferViewEarth);
+	// mBundlesCube->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// mBundlesCube->IASetVertexBuffers(0, 1, &mVertexBufferView);
+	// mBundlesCube->IASetIndexBuffer(&mIndexBufferView);
 
-	mBundlesEarth->DrawIndexedInstanced(mSphereIndexCnt, 1, 0, 0, 0);
+	// mBundlesCube->DrawIndexedInstanced(mIndexCount, 1, 0, 0, 0);
 
-	ThrowIfFailed(mBundlesEarth->Close());
+	// ThrowIfFailed(mBundlesCube->Close());
+
+	// std::vector<ComPtr<ID3D12GraphicsCommandList>> bundles;
+
+	// bundles.emplace_back(mBundlesCube);
+	// bundles.emplace_back(mBundlesEarth);
+
+	// // Earth
+	// mBundlesEarth->SetGraphicsRootSignature(mRootSignature.Get());
+	// mBundlesEarth->SetPipelineState(mPipelineState.Get());
+
+	// mBundlesEarth->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	// buffer = 
+	// {
+	// 	.textureID = 1,
+	// 	.samplerID = 0
+	// };
+
+	// mBundlesEarth->SetGraphicsRoot32BitConstants(0, count, &buffer, 0);
+	
+	// mBundlesEarth->SetGraphicsRootDescriptorTable(1, stGPUCBVHandle);
+
+	// mBundlesEarth->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// mBundlesEarth->IASetVertexBuffers(0, 1, &mVertexBufferViewEarth);
+	// mBundlesEarth->IASetIndexBuffer(&mIndexBufferViewEarth);
+
+	// mBundlesEarth->DrawIndexedInstanced(mSphereIndexCnt, 1, 0, 0, 0);
+
+	// ThrowIfFailed(mBundlesEarth->Close());
 
 	// Skybox
 	//=================================================================================================
@@ -2353,11 +2377,13 @@ void RenderToTexture::recordBundles()
 
 	mBundlesSkybox->SetGraphicsRootDescriptorTable(0, stGPUCBVHandleSkybox);
 
-	buffer = 
+	MaterialBuffer buffer = 
 	{
 		.textureID = 0,
 		.samplerID = 0
 	};
+
+	uint32_t count = sizeof(buffer) / sizeof(uint32_t);
 
 	mBundlesSkybox->SetGraphicsRoot32BitConstants(1, count, &buffer, 0);
 
@@ -3194,6 +3220,9 @@ void RenderToTexture::Update(const GameTimer& gt)
 	}
 
 	auto view = glm::lookAtLH(float3(0.0f, 10.0f, -20.0f), float3(0.0f), float3(0.0f, 1.0f, 0.0f));
+
+	view = camera.GetViewMatrix();
+
 	auto projection = glm::perspectiveLH(glm::pi<float>() * 0.25f, (float)mClientWidth / (float)mClientHeight, 0.1f, 100.0f);
 
 	auto rotateSkybox = glm::rotate(glm::mat4(1.0f), dModelRotationYAngle, float3(0.0, 1.0f, 0.0f));
@@ -3215,9 +3244,9 @@ void RenderToTexture::Update(const GameTimer& gt)
 
 	D3D12_UpdateScene(&scene, gt.TotalTime());
 	
-	processInput();
+	processInput(gt);
 
- 	updateSceneBuffers();
+ 	updateSceneBuffers(gt);
 }
 
 void RenderToTexture::Draw(const GameTimer& gt)
@@ -3267,41 +3296,39 @@ void RenderToTexture::Draw(const GameTimer& gt)
 		//Draw Call！！！
 		mCommandList->DrawInstanced((uint32_t)mSkyboxVertices.size(), 1, 0, 0);
 
-
-		// Cube
 		ID3D12DescriptorHeap* ppHeaps[] = { mSRVHeap.Get(), mSamplerHeap.Get() };
 
 		mCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		
-		// mCommandList->ExecuteBundle(mBundlesCube.Get());
 
 		mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
 		mCommandList->SetPipelineState(mPipelineState.Get());
 
-		buffer = 
+
+		for (const auto& actor : actors)
 		{
-			.textureID = 0,
-			.samplerID = 0
-		};
+			const Mesh& mesh = meshes[actor.renderData.meshID];
 
-		mCommandList->SetGraphicsRoot32BitConstants(0, count, &buffer, 0);
+			buffer = 
+			{
+				.textureID = actor.renderData.meshID,
+				.samplerID = 0,
+				.objectIndex = actor.renderData.objectIndex
+			};
 
-		CD3DX12_GPU_DESCRIPTOR_HANDLE stGPUCBVHandle(mSRVHeap->GetGPUDescriptorHandleForHeapStart()
-		, 3
-		, nSRVDescriptorSize);
+			mCommandList->SetGraphicsRoot32BitConstants(0, count, &buffer, 0);
 
-		mCommandList->SetGraphicsRootDescriptorTable(1, stGPUCBVHandle);
+			CD3DX12_GPU_DESCRIPTOR_HANDLE stGPUCBVHandle(mSRVHeap->GetGPUDescriptorHandleForHeapStart()
+			, 3
+			, nSRVDescriptorSize);
 
-		mCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		mCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
-		mCommandList->IASetIndexBuffer(&mIndexBufferView);
+			mCommandList->SetGraphicsRootDescriptorTable(1, stGPUCBVHandle);
 
-		mCommandList->DrawIndexedInstanced(mIndexCount, 1, 0, 0, 0);
-		
-		// Earth
-		mCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+			mCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			mCommandList->IASetVertexBuffers(0, 1, &mesh.vertexBufferView);
+			mCommandList->IASetIndexBuffer(&mesh.indexBufferView);
 
-		mCommandList->ExecuteBundle(mBundlesEarth.Get());
+			mCommandList->DrawIndexedInstanced(mesh.indexCount, 1, 0, 0, 0);
+		}
 
 		renderTexture.end(mCommandList);
 
@@ -3415,41 +3442,6 @@ void RenderToTexture::Draw(const GameTimer& gt)
 		//Draw Call！！！
 		mCommandList->DrawInstanced((uint32_t)mSkyboxVertices.size(), 1, 0, 0);
 
-		// // Cube
-		// ID3D12DescriptorHeap* ppHeaps[] = { mSRVHeap.Get(), mSamplerHeap.Get() };
-
-		// mCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-		// // mCommandList->ExecuteBundle(mBundlesCube.Get());
-
-		// mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
-		// mCommandList->SetPipelineState(mPipelineState.Get());
-
-		// buffer = 
-		// {
-		// 	.textureID = 0,
-		// 	.samplerID = 0
-		// };
-
-		// mCommandList->SetGraphicsRoot32BitConstants(0, count, &buffer, 0);
-
-		// CD3DX12_GPU_DESCRIPTOR_HANDLE stGPUCBVHandle(mSRVHeap->GetGPUDescriptorHandleForHeapStart()
-		// , 3
-		// , nSRVDescriptorSize);
-
-		// mCommandList->SetGraphicsRootDescriptorTable(1, stGPUCBVHandle);
-
-		// mCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		// mCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
-		// mCommandList->IASetIndexBuffer(&mIndexBufferView);
-
-		// mCommandList->DrawIndexedInstanced(mIndexCount, 1, 0, 0, 0);
-		
-		// // Earth
-		// mCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-		// mCommandList->ExecuteBundle(mBundlesEarth.Get());
-
 		ID3D12DescriptorHeap* ppHeaps[] = { mSRVHeap.Get(), mSamplerHeap.Get() };
 
 		mCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
@@ -3535,6 +3527,34 @@ void RenderToTexture::Draw(const GameTimer& gt)
 	FlushCommandQueue();
 }
 
+void RenderToTexture::OnRightMouseDown(WPARAM btnState, int x, int y)
+{
+	rightMouseDown = true;
+}
+
+void RenderToTexture::OnRightMouseUp(WPARAM btnState, int x, int y)
+{
+	rightMouseDown = false;
+}
+
+void RenderToTexture::OnMouseMove(WPARAM btnState, int x, int y)
+{
+	if (rightMouseDown)
+	{
+		float offsetX = lastMousePosition.x - x;
+		float offsetY = lastMousePosition.y - y;
+		
+		camera.ProcessMouseMovement(offsetX, offsetY);
+	}
+
+	lastMousePosition = float3(x, y, 0.0f);
+}
+
+LRESULT RenderToTexture::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	return D3DApp::MsgProc(hwnd, msg, wParam, lParam);
+}
+
 void RenderToTexture::DrawBindless()
 {
 	upload_arena.Reset();
@@ -3596,17 +3616,55 @@ void RenderToTexture::DrawBindless()
 	}
 }
 
-void RenderToTexture::processInput()
+void RenderToTexture::processInput(const GameTimer& gt)
 {
 	if (GetAsyncKeyState(VK_SPACE))
 	{
 		actorIndex = (actorIndex + 1) % actors.size();
 	}
+
+	if (GetAsyncKeyState('W') & 0x8000 || GetAsyncKeyState('w') & 0x8000)
+	{
+		camera.ProcessKeyboard(FORWARD, gt.DeltaTime());
+	}
+
+	if (GetAsyncKeyState('S') & 0x8000 || GetAsyncKeyState('s') & 0x8000)
+	{
+		camera.ProcessKeyboard(BACKWARD, gt.DeltaTime());
+	}
+
+	if (GetAsyncKeyState('A') & 0x8000 || GetAsyncKeyState('a') & 0x8000)
+	{
+		camera.ProcessKeyboard(LEFT, gt.DeltaTime());
+	}
+
+	if (GetAsyncKeyState('D') & 0x8000 || GetAsyncKeyState('d') & 0x8000)
+	{
+		camera.ProcessKeyboard(RIGHT, gt.DeltaTime());
+	}
+
+	if (GetAsyncKeyState('Q') & 0x8000 || GetAsyncKeyState('q') & 0x8000)
+	{
+		camera.ProcessKeyboard(DOWN, gt.DeltaTime());
+	}
+
+	if (GetAsyncKeyState('E') & 0x8000 || GetAsyncKeyState('e') & 0x8000)
+	{
+		camera.ProcessKeyboard(UP, gt.DeltaTime());
+	}
 }
 
-void RenderToTexture::updateSceneBuffers()
+void RenderToTexture::updateSceneBuffers(const GameTimer& gt)
 {
 	beginCopy();
+
+    float baseScale = 1.0f;      // 原始大小
+    float amplitude = 0.25f;     // 缩放振幅（25%）
+    float speed = 2.0f;          // 速度（控制周期快慢）
+
+    float scale = baseScale * (1.0f + sin(gt.TotalTime() * speed) * amplitude);
+
+	// actors[actorIndex].transform.scale = glm::vec3(scale, scale, scale);
 
 	int32_t index = 0;
 
